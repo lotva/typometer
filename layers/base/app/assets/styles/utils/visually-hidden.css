@@ -1,0 +1,15 @@
+.visually-hidden:not(:focus):not(:active) {
+	position: absolute;
+
+	overflow: hidden;
+
+	inline-size: 1px;
+	block-size: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+
+	white-space: nowrap;
+
+	clip-path: inset(50%);
+}

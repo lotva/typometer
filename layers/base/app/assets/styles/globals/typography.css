@@ -1,0 +1,86 @@
+a {
+	padding-block: 0.1em 0.2em;
+	text-decoration-skip-ink: none;
+
+	@media (hover: hover) and (pointer: fine) {
+		&[href*='://'] {
+			cursor: alias;
+		}
+	}
+
+	&:focus-visible {
+		outline-color: transparent;
+		outline-style: solid;
+	}
+}
+
+h1,
+h2,
+h3 {
+	margin-block: 0;
+	text-wrap: balance;
+	overflow-wrap: break-word;
+}
+
+pre,
+p {
+	margin: 0;
+}
+
+p {
+	text-wrap: pretty;
+	overflow-wrap: break-word;
+}
+
+ul,
+ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+picture,
+img,
+video,
+iframe {
+	display: block;
+	max-inline-size: 100%;
+	block-size: auto;
+}
+
+img {
+	image-rendering: smooth;
+}
+
+iframe {
+	border: 0;
+}
+
+blockquote {
+	margin: 0;
+}
+
+button,
+select,
+input,
+textarea {
+	font: inherit;
+}
+
+button {
+	user-select: none;
+	padding: 0;
+	border: none;
+	background-color: transparent;
+}
+
+input,
+textarea {
+	border: none;
+	background-color: transparent;
+}
+
+.capitals {
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}

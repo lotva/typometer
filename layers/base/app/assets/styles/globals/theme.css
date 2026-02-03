@@ -1,0 +1,41 @@
+html {
+	font-family: var(--typography__font-family);
+	font-size: var(--typography__font-size-clamp);
+	color: var(--color__text);
+	background-color: var(--color__background);
+}
+
+a {
+	color: var(--color__link);
+	text-decoration-color: var(--color__link-border);
+	text-decoration-line: var(--decoration__line);
+	text-decoration-thickness: var(--decoration__thickness);
+	text-underline-offset: var(--decoration__offset);
+
+	&:focus-visible {
+		--decoration-thickness: var(--outline__thickness);
+	}
+}
+
+strong,
+h1,
+h2,
+h3 {
+	--color__link: var(--color__foreground--strong);
+
+	color: var(--color__foreground--strong);
+}
+
+button,
+select,
+input,
+textarea {
+	transition:
+		color 0.3s ease,
+		background-color 0.3s ease,
+		box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+	&:focus-visible {
+		box-shadow: 0 0 0 0.1em var(--color__outline);
+	}
+}

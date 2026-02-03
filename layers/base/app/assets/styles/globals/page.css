@@ -1,0 +1,9 @@
+html {
+	cursor: default;
+	scrollbar-gutter: stable;
+}
+
+body {
+	max-inline-size: 1440px;
+	margin: 0 auto;
+}

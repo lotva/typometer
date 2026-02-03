@@ -1,0 +1,14 @@
+{
+	"recommendations": [
+		"deque-systems.vscode-axe-linter",
+		"joshbolduc.commitlint",
+		"stylelint.vscode-stylelint",
+		"dbaeumer.vscode-eslint",
+		"Vue.volar",
+		"vitest.explorer",
+		"ms-playwright.playwright",
+		"EditorConfig.EditorConfig",
+		"esbenp.prettier-vscode",
+		"oxc.oxc-vscode"
+	]
+}

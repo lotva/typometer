@@ -1,0 +1,8 @@
+{
+	"$schema": "https://json.schemastore.org/prettierrc",
+	"vueIndentScriptAndStyle": true,
+	"singleAttributePerLine": true,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"semi": false
+}
