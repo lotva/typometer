@@ -27,6 +27,7 @@ export default defineNuxtConfig({
 				file: 'ru.ts',
 			},
 		],
+		skipSettingLocaleOnNavigate: true,
 	},
 
 	imports: {
