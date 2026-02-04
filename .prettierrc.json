@@ -2,6 +2,7 @@
 	"$schema": "https://json.schemastore.org/prettierrc",
 	"vueIndentScriptAndStyle": true,
 	"singleAttributePerLine": true,
+	"htmlWhitespaceSensitivity": "ignore",
 	"singleQuote": true,
 	"trailingComma": "all",
 	"semi": false
