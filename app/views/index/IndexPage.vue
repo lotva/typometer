@@ -1,13 +1,32 @@
 <template>
-	<div>
-		<SampleComponent />
+	<main class="layout">
+		<div class="sidebar">
+			<Controls />
+		</div>
 
-		<LanguageSwitcher />
-	</div>
+		<div class="content"><Preview /></div>
+	</main>
 </template>
 
 <script setup lang="ts">
-	import LanguageSwitcher from '~/common/ui/LanguageSwitcher.vue'
-
-	import SampleComponent from '../../common/ui/SampleComponent.vue'
+	import { Controls, Preview } from '~/modules/root'
 </script>
+
+<style scoped>
+	.layout {
+		display: flex;
+	}
+
+	.sidebar {
+		position: sticky;
+		inset-block-start: 0;
+
+		max-inline-size: 28ch;
+		block-size: 100dvb;
+		padding: calc(var(--gap) * 5) calc(var(--gap));
+	}
+
+	.content {
+		padding: calc(var(--gap) * 5) calc(var(--gap));
+	}
+</style>

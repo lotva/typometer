@@ -17,6 +17,11 @@ export default {
 
 		'color-function-notation': 'modern',
 
+		'custom-property-pattern': [
+			/^[a-z][\da-z]*(?:-[\da-z]+)*(?:__[a-z][\da-z]*(?:-[\da-z]+)*)?(?:--[a-z][\da-z]*(?:-[\da-z]+)*)?$/,
+			'Сustom properties should follow the BEM naming convention',
+		],
+
 		'declaration-property-value-no-unknown': null,
 
 		'no-descending-specificity': [true, { severity: 'warning' }],

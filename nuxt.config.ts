@@ -3,7 +3,11 @@ export default defineNuxtConfig({
 
 	css: ['~~/app/core/assets/styles/index.css'],
 
-	devtools: { enabled: true },
+	devtools: { enabled: false },
+
+	dir: {
+		layouts: '~~/app/core/layouts',
+	},
 
 	eslint: {
 		config: {
@@ -39,6 +43,7 @@ export default defineNuxtConfig({
 		'@nuxt/test-utils',
 		'@nuxt/devtools',
 		'@nuxtjs/i18n',
+		'motion-v/nuxt',
 	],
 
 	typescript: {

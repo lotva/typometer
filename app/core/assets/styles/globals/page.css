@@ -4,6 +4,7 @@ html {
 }
 
 body {
+	position: relative;
 	max-inline-size: 1440px;
 	margin: 0 auto;
 }

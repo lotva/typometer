@@ -1,0 +1,52 @@
+:root {
+	--font__text: 'PT Root UI', sans-serif;
+	--font__mono: 'Martian Mono', monospace;
+}
+
+@font-face {
+	font-family: 'PT Root UI';
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: block;
+	src: url('/fonts/pt-root-ui-vf.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Martian Mono';
+	font-weight: 100 800;
+	font-style: normal;
+	font-display: swap;
+	src: url('/fonts/martian-mono-vf.woff2') format('woff2');
+}
+
+.text-metrics-fix,
+p,
+h1,
+h2 {
+	&::before {
+		content: '';
+		display: table;
+		margin-block-end: calc(-0.35em - (1lh - 1em) / 2);
+	}
+
+	&::after {
+		content: '';
+		display: table;
+		margin-block-start: calc(-0.15em - (1lh - 1em) / 2);
+	}
+}
+
+.mono-metrics-fix,
+pre {
+	&::before {
+		content: '';
+		display: table;
+		margin-block-end: calc(-0.312em - (1lh - 1em) / 2);
+	}
+
+	&::after {
+		content: '';
+		display: table;
+		margin-block-start: calc(-0.088em - (1lh - 1em) / 2);
+	}
+}

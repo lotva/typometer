@@ -1,7 +1,7 @@
 html {
-	font-family: var(--typography__font-family);
-	font-size: var(--typography__font-size-clamp);
-	color: var(--color__text);
+	font-family: var(--font__text);
+	font-weight: var(--typography__font-weight);
+	color: var(--color__foreground);
 	background-color: var(--color__background);
 }
 
@@ -12,18 +12,37 @@ a {
 	text-decoration-thickness: var(--decoration__thickness);
 	text-underline-offset: var(--decoration__offset);
 
+	transition:
+		color var(--animation__duration--fast) var(--animation__ease),
+		background-color var(--animation__duration--fast) var(--animation__ease),
+		box-shadow var(--animation__duration--fast) var(--animation__ease-in-out);
+
 	&:focus-visible {
-		--decoration-thickness: var(--outline__thickness);
+		--decoration-thickness: var(--typography__outline-thickness);
 	}
 }
 
-strong,
+strong {
+	--color__link: var(--color__foreground--strong);
+
+	font-weight: var(--typography__font-weight--bold);
+	color: var(--color__foreground--strong);
+}
+
 h1,
 h2,
 h3 {
-	--color__link: var(--color__foreground--strong);
+	--color__link: var(--color__foreground--title);
 
-	color: var(--color__foreground--strong);
+	font-weight: var(--typography__font-weight--bold);
+	color: var(--color__foreground--title);
+}
+
+h1,
+h2,
+h3,
+p {
+	margin-inline-start: var(--typography__compensator);
 }
 
 button,
@@ -31,11 +50,22 @@ select,
 input,
 textarea {
 	transition:
-		color 0.3s ease,
-		background-color 0.3s ease,
-		box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+		color var(--animation__duration--fast) var(--animation__ease),
+		background-color var(--animation__duration--fast) var(--animation__ease),
+		box-shadow var(--animation__duration--fast) var(--animation__ease-in-out);
 
 	&:focus-visible {
-		box-shadow: 0 0 0 0.1em var(--color__outline);
+		box-shadow: 0 0 0 var(--typography__outline-thickness) var(--color__outline);
+	}
+}
+
+.capitals {
+	text-transform: uppercase;
+	letter-spacing: var(--typography__tracking--widest);
+}
+
+.box {
+	&:focus-visible {
+		box-shadow: 0 0 0 var(--typography__outline-thickness) var(--color__outline);
 	}
 }

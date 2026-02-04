@@ -1,0 +1,148 @@
+:root {
+	--typography__tracking--tighter: -0.05em;
+	--typography__tracking--tight: -0.035em;
+	--typography__tracking: 0em;
+	--typography__tracking--wide: 0.025em;
+	--typography__tracking--widest: 0.1em;
+
+	--typography__leading--tighter: 0.9;
+	--typography__leading--tight: 1.1;
+	--typography__leading: 1.3;
+	--typography__leading--loose: 1.5;
+
+	--typography__font-weight--light: 300;
+	--typography__font-weight: 480;
+	--typography__font-weight--medium: 500;
+	--typography__font-weight--bold: 700;
+
+	--typography__space-width: 0.27em;
+
+	--typography__outline-thickness: 0.125rem;
+
+	--typography__compensator: -0.07em;
+	--typography__surface-capital-compensator: calc((1cap - 1ex) / 2);
+
+	--rex: calc(1rem / 2);
+	--rlh: calc(1rem * var(--typography__leading));
+	--gap: calc(var(--rlh) - var(--rex));
+	--gap--relative: calc(1lh - 1ex);
+
+	--radius-sm: calc(var(--radius) - 0.125em);
+	--radius: 0.25em;
+	--radius-lg: calc(var(--radius) + 0.125em);
+
+	--decoration__line: underline;
+	--decoration__thickness: 0.05em;
+	--decoration__offset: 0.35em;
+
+	--animation__duration: 300ms;
+	--animation__duration--fast: 150ms;
+	--animation__ease: ease;
+	--animation__ease-out: cubic-bezier(0, 0, 0.2, 1);
+	--animation__ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+	--color__background: rgb(255 255 255);
+	--color__surface: rgb(248 248 248);
+
+	--color__foreground--muted: rgb(115 115 115);
+	--color__foreground: rgb(10 10 10);
+	--color__foreground--strong: var(--color__foreground);
+	--color__foreground--subtitle: var(--color__foreground--muted);
+	--color__foreground--title: var(--color__foreground);
+
+	--color__primary--disabled: rgb(24 24 24 / 0.5);
+	--color__primary: rgb(24 24 24);
+	--color__primary--hover: rgb(24 24 24 / 0.9);
+	--color__primary--active: rgb(24 24 24 / 0.8);
+
+	--color__muted: rgb(240 240 240);
+	--color__muted--hover: rgb(235 235 235);
+	--color__muted--active: rgb(230 230 230);
+
+	--color__input: var(--color__background);
+	--color__input--hover: var(--color__muted);
+	--color__input--active: var(--color__muted--hover);
+	--color__input-foreground: var(--color__foreground);
+	--color__input-placeholder: var(--color__foreground--muted);
+	--color__input-border: var(--color__border);
+	--color__input-border--focus: var(--color__outline);
+
+	--color__link: inherit;
+	--color__link--hover: var(--color__primary--hover);
+	--color__link-border: var(--color__primary--disabled);
+	--color__link-border--hover: var(--color__primary--hover);
+	--color__link-border--focus: var(--color__primary--hover);
+
+	--color__success: rgb(208 250 229);
+	--color__success-border: rgb(0 153 102);
+
+	--color__destructive: rgb(231 0 11 / 0.1);
+	--color__destructive--hover: rgb(255 100 103 / 0.2);
+	--color__destructive--active: var(--color__destructive--hover);
+	--color__destructive-outline: rgb(255 100 103 / 0.3);
+	--color__destructive-foreground: rgb(231 0 11);
+
+	--color__warning: rgb(255 251 235);
+	--color__warning-border: rgb(254 230 133);
+
+	--color__outline: rgb(161 161 161 / 0.5);
+	--color__border: rgb(229 229 229);
+
+	--color__disabled-state-opacity: 0.5;
+
+	color-scheme: light;
+
+	@media (prefers-color-scheme: dark) {
+		--typography__font-weight: 450;
+
+		--color__background: rgb(10 10 10);
+		--color__surface: rgb(24 24 24);
+
+		--color__foreground--muted: rgb(161 161 161);
+		--color__foreground: rgb(212 212 212);
+		--color__foreground--strong: rgb(250 250 250);
+		--color__foreground--subtitle: var(--color__foreground--muted);
+		--color__foreground--title: var(--color__foreground);
+
+		--color__primary--disabled: rgb(229 229 229 / 0.5);
+		--color__primary: rgb(229 229 229);
+		--color__primary--hover: rgb(229 229 229 / 90%);
+		--color__primary--active: rgb(229 229 229 / 80%);
+
+		--color__muted: rgb(38 38 38);
+		--color__muted--hover: rgb(64 64 64);
+		--color__muted--active: rgb(64 64 64);
+
+		--color__input: rgb(255 255 255 / 0.045);
+		--color__input--hover: rgb(255 255 255 / 0.075);
+		--color__input--active: rgb(255 255 255 / 0.1125);
+		--color__input-foreground: var(--color__foreground);
+		--color__input-placeholder: var(--color__foreground--muted);
+		--color__input-border: rgb(255 255 255 / 0.15);
+		--color__input-border--focus: var(--color__outline);
+
+		--color__link: inherit;
+		--color__link--hover: var(--color__primary--hover);
+		--color__link-border: var(--color__primary--disabled);
+		--color__link-border--hover: var(--color__primary--hover);
+		--color__link-border--focus: var(--color__primary--hover);
+
+		--color__success: rgb(102 128 11);
+
+		--color__destructive: rgb(255 100 103 / 0.2);
+		--color__destructive--hover: rgb(255 100 103 / 0.3);
+		--color__destructive--active: var(--color__destructive--hover);
+		--color__destructive-outline: rgb(255 100 103 / 0.4);
+		--color__destructive-foreground: rgb(255 100 103);
+
+		--color__warning: rgb(70 25 1);
+		--color__warning-border: rgb(123 51 6);
+
+		--color__outline: rgb(115 115 115 / 0.5);
+		--color__border: rgb(255 255 255 / 0.1);
+
+		--color__disabled-state-opacity: 0.5;
+
+		color-scheme: dark;
+	}
+}

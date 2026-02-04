@@ -1,0 +1,33 @@
+html {
+	--font-size--mobile-min: 20;
+	--font-size--mobile-max: 24;
+	--font-size--desktop-min: 16;
+	--font-size--desktop-max: 21;
+	--breakpoint--mobile: 320;
+	--breakpoint--desktop: 768;
+	--breakpoint--max: 1440;
+
+	font-size: calc(
+		var(--font-size--mobile-min) * 1px +
+			(var(--font-size--mobile-max) - var(--font-size--mobile-min)) *
+			(
+				(100vi - var(--breakpoint--mobile) * 1px) /
+					(var(--breakpoint--desktop) - var(--breakpoint--mobile))
+			)
+	);
+
+	@media (width >= 768px) {
+		font-size: calc(
+			var(--font-size--desktop-min) * 1px +
+				(var(--font-size--desktop-max) - var(--font-size--desktop-min)) *
+				(
+					(100vi - var(--breakpoint--desktop) * 1px) /
+						(var(--breakpoint--max) - var(--breakpoint--desktop))
+				)
+		);
+	}
+
+	@media (width >= 1440px) {
+		font-size: calc(var(--font-size--desktop-max) * 1px);
+	}
+}
