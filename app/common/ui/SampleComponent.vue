@@ -1,3 +1,5 @@
 <template>
-	<div>Sample Component</div>
+	<span>
+		{{ $t('typometer') }}
+	</span>
 </template>

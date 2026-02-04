@@ -14,11 +14,31 @@ export default defineNuxtConfig({
 		typedPages: true,
 	},
 
+	i18n: {
+		defaultLocale: 'en',
+		detectBrowserLanguage: false,
+		locales: [
+			{
+				code: 'en',
+				file: 'en.ts',
+			},
+			{
+				code: 'ru',
+				file: 'ru.ts',
+			},
+		],
+	},
+
 	imports: {
 		scan: false,
 	},
 
-	modules: ['@nuxt/eslint', '@nuxt/test-utils', '@nuxt/devtools'],
+	modules: [
+		'@nuxt/eslint',
+		'@nuxt/test-utils',
+		'@nuxt/devtools',
+		'@nuxtjs/i18n',
+	],
 
 	typescript: {
 		tsConfig: {

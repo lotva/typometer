@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@nuxt/devtools": "3.1.1",
 		"@nuxt/eslint": "1.13.0",
+		"@nuxtjs/i18n": "10.2.1",
 		"eslint": "^9.39.2",
 		"nuxt": "^4.3.0",
 		"vite": "npm:rolldown-vite@^7.3.1",
