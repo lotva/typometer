@@ -7,6 +7,7 @@ export default defineNuxtConfig({
 
 	dir: {
 		layouts: '~~/app/core/layouts',
+		plugins: '~~/app/core/plugins',
 	},
 
 	eslint: {
