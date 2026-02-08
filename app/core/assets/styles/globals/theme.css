@@ -13,8 +13,8 @@ a {
 	text-underline-offset: var(--decoration__offset);
 
 	transition:
-		color var(--animation__duration--fast) var(--animation__ease),
-		background-color var(--animation__duration--fast) var(--animation__ease),
+		color var(--animation__duration) var(--animation__ease),
+		background-color var(--animation__duration) var(--animation__ease),
 		box-shadow var(--animation__duration--fast) var(--animation__ease-in-out);
 
 	&:focus-visible {
@@ -41,7 +41,8 @@ h3 {
 h1,
 h2,
 h3,
-p {
+p,
+.has-compensator {
 	margin-inline-start: var(--typography__compensator);
 }
 
@@ -49,14 +50,27 @@ button,
 select,
 input,
 textarea {
+	outline-color: transparent;
+	outline-style: solid;
 	transition:
-		color var(--animation__duration--fast) var(--animation__ease),
-		background-color var(--animation__duration--fast) var(--animation__ease),
+		color var(--animation__duration) var(--animation__ease),
+		background-color var(--animation__duration) var(--animation__ease),
+		opacity var(--animation__duration) var(--animation__ease),
 		box-shadow var(--animation__duration--fast) var(--animation__ease-in-out);
+
+	&:hover {
+		transition-property: box-shadow;
+	}
 
 	&:focus-visible {
 		box-shadow: 0 0 0 var(--typography__outline-thickness) var(--color__outline);
 	}
+}
+
+hr {
+	block-size: 1px;
+	border: none;
+	background-color: var(--color__border);
 }
 
 .capitals {
