@@ -100,9 +100,13 @@
 
 		&[data-part='increment-trigger'],
 		&[data-part='decrement-trigger'] {
+			position: relative;
+
 			padding: 0.15em;
 			border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+
 			background-color: var(--color__muted);
+
 			transition:
 				background-color var(--animation__duration--fast) var(--animation__ease),
 				opacity var(--animation__duration--fast) var(--animation__ease);
@@ -115,6 +119,15 @@
 					opacity: var(--color__disabled-state-opacity);
 					background-color: var(--color__muted);
 				}
+			}
+
+			&::before {
+				content: '';
+
+				position: absolute;
+				z-index: 1;
+				inset-block: 0 -0.3em;
+				inset-inline: -0.3em calc(-1 * var(--gap));
 			}
 
 			&::after {
@@ -134,6 +147,10 @@
 
 			&[data-part='increment-trigger'] {
 				border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+
+				&::before {
+					inset-block: -0.3em 0;
+				}
 
 				&::after {
 					rotate: 180deg;
