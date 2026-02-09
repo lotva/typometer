@@ -17,11 +17,13 @@
 
 <style scoped>
 	.layout {
-		display: flex;
+		display: grid;
+		grid-template-columns: 28ch auto;
 	}
 
 	.sidebar {
 		--container-padding-inline: var(--gap);
+		--container-padding-block: calc(var(--gap) * 5);
 
 		scrollbar-color: var(--color__border) transparent;
 		scrollbar-width: thin;
@@ -32,9 +34,8 @@
 		overflow: auto;
 		overscroll-behavior: contain;
 
-		max-inline-size: 28ch;
 		block-size: 100dvb;
-		padding: calc(var(--gap) * 5) var(--container-padding-inline);
+		padding: 0 var(--container-padding-inline);
 	}
 
 	.content {

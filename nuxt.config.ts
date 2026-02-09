@@ -6,6 +6,7 @@ export default defineNuxtConfig({
 	devtools: { enabled: false },
 
 	dir: {
+		assets: '~~/app/core/assets',
 		layouts: '~~/app/core/layouts',
 		plugins: '~~/app/core/plugins',
 	},
@@ -32,6 +33,7 @@ export default defineNuxtConfig({
 				file: 'ru.ts',
 			},
 		],
+		restructureDir: 'app/core/i18n',
 		skipSettingLocaleOnNavigate: true,
 	},
 
@@ -44,6 +46,7 @@ export default defineNuxtConfig({
 		'@nuxt/test-utils',
 		'@nuxt/devtools',
 		'@nuxtjs/i18n',
+		'@pinia/nuxt',
 		'motion-v/nuxt',
 	],
 
