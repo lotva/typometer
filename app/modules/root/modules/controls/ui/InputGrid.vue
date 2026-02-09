@@ -28,13 +28,12 @@
 			<NumberInput
 				:model-value="String(store.settings.gridStep)"
 				class="input"
-				:min="1"
-				:max="1000"
+				:min="min"
+				:max="max"
+				:step="step"
 				:disabled="!store.settings.shouldSnapToGrid"
 				:aria-describedby="descriptionId"
-				@value-change="
-					(details) => store.updateSettings({ gridStep: details.valueAsNumber })
-				"
+				@value-change="updateGridStep"
 			/>
 
 			<span
@@ -55,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-	import { Switch } from '@ark-ui/vue'
+	import { type NumberInputValueChangeDetails, Switch } from '@ark-ui/vue'
 
 	import NumberInput from '~/common/ui/NumberInput.vue'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
@@ -64,6 +63,14 @@
 
 	const inputId = useId()
 	const descriptionId = useId()
+
+	const step = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
+	const min = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
+	const max = computed(() => (store.settings.unit === 'px' ? 16 : 1))
+
+	const updateGridStep = (details: NumberInputValueChangeDetails) => {
+		store.updateGridStep(details.valueAsNumber, store.settings.unit)
+	}
 </script>
 
 <style scoped>

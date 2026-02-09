@@ -33,6 +33,7 @@
 		set: (value: TUnit) => {
 			store.updateSettings({
 				base: store.settings.baseByUnit[value],
+				gridStep: store.settings.gridStepByUnit[value],
 				unit: value,
 			})
 		},

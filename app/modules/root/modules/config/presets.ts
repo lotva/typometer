@@ -2,19 +2,22 @@ import type { IPreset } from '../../model/types'
 
 export const PRESETS: IPreset[] = [
 	{
-		base: 1,
+		base: 16,
 		baseByUnit: {
 			em: 1,
 			px: 16,
 		},
 		gridStep: 4,
-		id: 'preset-1',
-		intermediateSteps: 0,
+		gridStepByUnit: {
+			em: 0.25,
+			px: 4,
+		},
+		id: '1',
+		intermediateSteps: 2,
+		name: 'Geist Design System',
 		ratio: 1.5,
-		name: 'Default',
-		range: { end: 8, start: -3 },
-		shouldSnapToGrid: false,
-		unit: 'em',
+		shouldSnapToGrid: true,
+		unit: 'px',
 	},
 	{
 		base: 12,
@@ -23,11 +26,14 @@ export const PRESETS: IPreset[] = [
 			px: 12,
 		},
 		gridStep: 4,
-		id: 'preset-2',
+		gridStepByUnit: {
+			em: 0.25,
+			px: 4,
+		},
+		id: '2',
 		intermediateSteps: 4,
-		ratio: 2,
 		name: 'Alt',
-		range: { end: 8, start: -3 },
+		ratio: 2,
 		shouldSnapToGrid: false,
 		unit: 'px',
 	},

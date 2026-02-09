@@ -4,6 +4,7 @@ import type { ISettings, TOutputFormat, TPreviewMode, TUnit } from './types'
 
 import { useCalculateScale } from '../lib/useCalculateScale'
 import { useGenerateTokens } from '../lib/useGenerateTokens'
+import { convert } from '../lib/utilities'
 import { PRESETS } from '../modules/config/presets'
 
 export const useScaleStore = defineStore('scale', () => {
@@ -20,15 +21,30 @@ export const useScaleStore = defineStore('scale', () => {
 
 		shouldSnapToGrid: false,
 		gridStep: 4,
+		gridStepByUnit: {
+			px: 4,
+			em: 0.25,
+		},
 	})
 
 	const outputFormat = ref<TOutputFormat>('tshirt')
 	const previewMode = ref<TPreviewMode>('example')
+	const activePresetId = ref<null | string>(null)
+
+	watch(
+		() => settings,
+		() => {
+			activePresetId.value = null
+		},
+		{ deep: true, immediate: false, flush: 'sync' },
+	)
 
 	function applyPreset(presetId: string) {
 		const preset = PRESETS.find((p) => p.id === presetId)
+
 		if (preset) {
 			Object.assign(settings, preset)
+			activePresetId.value = presetId
 		}
 	}
 
@@ -44,6 +60,17 @@ export const useScaleStore = defineStore('scale', () => {
 		}
 	}
 
+	function updateGridStep(updated: number, unit: TUnit) {
+		const oppositeUnit = unit === 'px' ? 'em' : 'px'
+
+		settings.gridStepByUnit[unit] = updated
+		settings.gridStepByUnit[oppositeUnit] = convert(updated, unit, oppositeUnit)
+
+		if (unit === settings.unit) {
+			settings.gridStep = updated
+		}
+	}
+
 	const { snappedScale } = useCalculateScale(settings)
 	const { css } = useGenerateTokens(
 		snappedScale,
@@ -52,18 +79,18 @@ export const useScaleStore = defineStore('scale', () => {
 		() => settings.base,
 	)
 
-	const scale = computed(() => snappedScale.value)
-
 	return {
 		settings,
 		outputFormat,
 		previewMode,
+		activePresetId,
 
-		scale,
+		scale: snappedScale,
 		css,
 
 		applyPreset,
 		updateSettings,
 		updateBase,
+		updateGridStep,
 	}
 })

@@ -1,5 +1,21 @@
 import type { ISettings } from '../model/types'
 
+export function convert(
+	value: number,
+	fromUnit: ISettings['unit'],
+	toUnit: ISettings['unit'],
+) {
+	if (fromUnit === 'px' && toUnit === 'em') {
+		return value / 16
+	}
+
+	if (fromUnit === 'em' && toUnit === 'px') {
+		return value * 16
+	}
+
+	return value
+}
+
 export function generateCss(tokens: Record<string, string>) {
 	return `:root {\n${Object.entries(tokens)
 		.map(([key, value]) => `  ${key}: ${value};`)

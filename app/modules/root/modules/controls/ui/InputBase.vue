@@ -5,7 +5,7 @@
 		:min="1"
 		:max="max"
 		:label="`${$t('controls.base')}, ${$t('controls.' + store.settings.unit)}`"
-		@value-change="updateSettings"
+		@value-change="updateBase"
 	/>
 </template>
 
@@ -20,7 +20,7 @@
 	const step = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
 	const max = computed(() => (store.settings.unit === 'px' ? 72 : 6))
 
-	const updateSettings = (details: NumberInputValueChangeDetails) => {
+	const updateBase = (details: NumberInputValueChangeDetails) => {
 		store.updateBase(details.valueAsNumber, store.settings.unit)
 	}
 </script>
