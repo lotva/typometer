@@ -1,6 +1,17 @@
 export const TOKEN_NAMES = {
 	semantic: {
-		names: ['small', '', 'h3', 'h2', 'loud', 'h1', 'shout'],
+		names: [
+			'label',
+			'small',
+			'',
+			'large',
+			'subheading',
+			'accent',
+			'loud',
+			'factoid',
+			'heading',
+			'shout',
+		],
 		overflowStrategy: 'numeric',
 		prefix: 'font-size--',
 	},

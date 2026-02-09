@@ -15,10 +15,22 @@ a {
 	transition:
 		color var(--animation__duration) var(--animation__ease),
 		background-color var(--animation__duration) var(--animation__ease),
-		box-shadow var(--animation__duration--fast) var(--animation__ease-in-out);
+		text-decoration-color var(--animation__duration) var(--animation__ease),
+		box-shadow var(--animation__duration--fast) var(--animation__ease-in-out),
+		text-decoration-thickness var(--animation__duration--fast)
+			var(--animation__ease-in-out);
+
+	&:hover,
+	&:focus-visible {
+		color: var(--color__link--hover);
+		text-decoration-color: var(--color__link-border--hover);
+		transition-property: box-shadow, text-decoration-thickness;
+	}
 
 	&:focus-visible {
-		--decoration-thickness: var(--typography__outline-thickness);
+		--decoration__thickness: var(--typography__outline-thickness);
+
+		text-decoration-color: var(--color__link-border--focus);
 	}
 }
 

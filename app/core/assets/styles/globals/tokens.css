@@ -56,8 +56,8 @@
 	--color__primary--active: rgb(24 24 24 / 0.8);
 
 	--color__muted: rgb(240 240 240);
-	--color__muted--hover: rgb(235 235 235);
-	--color__muted--active: rgb(230 230 230);
+	--color__muted--hover: rgb(230 230 230);
+	--color__muted--active: rgb(220 220 220);
 
 	--color__input: var(--color__background);
 	--color__input--hover: var(--color__muted);

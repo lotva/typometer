@@ -35,7 +35,7 @@
 		overscroll-behavior: contain;
 
 		block-size: 100dvb;
-		padding: 0 var(--container-padding-inline);
+		padding: 0 var(--container-padding-inline) var(--container-padding-block);
 	}
 
 	.content {

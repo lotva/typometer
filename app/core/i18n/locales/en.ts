@@ -17,6 +17,10 @@ export default defineI18nLocale(async () => {
 			},
 		},
 		description: 'Compose typographic scale as CSS tokens',
+		presets: {
+			classic: 'Classic, from The Elements of Typographic Style',
+			geist: 'Geist Design System',
+		},
 		switchLanguage: 'Switch language',
 		title: 'Typometer',
 	}

@@ -19,6 +19,10 @@ export default defineI18nLocale(async () => {
 			},
 		},
 		description: 'Составляет типографическую шкалу в виде ЦСС-токенов',
+		presets: {
+			classic: 'Классическая шкала из книги «Основы стиля в типографике»',
+			geist: 'Дизайн-система Geist',
+		},
 		switchLanguage: 'Смена языка',
 		title: 'Типометр',
 	}

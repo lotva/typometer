@@ -1,6 +1,6 @@
 export interface IPreset extends ISettings {
+	i18nNameKey: string
 	id: string
-	name: string
 }
 
 export interface ISettings {
