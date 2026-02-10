@@ -1,6 +1,6 @@
 <template>
 	<NumberInput
-		:model-value="String(store.settings.ratio)"
+		:model-value="ratioLocalized"
 		:step="0.1"
 		:min="1"
 		:max="10"
@@ -12,8 +12,11 @@
 </template>
 
 <script setup lang="ts">
+	import { useLocalizedNumber } from '~/common/lib/useLocalizedNumber'
 	import NumberInput from '~/common/ui/NumberInput.vue'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 
 	const store = useScaleStore()
+
+	const ratioLocalized = useLocalizedNumber(() => store.settings.ratio)
 </script>
