@@ -21,6 +21,12 @@ export default defineI18nLocale(async () => {
 			classic: 'Classic, from The Elements of Typographic Style',
 			geist: 'Geist Design System',
 		},
+		preview: {
+			ariaLabel: 'Scale preview and token copy',
+			example: 'Preview',
+			scale: 'Scale',
+			tokens: 'Tokens',
+		},
 		switchLanguage: 'Switch language',
 		title: 'Typometer',
 	}

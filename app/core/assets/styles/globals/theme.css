@@ -85,6 +85,10 @@ hr {
 	background-color: var(--color__border);
 }
 
+code {
+	font-family: var(--font__mono);
+}
+
 .capitals {
 	text-transform: uppercase;
 	letter-spacing: var(--typography__tracking--widest);

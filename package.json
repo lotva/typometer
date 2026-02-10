@@ -45,6 +45,7 @@
 		"lefthook": "^2.0.16",
 		"oxlint": "^1.42.0",
 		"prettier": "^3.8.1",
+		"shiki": "^3.22.0",
 		"stylelint": "^16.26.1",
 		"stylelint-config-clean-order": "^7.0.0",
 		"stylelint-config-recommended": "^17.0.0",

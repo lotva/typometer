@@ -17,13 +17,14 @@
 
 <style scoped>
 	.layout {
+		--container-padding-block: calc(var(--gap) * 5);
+
 		display: grid;
 		grid-template-columns: 28ch auto;
 	}
 
 	.sidebar {
 		--container-padding-inline: var(--gap);
-		--container-padding-block: calc(var(--gap) * 5);
 
 		scrollbar-color: var(--color__border) transparent;
 		scrollbar-width: thin;
@@ -39,6 +40,7 @@
 	}
 
 	.content {
-		padding: calc(var(--gap) * 5) calc(var(--gap));
+		padding: var(--container-padding-block) var(--gap) calc(var(--gap) * 4.65)
+			calc(var(--gap) * 4);
 	}
 </style>

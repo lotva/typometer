@@ -13,13 +13,13 @@ export const TOKEN_NAMES = {
 			'shout',
 		],
 		overflowStrategy: 'numeric',
-		prefix: 'font-size--',
+		prefix: 'font-size',
 	},
 
 	tshirt: {
 		names: ['xs', 's', '', 'l', 'xl'],
 		overflowStrategy: 'tshirt',
-		prefix: 'font-size--',
+		prefix: 'font-size',
 	},
 }
 

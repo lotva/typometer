@@ -23,6 +23,12 @@ export default defineI18nLocale(async () => {
 			classic: 'Классическая шкала из книги «Основы стиля в типографике»',
 			geist: 'Дизайн-система Geist',
 		},
+		preview: {
+			ariaLabel: 'Предпросмотр шкалы и копирование токенов',
+			example: 'Превью',
+			scale: 'Шкала',
+			tokens: 'Токены',
+		},
 		switchLanguage: 'Смена языка',
 		title: 'Типометр',
 	}

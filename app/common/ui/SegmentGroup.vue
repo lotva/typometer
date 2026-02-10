@@ -127,7 +127,9 @@
 		inset-block: 0;
 		inset-inline: 0;
 
-		border-radius: var(--radius);
+		border-radius: calc(
+			var(--radius-lg) - var(--typography__outline-thickness)
+		);
 
 		background: var(--color__background);
 	}

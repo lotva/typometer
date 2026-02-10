@@ -28,7 +28,7 @@ export const useScaleStore = defineStore('scale', () => {
 	})
 
 	const outputFormat = ref<TOutputFormat>('tshirt')
-	const previewMode = ref<TPreviewMode>('example')
+	const previewMode = ref<TPreviewMode>('scale')
 	const activePresetId = ref<null | string>(null)
 
 	watch(
