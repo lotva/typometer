@@ -32,6 +32,7 @@
 	.sidebar {
 		scrollbar-color: var(--color__border) transparent;
 		scrollbar-width: thin;
+		scroll-padding-block-start: 200px;
 
 		position: sticky;
 		inset-block-start: 0;
