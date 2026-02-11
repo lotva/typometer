@@ -2,7 +2,7 @@
 	<main class="layout">
 		<div
 			v-save-scroll
-			class="sidebar"
+			class="sidebar box"
 		>
 			<Controls />
 		</div>
@@ -18,14 +18,18 @@
 <style scoped>
 	.layout {
 		--container-padding-block: calc(var(--gap) * 5);
+		--container-padding-inline: var(--gap);
 
 		display: grid;
 		grid-template-columns: 28ch auto;
 	}
 
-	.sidebar {
-		--container-padding-inline: var(--gap);
+	.sidebar,
+	.content {
+		block-size: 100dvb;
+	}
 
+	.sidebar {
 		scrollbar-color: var(--color__border) transparent;
 		scrollbar-width: thin;
 
@@ -35,12 +39,14 @@
 		overflow: auto;
 		overscroll-behavior: contain;
 
-		block-size: 100dvb;
 		padding: 0 var(--container-padding-inline) var(--container-padding-block);
+
+		transition: box-shadow var(--animation__duration--fast)
+			var(--animation__ease-in-out);
 	}
 
 	.content {
-		padding: var(--container-padding-block) var(--gap) calc(var(--gap) * 4.65)
-			calc(var(--gap) * 4);
+		padding: var(--container-padding-block) var(--container-padding-inline)
+			calc(var(--container-padding-block) + var(--gap)) calc(var(--gap) * 5);
 	}
 </style>

@@ -52,22 +52,14 @@
 		}
 
 		pre {
-			scrollbar-width: thin;
-
-			overflow-block: hidden;
-			overflow-inline: auto;
-
+			max-inline-size: 100%;
+			margin: calc(-1 * var(--gap)) calc(-1 * var(--gap) / 2)
+				calc(-1 * var(--gap) * 2);
 			padding: var(--gap) calc(var(--gap) / 2) calc(var(--gap) * 2);
-			border-radius: var(--radius-lg);
 
 			font-size: 0.84rem;
 			line-height: 1.5;
-
-			background-color: var(--color__surface);
-		}
-
-		code {
-			user-select: all;
+			white-space: pre-wrap;
 		}
 	}
 </style>
