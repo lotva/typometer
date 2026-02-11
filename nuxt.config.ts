@@ -34,7 +34,6 @@ export default defineNuxtConfig({
 			},
 		],
 		restructureDir: 'app/core/i18n',
-		skipSettingLocaleOnNavigate: true,
 	},
 
 	imports: {

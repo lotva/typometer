@@ -1,9 +1,6 @@
 <template>
 	<main class="layout">
-		<div
-			v-save-scroll
-			class="sidebar box"
-		>
+		<div class="sidebar box">
 			<Controls />
 		</div>
 

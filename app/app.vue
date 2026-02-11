@@ -4,51 +4,45 @@
 	<NuxtLayout>
 		<NuxtPage
 			:transition="{
-				name: transitionName,
+				name: 'route',
 				mode: 'out-in',
-				onBeforeEnter,
 			}"
+			:class="{
+				'is-locale-changing': isLocaleChanging,
+			}"
+			:page-key="getPageKey"
 		/>
 	</NuxtLayout>
 </template>
 
 <script setup lang="ts">
-	const { finalizePendingLocaleChange, locale } = useI18n()
+	import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-	const transitionName = ref<'locale' | 'route'>('route')
-	const previousLocale = ref(locale.value)
+	import { useIsLocaleChanging } from './common/lib/useIsLocaleChanging'
 
-	const onBeforeEnter = async () => {
-		await finalizePendingLocaleChange()
+	const getRouteBaseName = useRouteBaseName()
+	const { isLocaleChanging } = useIsLocaleChanging()
 
-		const isLocaleChanged = previousLocale.value !== locale.value
-		transitionName.value = isLocaleChanged ? 'locale' : 'route'
-
-		previousLocale.value = locale.value
+	const getPageKey = (route: RouteLocationNormalizedLoaded) => {
+		return getRouteBaseName(route) || 'unknown'
 	}
 </script>
 
 <style>
 	[data-route-transition],
 	[data-locale-transition] {
-		transition: opacity 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+		transition: opacity 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-		:is(.locale-enter-from, .locale-leave-to) & {
+		.is-locale-changing & {
 			opacity: 0;
-		}
-
-		.locale-enter-to & {
-			opacity: 1;
+			transition: none;
 		}
 	}
 
 	[data-route-transition] {
-		:is(.route-enter-from, .route-leave-to) & {
+		:is(.route-enter-from, .route-leave-active) & {
 			opacity: 0;
-		}
-
-		.route-enter-to & {
-			opacity: 1;
+			transition: none;
 		}
 	}
 </style>
