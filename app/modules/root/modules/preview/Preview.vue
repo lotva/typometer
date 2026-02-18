@@ -75,12 +75,14 @@
 
 	import type { TPreviewMode } from '../../model/types'
 
+	import { useSyncScaleWithUrl } from '../../lib/useSyncScaleWithUrl'
 	import { useScaleStore } from '../../model/useScaleStore'
 	import { scrollBeforeRenderScript } from './lib/scrollBeforeRenderScript'
 	import Scale from './ui/Scale.vue'
 	import Tokens from './ui/Tokens.vue'
 
 	const store = useScaleStore()
+	useSyncScaleWithUrl()
 
 	const tabs = [
 		{ label: 'preview.scale', value: 'scale' },

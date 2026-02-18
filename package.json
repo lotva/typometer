@@ -22,6 +22,7 @@
 		"@pinia/nuxt": "0.11.3",
 		"@shikijs/langs": "^3.22.0",
 		"@shikijs/themes": "^3.22.0",
+		"@vueuse/core": "^14.2.1",
 		"eslint": "^9.39.2",
 		"motion-v": "^1.10.2",
 		"nuxt": "^4.3.0",
