@@ -7,6 +7,7 @@
 	font-family: 'PT Root UI';
 	font-weight: 300 700;
 	font-style: normal;
+
 	font-display: block;
 	src: url('/fonts/pt-root-ui-vf.woff2') format('woff2');
 }
@@ -15,6 +16,7 @@
 	font-family: 'Martian Mono';
 	font-weight: 100 800;
 	font-style: normal;
+
 	font-display: swap;
 	src: url('/fonts/martian-mono-vf.woff2') format('woff2');
 }

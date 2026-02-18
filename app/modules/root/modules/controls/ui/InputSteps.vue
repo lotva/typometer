@@ -1,33 +1,40 @@
 <template>
-	<NumberInput.Root
+	<NumberInputRoot
 		v-model="steps"
 		:focus-input-on-change="false"
 		allow-mouse-wheel
 		:min="0"
-		:max="6"
+		:max="5"
 		class="controls-root"
 	>
-		<NumberInput.Label
+		<NumberInputLabel
 			class="text-metrics-fix has-compensator"
 			data-route-transition
 		>
 			{{ $t('controls.steps') }}
-		</NumberInput.Label>
+		</NumberInputLabel>
 
-		<NumberInput.Control class="controls-content">
-			<NumberInput.DecrementTrigger>−</NumberInput.DecrementTrigger>
+		<NumberInputControl class="controls-content">
+			<NumberInputDecrementTrigger>−</NumberInputDecrementTrigger>
 
-			<NumberInput.Input as-child>
+			<NumberInputInput as-child>
 				<Input />
-			</NumberInput.Input>
+			</NumberInputInput>
 
-			<NumberInput.IncrementTrigger>+</NumberInput.IncrementTrigger>
-		</NumberInput.Control>
-	</NumberInput.Root>
+			<NumberInputIncrementTrigger>+</NumberInputIncrementTrigger>
+		</NumberInputControl>
+	</NumberInputRoot>
 </template>
 
 <script setup lang="ts">
-	import { NumberInput } from '@ark-ui/vue'
+	import {
+		NumberInputControl,
+		NumberInputDecrementTrigger,
+		NumberInputIncrementTrigger,
+		NumberInputInput,
+		NumberInputLabel,
+		NumberInputRoot,
+	} from '@ark-ui/vue'
 
 	import Input from '~/common/ui/Input.vue'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
@@ -37,7 +44,7 @@
 	const steps = computed({
 		get: () => String(store.settings.intermediateSteps),
 		set: (value: string) => {
-			store.updateSettings({ intermediateSteps: Number(value) })
+			store.updateIntermediateSteps(Number(value))
 		},
 	})
 </script>

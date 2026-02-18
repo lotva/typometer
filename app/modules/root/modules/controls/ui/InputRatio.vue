@@ -2,7 +2,7 @@
 	<NumberInput
 		:model-value="ratioLocalized"
 		:step="0.1"
-		:min="1"
+		:min="1.1"
 		:max="10"
 		:label="$t('controls.ratio')"
 		@value-change="

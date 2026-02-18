@@ -1,33 +1,38 @@
 <template>
-	<NumberInput.Root
+	<NumberInputRoot
 		v-bind="mergedProps"
 		:class="[{ '_has-label': label }, `_${size}`]"
 	>
-		<NumberInput.Label
+		<NumberInputLabel
 			v-if="label"
 			class="text-metrics-fix has-compensator"
 			data-route-transition
 		>
 			{{ label }}
-		</NumberInput.Label>
+		</NumberInputLabel>
 
-		<NumberInput.Control>
-			<NumberInput.Input as-child>
+		<NumberInputControl>
+			<NumberInputInput as-child>
 				<Input />
-			</NumberInput.Input>
+			</NumberInputInput>
 
 			<div class="triggers">
-				<NumberInput.IncrementTrigger />
+				<NumberInputIncrementTrigger />
 
-				<NumberInput.DecrementTrigger />
+				<NumberInputDecrementTrigger />
 			</div>
-		</NumberInput.Control>
-	</NumberInput.Root>
+		</NumberInputControl>
+	</NumberInputRoot>
 </template>
 
 <script setup lang="ts">
 	import {
-		NumberInput,
+		NumberInputControl,
+		NumberInputDecrementTrigger,
+		NumberInputIncrementTrigger,
+		NumberInputInput,
+		NumberInputLabel,
+		NumberInputRoot,
 		type NumberInputRootEmits,
 		type NumberInputRootProps,
 		useForwardPropsEmits,

@@ -1,15 +1,15 @@
 <template>
 	<main class="layout">
-		<div class="sidebar box">
-			<Controls />
-		</div>
+		<Sidebar />
 
 		<div class="content"><Preview /></div>
 	</main>
 </template>
 
 <script setup lang="ts">
-	import { Controls, Preview } from '~/modules/root'
+	import { Preview } from '~/modules/root'
+
+	import Sidebar from './ui/Sidebar.vue'
 </script>
 
 <style scoped>
@@ -17,34 +17,21 @@
 		--container-padding-block: calc(var(--gap) * 5);
 		--container-padding-inline: var(--gap);
 
-		display: grid;
-		grid-template-columns: 28ch auto;
-	}
+		display: flex;
+		flex-direction: column;
 
-	.sidebar,
-	.content {
-		block-size: 100dvb;
-	}
-
-	.sidebar {
-		scrollbar-color: var(--color__border) transparent;
-		scrollbar-width: thin;
-		scroll-padding-block-start: 200px;
-
-		position: sticky;
-		inset-block-start: 0;
-
-		overflow: auto;
-		overscroll-behavior: contain;
-
-		padding: 0 var(--container-padding-inline) var(--container-padding-block);
-
-		transition: box-shadow var(--animation__duration--fast)
-			var(--animation__ease-in-out);
+		@media (width >= 768px) {
+			display: grid;
+			grid-template-columns: 28ch auto;
+		}
 	}
 
 	.content {
-		padding: var(--container-padding-block) var(--container-padding-inline)
-			calc(var(--container-padding-block) + var(--gap)) calc(var(--gap) * 5);
+		@media (width >= 768px) {
+			min-inline-size: 0;
+			block-size: 100dvb;
+			padding: var(--container-padding-block) var(--container-padding-inline)
+				calc(var(--container-padding-block) + var(--gap)) calc(var(--gap) * 5);
+		}
 	}
 </style>

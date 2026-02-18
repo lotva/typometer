@@ -9,7 +9,7 @@
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
 		"check:formatting": "prettier . --check",
-		"check:styles": "stylelint \"layers/**/*.{vue,css}\"",
+		"check:styles": "stylelint \"app/**/*.{vue,css}\"",
 		"check:scripts": "oxlint && eslint",
 		"check:types": "nuxt typecheck",
 		"test": "vitest"
@@ -20,6 +20,8 @@
 		"@nuxt/eslint": "1.13.0",
 		"@nuxtjs/i18n": "10.2.1",
 		"@pinia/nuxt": "0.11.3",
+		"@shikijs/langs": "^3.22.0",
+		"@shikijs/themes": "^3.22.0",
 		"eslint": "^9.39.2",
 		"motion-v": "^1.10.2",
 		"nuxt": "^4.3.0",

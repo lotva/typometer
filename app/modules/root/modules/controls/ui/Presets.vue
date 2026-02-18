@@ -37,7 +37,7 @@
 <script setup lang="ts">
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 
-	import { PRESETS } from '../../config/presets'
+	import { PRESETS } from '../../../config/presets'
 
 	const store = useScaleStore()
 

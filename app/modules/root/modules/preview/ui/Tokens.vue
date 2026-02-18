@@ -6,9 +6,9 @@
 </template>
 
 <script setup lang="ts">
-	import { codeToHtml } from 'shiki'
-
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
+
+	import { highlighter } from '../lib/highlighter'
 
 	const { css } = toRefs(useScaleStore())
 
@@ -18,9 +18,8 @@
 		css,
 		async (updated) => {
 			if (updated) {
-				html.value = await codeToHtml(updated, {
+				html.value = highlighter.codeToHtml(updated, {
 					colorReplacements: {
-						'#000': 'var(--color__background)',
 						'#393a34': 'var(--color__foreground--muted)',
 						'#101010': 'var(--color__background)',
 						'#fff': 'var(--color__foreground)',
@@ -53,9 +52,12 @@
 
 		pre {
 			max-inline-size: 100%;
-			margin: calc(-1 * var(--gap)) calc(-1 * var(--gap) / 2)
-				calc(-1 * var(--gap) * 2);
-			padding: var(--gap) calc(var(--gap) / 2) calc(var(--gap) * 2);
+			margin-block: calc(-1 * var(--container-padding-block-start))
+				calc(-1 * var(--container-padding-block-end));
+			margin-inline: calc(-1 * var(--container-padding-inline));
+			padding-block: var(--container-padding-block-start)
+				var(--container-padding-block-end);
+			padding-inline: var(--container-padding-inline);
 
 			font-size: 0.84rem;
 			line-height: 1.5;

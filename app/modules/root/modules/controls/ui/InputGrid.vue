@@ -1,24 +1,24 @@
 <template>
 	<div class="controls-root">
-		<Switch.Root
+		<SwitchRoot
 			:checked="store.settings.shouldSnapToGrid"
 			@checked-change="
 				(details) => store.updateSettings({ shouldSnapToGrid: details.checked })
 			"
 		>
-			<Switch.Control>
-				<Switch.Thumb />
-			</Switch.Control>
+			<SwitchControl>
+				<SwitchThumb />
+			</SwitchControl>
 
-			<Switch.Label
+			<SwitchLabel
 				class="text-metrics-fix"
 				data-route-transition
 			>
 				{{ $t('controls.grid') }}
-			</Switch.Label>
+			</SwitchLabel>
 
-			<Switch.HiddenInput :aria-controls="inputId" />
-		</Switch.Root>
+			<SwitchHiddenInput :aria-controls="inputId" />
+		</SwitchRoot>
 
 		<div
 			:id="inputId"
@@ -54,7 +54,14 @@
 </template>
 
 <script setup lang="ts">
-	import { type NumberInputValueChangeDetails, Switch } from '@ark-ui/vue'
+	import {
+		type NumberInputValueChangeDetails,
+		SwitchControl,
+		SwitchHiddenInput,
+		SwitchLabel,
+		SwitchRoot,
+		SwitchThumb,
+	} from '@ark-ui/vue'
 
 	import NumberInput from '~/common/ui/NumberInput.vue'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'

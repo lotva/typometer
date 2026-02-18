@@ -1,8 +1,11 @@
 <template>
-	<section :aria-label="$t('preview.ariaLabel')">
-		<Tabs.Root v-model="previewMode">
-			<Tabs.List>
-				<Tabs.Trigger
+	<section
+		class="section"
+		:aria-label="$t('preview.ariaLabel')"
+	>
+		<TabsRoot v-model="previewMode">
+			<TabList>
+				<TabTrigger
 					v-for="{ value, label } in tabs"
 					:key="value"
 					:value="value"
@@ -22,30 +25,59 @@
 							:transition="{ duration: 0.15, ease: 'easeOut' }"
 						/>
 					</AnimatePresence>
-				</Tabs.Trigger>
-			</Tabs.List>
 
-			<Tabs.Content value="scale">
-				{{ store.settings }} {{ store.outputFormat }} {{ previewMode }}
-				{{ store.scale }}
-			</Tabs.Content>
+					<span
+						v-if="previewMode === value"
+						class="indicator _mobile"
+					></span>
+				</TabTrigger>
+			</TabList>
 
-			<Tabs.Content value="example">Content</Tabs.Content>
+			<TabContent
+				id="scale-tab-content"
+				ref="scaleTabContent"
+				value="scale"
+				class="box"
+			>
+				<Scale
+					:scroll-container-ref="scaleTabContent"
+					@scroll-to-bottom="handleScrollToBottom"
+				/>
+			</TabContent>
 
-			<Tabs.Content value="tokens">
+			<!-- eslint-disable -->
+			<component
+				:is="'script'"
+				v-once
+				v-html="scrollBeforeRenderScript"
+			/>
+
+			<TabContent
+				value="example"
+				class="box"
+			>
+				Content
+			</TabContent>
+
+			<TabContent
+				value="tokens"
+				class="box"
+			>
 				<Tokens />
-			</Tabs.Content>
-		</Tabs.Root>
+			</TabContent>
+		</TabsRoot>
 	</section>
 </template>
 
 <script setup lang="ts">
-	import { Tabs } from '@ark-ui/vue/tabs'
+	import { TabContent, TabList, TabsRoot, TabTrigger } from '@ark-ui/vue'
 	import { motion } from 'motion-v'
 
 	import type { TPreviewMode } from '../../model/types'
 
 	import { useScaleStore } from '../../model/useScaleStore'
+	import { scrollBeforeRenderScript } from './lib/scrollBeforeRenderScript'
+	import Scale from './ui/Scale.vue'
 	import Tokens from './ui/Tokens.vue'
 
 	const store = useScaleStore()
@@ -56,6 +88,20 @@
 		{ label: 'preview.tokens', value: 'tokens' },
 	]
 
+	const scaleTabContent = ref<null | { $el: HTMLDivElement }>(null)
+
+	function handleScrollToBottom() {
+		if (!scaleTabContent.value) return
+		const element = scaleTabContent.value.$el
+
+		const scrollPosition = element.clientHeight + element.scrollTop
+		const isAtBottom = Math.abs(element.scrollHeight - scrollPosition) < 1
+
+		if (isAtBottom) {
+			nextTick(() => (element.scrollTop = element.scrollHeight))
+		}
+	}
+
 	const previewMode = computed({
 		get: () => store.previewMode,
 		set: (value: TPreviewMode) => {
@@ -65,6 +111,10 @@
 </script>
 
 <style scoped>
+	.section {
+		block-size: 100%;
+	}
+
 	[data-scope='tabs'][data-part='root'] {
 		position: relative;
 
@@ -75,19 +125,27 @@
 		block-size: 100%;
 
 		[data-part='list'] {
+			--header-height: calc(var(--gap) * 2.7);
+
 			isolation: isolate;
-			position: absolute;
-			position: fixed;
-			inset-block-end: 0;
-			inset-block-end: calc(var(--gap) * 2);
+			position: sticky;
+			z-index: 10;
+			inset-block-start: calc(var(--gap));
 
 			display: inline-flex;
 			align-items: center;
 
+			margin-block: calc(var(--gap) / 2);
 			padding: var(--typography__outline-thickness);
 			border-radius: var(--radius-lg);
 
 			background-color: var(--color__muted);
+
+			@media (width >= 768px) {
+				position: fixed;
+				inset-block: auto calc(var(--gap) * 2);
+				margin-block: 0;
+			}
 		}
 
 		[data-part='trigger'] {
@@ -100,12 +158,16 @@
 			align-items: center;
 			justify-content: center;
 
-			padding: var(--gap) calc(var(--gap) * 2);
+			padding: calc(var(--gap) * 0.75) calc(var(--gap) * 1.5);
 			border-radius: calc(
 				var(--radius-lg) - var(--typography__outline-thickness)
 			);
 
 			color: var(--color__foreground--muted);
+
+			@media (width >= 768px) {
+				padding-block: var(--gap);
+			}
 
 			&[aria-selected='true'] {
 				color: var(--color__foreground);
@@ -132,17 +194,52 @@
 			inset-block: 0;
 			inset-inline: 0;
 
+			display: none;
+
 			border-radius: calc(
 				var(--radius-lg) - var(--typography__outline-thickness)
 			);
 
-			background: var(--color__background);
+			background-color: var(--color__background);
+
+			@media (width >= 768px) {
+				display: inline;
+			}
+
+			&._mobile {
+				display: inline;
+
+				@media (width >= 768px) {
+					display: none;
+				}
+			}
 		}
 
 		[data-part='content'] {
+			--container-padding-inline: calc(var(--gap) / 2);
+			--container-padding-block-start: var(--gap);
+			--container-padding-block-end: calc(var(--gap) * 2);
+
+			scrollbar-color: var(--color__border) transparent;
+			scrollbar-width: thin;
+
+			overflow-inline: hidden;
+
 			inline-size: 100%;
+			padding-block: var(--container-padding-block-start)
+				var(--container-padding-block-end);
+			padding-inline: var(--container-padding-inline);
 			border: 1px solid var(--color__border);
 			border-radius: var(--radius-lg);
+
+			transition: box-shadow var(--animation__duration--fast)
+				var(--animation__ease-in-out);
+
+			@media (width >= 768px) {
+				overflow-block: auto;
+				overscroll-behavior: contain;
+				margin-block-start: calc(-1 * var(--gap));
+			}
 		}
 	}
 </style>

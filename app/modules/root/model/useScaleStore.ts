@@ -1,21 +1,27 @@
 /* eslint-disable perfectionist/sort-objects */
 
-import type { ISettings, TOutputFormat, TPreviewMode, TUnit } from './types'
+import type {
+	ICustomStep,
+	ISettings,
+	TOutputFormat,
+	TPreviewMode,
+	TUnit,
+} from './types'
 
+import { PRESETS } from '../config/presets'
+import { convert } from '../lib/scale.utilities'
 import { useCalculateScale } from '../lib/useCalculateScale'
 import { useGenerateTokens } from '../lib/useGenerateTokens'
-import { convert } from '../lib/utilities'
-import { PRESETS } from '../modules/config/presets'
 
 export const useScaleStore = defineStore('scale', () => {
 	const settings = reactive<ISettings>({
-		base: 12,
+		base: 21,
 		baseByUnit: {
-			px: 12,
+			px: 21,
 			em: 1,
 		},
-		intermediateSteps: 4,
-		ratio: 2,
+		intermediateSteps: 2,
+		ratio: 1.5,
 
 		unit: 'px',
 
@@ -25,18 +31,21 @@ export const useScaleStore = defineStore('scale', () => {
 			px: 4,
 			em: 0.25,
 		},
+
+		customSteps: [],
+		disabledIndices: new Set<number>(),
 	})
 
-	const outputFormat = ref<TOutputFormat>('tshirt')
+	const outputFormat = ref<TOutputFormat>('semantic')
 	const previewMode = ref<TPreviewMode>('scale')
 	const activePresetId = ref<null | string>(null)
 
 	watch(
-		() => settings,
+		() => [settings.ratio, settings.intermediateSteps],
 		() => {
 			activePresetId.value = null
 		},
-		{ deep: true, immediate: false, flush: 'sync' },
+		{ immediate: false, flush: 'sync' },
 	)
 
 	function applyPreset(presetId: string) {
@@ -48,6 +57,7 @@ export const useScaleStore = defineStore('scale', () => {
 		}
 	}
 
+	// TODO: вынести в компосабл (вероятно?)
 	function updateSettings(updated: Partial<ISettings>) {
 		Object.assign(settings, updated)
 	}
@@ -71,12 +81,39 @@ export const useScaleStore = defineStore('scale', () => {
 		}
 	}
 
-	const { snappedScale } = useCalculateScale(settings)
-	const { css } = useGenerateTokens(
-		snappedScale,
+	function updateIntermediateSteps(steps: number) {
+		settings.intermediateSteps = steps
+		settings.customSteps = []
+		settings.disabledIndices.clear()
+		activePresetId.value = null
+	}
+
+	// TODO: вынести в компосабл
+	function addCustomStep(step: Omit<ICustomStep, 'offsetExponent'>) {
+		const offsetExponent = 0.5
+		settings.customSteps.push({ ...step, offsetExponent })
+	}
+
+	function removeCustomStep(index: number) {
+		settings.customSteps.splice(index, 1)
+	}
+
+	function toggleDisableIndex(index: number) {
+		if (settings.disabledIndices.has(index)) {
+			settings.disabledIndices.delete(index)
+		} else {
+			settings.disabledIndices.add(index)
+		}
+	}
+
+	const { mergedScale } = useCalculateScale(settings)
+
+	const { css, tokens } = useGenerateTokens(
+		mergedScale,
 		() => settings.unit,
 		outputFormat,
 		() => settings.base,
+		() => settings.disabledIndices,
 	)
 
 	return {
@@ -85,12 +122,17 @@ export const useScaleStore = defineStore('scale', () => {
 		previewMode,
 		activePresetId,
 
-		scale: snappedScale,
+		scale: mergedScale,
 		css,
+		tokens,
 
 		applyPreset,
 		updateSettings,
 		updateBase,
 		updateGridStep,
+		updateIntermediateSteps,
+		addCustomStep,
+		removeCustomStep,
+		toggleDisableIndex,
 	}
 })
