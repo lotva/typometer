@@ -19,19 +19,23 @@
 
 		display: flex;
 		flex-direction: column;
+		min-block-size: 100dvb;
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			display: grid;
 			grid-template-columns: 28ch auto;
 		}
 	}
 
 	.content {
-		@media (width >= 768px) {
+		margin-block-end: auto;
+
+		@media (--desktop) {
 			min-inline-size: 0;
 			block-size: 100dvb;
 			padding: var(--container-padding-block) var(--container-padding-inline)
-				calc(var(--container-padding-block) + var(--gap)) calc(var(--gap) * 5);
+				calc(var(--container-padding-block) + var(--gap))
+				clamp(calc(var(--gap) * 1), 6vi, calc(var(--gap) * 5));
 		}
 	}
 </style>

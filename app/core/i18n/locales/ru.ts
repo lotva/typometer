@@ -31,6 +31,10 @@ export default defineI18nLocale(async () => {
 			semantic: 'Семантический',
 			tshirt: 'XS—XL',
 		},
+		panel: {
+			collapse: 'Свернуть панель',
+			expand: 'Раскрыть панель',
+		},
 		presets: {
 			carbon: 'Дизайн-система Carbon',
 			classic: 'Классическая шкала из книги «Основы стиля в типографике»',

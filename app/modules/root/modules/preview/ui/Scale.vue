@@ -134,9 +134,11 @@
 		&:not(._disabled) {
 			cursor: copy;
 
-			&:hover {
-				background-color: var(--color__surface);
-				transition: none;
+			@media (hover: hover) and (pointer: fine) {
+				&:hover {
+					background-color: var(--color__surface);
+					transition: none;
+				}
 			}
 		}
 	}

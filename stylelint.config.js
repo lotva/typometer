@@ -41,6 +41,13 @@ export default {
 
 		'plugin/use-logical-units': [true, { severity: 'warning' }],
 
+		'property-no-unknown': [
+			true,
+			{
+				ignoreProperties: ['corner-shape'],
+			},
+		],
+
 		'rule-empty-line-before': [
 			'always',
 			{

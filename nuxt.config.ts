@@ -49,6 +49,15 @@ export default defineNuxtConfig({
 		'motion-v/nuxt',
 	],
 
+	postcss: {
+		plugins: {
+			'@csstools/postcss-global-data': {
+				files: ['app/core/assets/styles/globals/breakpoints.pcss'],
+			},
+			'postcss-custom-media': {},
+		},
+	},
+
 	typescript: {
 		tsConfig: {
 			include: ['../commitlint.config.ts'],

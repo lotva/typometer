@@ -25,7 +25,7 @@
 			class="module"
 			:aria-hidden="!store.settings.shouldSnapToGrid"
 		>
-			<NumberInput
+			<NumberInputInline
 				:model-value="String(store.settings.gridStep)"
 				class="input"
 				:min="min"
@@ -63,7 +63,8 @@
 		SwitchThumb,
 	} from '@ark-ui/vue'
 
-	import NumberInput from '~/common/ui/NumberInput.vue'
+	import { withValidation } from '~/common/lib/withValidation'
+	import NumberInputInline from '~/common/ui/NumberInputInline.vue'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 
 	const store = useScaleStore()
@@ -72,12 +73,18 @@
 	const descriptionId = useId()
 
 	const step = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
-	const min = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
+	const min = computed(() => (store.settings.unit === 'px' ? 2 : 0.1))
 	const max = computed(() => (store.settings.unit === 'px' ? 16 : 1))
 
-	const updateGridStep = (details: NumberInputValueChangeDetails) => {
-		store.updateGridStep(details.valueAsNumber, store.settings.unit)
-	}
+	const updateGridStep = withValidation(
+		(details: NumberInputValueChangeDetails) => {
+			store.updateGridStep(details.valueAsNumber, store.settings.unit)
+		},
+		{
+			max: () => max.value,
+			min: () => min.value,
+		},
+	)
 </script>
 
 <style scoped>

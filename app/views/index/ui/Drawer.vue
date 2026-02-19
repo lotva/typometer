@@ -6,7 +6,7 @@
 		<button
 			class="expand"
 			type="button"
-			:aria-label="$t('togglePanel')"
+			:aria-label="isExpanded ? $t('panel.collapse') : $t('panel.expand')"
 			:aria-expanded="isExpanded"
 			aria-controls="drawer"
 		></button>
@@ -21,34 +21,38 @@
 
 <style scoped>
 	.drawer {
-		@media (width < 768px) {
+		@media (--mobile) {
 			--end-position: calc(297px + env(safe-area-inset-bottom, 0));
 
 			position: sticky;
 			z-index: 10;
 			inset-block-end: 0;
-			inset-inline: 0;
 			transform: translateY(min(var(--touch-diff, 0), var(--end-position)));
 
-			overflow: clip;
 			overflow-block: auto;
 
 			inline-size: 100%;
-			max-block-size: 300px;
-			margin-block-start: 21px;
+			max-block-size: calc(var(--gap) * 17);
 			padding: 0 var(--container-padding-inline)
 				calc(env(safe-area-inset-bottom, 0) + var(--gap) * 3);
-			border: 1px solid var(--color__border);
 			border-radius: calc(var(--radius) + 1.125em) calc(var(--radius) + 1.125em)
 				0 0;
 
 			background-color: var(--color__surface);
 			backdrop-filter: blur(24px);
 			box-shadow:
+				0 0 0 1px var(--color__muted),
 				0 0 0.125rem rgb(0 0 0 / 10%),
 				0 0 1rem rgb(0 0 0 / 10%);
 
 			transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+			@supports (corner-shape: squircle) {
+				border-radius: calc(var(--radius) + 2.125em)
+					calc(var(--radius) + 2.125em) 0 0;
+
+				corner-shape: squircle;
+			}
 		}
 	}
 
@@ -74,7 +78,7 @@
 			transparent
 		);
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			display: none;
 		}
 

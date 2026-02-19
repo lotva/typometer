@@ -1,5 +1,5 @@
 html {
-	--font-size--mobile-min: 20;
+	--font-size--mobile-min: 18;
 	--font-size--mobile-max: 24;
 	--font-size--desktop-min: 16;
 	--font-size--desktop-max: 21;
@@ -16,7 +16,7 @@ html {
 			)
 	);
 
-	@media (width >= 768px) {
+	@media (--desktop) {
 		font-size: calc(
 			var(--font-size--desktop-min) * 1px +
 				(var(--font-size--desktop-max) - var(--font-size--desktop-min)) *

@@ -42,7 +42,7 @@
 	.sidebar {
 		display: contents;
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			scrollbar-color: var(--color__border) transparent;
 			scrollbar-width: thin;
 			scroll-padding-block-start: 200px;
@@ -64,13 +64,12 @@
 		align-items: last baseline;
 		justify-content: space-between;
 
-		padding-block: calc(var(--gap) / 2);
+		padding-block: calc(var(--gap) * 1) calc(var(--gap) * 0.75);
 		padding-inline: var(--container-padding-inline);
-		border-block-end: 1px solid var(--color__border);
 
 		background-color: var(--color__background);
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			display: contents;
 			padding: 0;
 			border-block-end: none;
@@ -78,7 +77,7 @@
 	}
 
 	.masthead {
-		@media (width >= 768px) {
+		@media (--desktop) {
 			position: sticky;
 			z-index: 1;
 			inset-block-start: 0;
@@ -94,7 +93,7 @@
 	.title {
 		font-size: 1rem;
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			font-size: 2em;
 			letter-spacing: var(--typography__tracking--tight);
 		}
@@ -104,7 +103,7 @@
 		margin-block-start: calc(var(--gap) * 1.5);
 		color: var(--color__foreground--subtitle);
 
-		@media (width < 768px) {
+		@media (--mobile) {
 			position: absolute;
 
 			overflow: hidden;
@@ -125,7 +124,7 @@
 		display: none;
 		margin-block-start: calc(var(--gap) * 2);
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			display: block;
 		}
 	}
@@ -135,7 +134,7 @@
 	}
 
 	.controls {
-		@media (width >= 768px) {
+		@media (--desktop) {
 			margin-block-start: calc(var(--gap) * 2);
 		}
 	}
@@ -147,7 +146,7 @@
 	.switcher {
 		font-size: 0.875em;
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			position: absolute;
 			inset-block-start: calc(var(--gap) * 1);
 			inset-inline-end: calc(var(--gap) * 1);

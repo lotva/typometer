@@ -5,6 +5,7 @@
 @import 'globals/interpolate-size.css';
 @import 'globals/page.css';
 @import 'globals/selection.css';
+@import 'globals/tap-highlight.css';
 @import 'globals/theme.css';
 @import 'globals/tokens.css';
 

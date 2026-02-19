@@ -22,7 +22,7 @@
 	.toast {
 		position: fixed;
 		z-index: 11;
-		inset-block-end: 0;
+		inset-block-end: var(--gap);
 		inset-inline-end: var(--container-padding-inline);
 		transform-origin: bottom center;
 
@@ -36,8 +36,9 @@
 
 		background-color: var(--color__primary);
 
-		@media (width >= 768px) {
+		@media (--desktop) {
 			position: sticky;
+			inset-block-end: 0;
 		}
 	}
 

@@ -31,6 +31,10 @@ export default defineI18nLocale(async () => {
 			semantic: 'Semantic',
 			tshirt: 'T-Shirt',
 		},
+		panel: {
+			collapse: 'Collapse panel',
+			expand: 'Expand panel',
+		},
 		presets: {
 			carbon: 'Carbon Design System',
 			classic: 'Classic, from The Elements of Typographic Style',
