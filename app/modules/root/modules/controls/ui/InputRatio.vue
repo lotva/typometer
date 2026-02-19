@@ -5,6 +5,7 @@
 		:min="min"
 		:max="max"
 		:label="$t('controls.ratio')"
+		hotkey="R"
 		@value-change="updateRatio"
 	/>
 </template>

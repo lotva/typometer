@@ -5,6 +5,7 @@
 		:min="min"
 		:max="max"
 		:label="`${$t('controls.base')}, ${$t('controls.' + store.settings.unit)}`"
+		hotkey="B"
 		@value-change="updateBase"
 	/>
 </template>

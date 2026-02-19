@@ -6,6 +6,7 @@
 		:min="0"
 		:max="5"
 		:label="$t('controls.steps')"
+		hotkey="S"
 	/>
 </template>
 

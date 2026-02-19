@@ -25,6 +25,7 @@ export default defineI18nLocale(async () => {
 			text: 'Разработал Денис Налитов',
 		},
 		description: 'Составляет типографическую шкалу в виде ЦСС-токенов',
+		hotkey: 'Горячая клавиша',
 		outputFormat: {
 			label: 'Формат токенов',
 			numeric: 'Числовой',

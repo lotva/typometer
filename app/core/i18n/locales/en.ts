@@ -25,6 +25,7 @@ export default defineI18nLocale(async () => {
 			text: 'Built by Denis Nalitov',
 		},
 		description: 'Compose typographic scale as CSS tokens',
+		hotkey: 'Hotkey',
 		outputFormat: {
 			label: 'Output format',
 			numeric: 'Numeric',

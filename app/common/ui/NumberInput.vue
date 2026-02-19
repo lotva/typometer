@@ -9,13 +9,23 @@
 			data-route-transition
 		>
 			{{ label }}
+
+			<kbd
+				class="hotkey"
+				aria-hidden="true"
+			>
+				{{ hotkey }}
+			</kbd>
 		</NumberInputLabel>
 
 		<NumberInputControl>
 			<NumberInputDecrementTrigger>−</NumberInputDecrementTrigger>
 
 			<NumberInputInput as-child>
-				<Input />
+				<Input
+					ref="inputRef"
+					:aria-keyshortcuts="hotkey"
+				/>
 			</NumberInputInput>
 
 			<NumberInputIncrementTrigger>+</NumberInputIncrementTrigger>
@@ -38,14 +48,22 @@
 
 	import Input from '~/common/ui/Input.vue'
 
+	import { useFocusHotkey } from '../lib/useFocusHotkey'
+
 	interface IProps extends NumberInputRootProps {
+		hotkey?: string
 		label?: string
 		size?: TSize
 	}
 
 	type TSize = 'l' | 'm' | 's'
 
-	const { label = '', size = 'l', ...rootProps } = defineProps<IProps>()
+	const {
+		hotkey = '',
+		label = '',
+		size = 'l',
+		...rootProps
+	} = defineProps<IProps>()
 	const emits = defineEmits<NumberInputRootEmits>()
 
 	const { locale: selectedLocale } = useI18n()
@@ -63,6 +81,12 @@
 		},
 		locale: selectedLocale.value === 'ru' ? 'ru-RU' : 'en-US',
 	}))
+
+	const inputRef = ref<{ $el: HTMLInputElement }>()
+
+	if (hotkey) {
+		useFocusHotkey(inputRef, hotkey)
+	}
 </script>
 
 <style scoped>
@@ -106,6 +130,35 @@
 			&[disabled] {
 				opacity: var(--color__disabled-state-opacity);
 			}
+		}
+	}
+
+	.hotkey {
+		position: relative;
+
+		display: none;
+
+		margin-inline-start: calc(var(--typography__space-width) * 2.75);
+
+		font-family: inherit;
+		font-size: 0.65em;
+		font-weight: bold;
+		color: var(--color__foreground--muted);
+		text-align: center;
+
+		&::before {
+			content: '';
+
+			position: absolute;
+			inset-block-start: 50%;
+			inset-inline-start: 50%;
+			translate: -50% -50%;
+
+			inline-size: 3.2ex;
+			block-size: 3.2ex;
+			border: 1px solid var(--color__outline);
+			border-block-end-width: 2px;
+			border-radius: var(--radius);
 		}
 	}
 </style>
