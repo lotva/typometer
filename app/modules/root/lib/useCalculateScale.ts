@@ -35,7 +35,8 @@ export function useCalculateScale(settings: MaybeRefOrGetter<ISettings>) {
 			toValue(settings),
 		)
 
-		return points.map((p) => p.value)
+		const values = points.map((p) => p.value)
+		return [...new Set(values)]
 	})
 
 	return {
