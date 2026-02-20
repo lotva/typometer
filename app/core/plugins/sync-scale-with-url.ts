@@ -37,7 +37,11 @@ export default defineNuxtPlugin(() => {
 
 const decodeCustomSteps = (encoded: string) => {
 	try {
-		return JSON.parse(atob(encoded))
+		const parsed = JSON.parse(atob(encoded))
+		return Array.isArray(parsed) &&
+			parsed.every((item) => item.offsetExponent !== undefined)
+			? parsed
+			: []
 	} catch {
 		return []
 	}

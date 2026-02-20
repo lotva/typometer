@@ -1,5 +1,4 @@
 import { useUrlSearchParams } from '@vueuse/core'
-import { watch } from 'vue'
 
 import { useScaleStore } from '../model/useScaleStore'
 
@@ -11,7 +10,13 @@ export function useSyncScaleWithUrl() {
 		if (!steps?.length) return ''
 
 		return btoa(
-			JSON.stringify(steps.map(({ label, value }) => ({ label, value }))),
+			JSON.stringify(
+				steps.map(({ offsetExponent, position, referenceIndex }) => ({
+					offsetExponent,
+					position,
+					referenceIndex,
+				})),
+			),
 		)
 	}
 
@@ -34,9 +39,7 @@ export function useSyncScaleWithUrl() {
 			parameters.snap = String(store.settings.shouldSnapToGrid)
 			parameters.module = String(store.settings.gridStep)
 
-			if (store.settings.customSteps.length) {
-				parameters.custom = encodeCustomSteps(store.settings.customSteps)
-			}
+			parameters.custom = encodeCustomSteps(store.settings.customSteps)
 
 			parameters.format = store.outputFormat
 		},
