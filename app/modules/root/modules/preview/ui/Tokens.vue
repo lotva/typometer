@@ -8,7 +8,7 @@
 <script setup lang="ts">
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 
-	import { highlighter } from '../lib/highlighter'
+	import { highlight } from '../lib/highlighter'
 
 	const { css } = toRefs(useScaleStore())
 
@@ -16,20 +16,9 @@
 
 	watch(
 		css,
-		async (updated) => {
-			if (updated) {
-				html.value = highlighter.codeToHtml(updated, {
-					colorReplacements: {
-						'#393a34': 'var(--color__foreground--muted)',
-						'#101010': 'var(--color__background)',
-						'#fff': 'var(--color__foreground)',
-					},
-					lang: 'css',
-					themes: {
-						dark: 'vesper',
-						light: 'vitesse-light',
-					},
-				})
+		async (updatedCss) => {
+			if (updatedCss) {
+				html.value = await highlight(updatedCss)
 			}
 		},
 		{ immediate: true },
