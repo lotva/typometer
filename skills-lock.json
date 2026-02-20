@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "skills": {
+    "accessibility": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "a16b37abf64fe636f19f43b22aa1a09a4d5271e2d2972dfb9333f7bc7fa0355d"
+    },
+    "best-practices": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "98dafea60ec1a7f5f70f6febcdd4b4fa3fe15723ad9c0b991c0818615bff7ba6"
+    },
+    "core-web-vitals": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "fa437acc2249cea2cb28f190ba7faf8fdfac829d1c1aafa9ce938c6dd9338721"
+    },
+    "create-adaptable-composable": {
+      "source": "vuejs-ai/skills",
+      "sourceType": "github",
+      "computedHash": "2f215126499d29a733be980ef9ce8f4ffb5f25a8831aec965d86c0cd21b2c5d2"
+    },
+    "performance": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "acbafe2fcbfc3a1a67db47c2f6299d5c0e16f543c4e683e38e74a8ccb54888fb"
+    },
+    "seo": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "f1fed683b76913d26fbf1aa1e008e6932f7771701fc3a79925b042236aa4681a"
+    },
+    "vue-best-practices": {
+      "source": "vuejs-ai/skills",
+      "sourceType": "github",
+      "computedHash": "3df585ad31aec78fe55c56c1411262737e6b231677a3153dec512a882fde80cd"
+    },
+    "vue-pinia-best-practices": {
+      "source": "vuejs-ai/skills",
+      "sourceType": "github",
+      "computedHash": "d4ba913bec21910b8e37b2115cd964df2dc43ad62346b981c7b88d4ddc8cf792"
+    },
+    "web-quality-audit": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "computedHash": "1168be21aa9fe7bdc6e6e053ca05b6ca5a45675a527c103cdf77bc56ce8159af"
+    }
+  }
+}
