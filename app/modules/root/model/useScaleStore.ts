@@ -40,14 +40,6 @@ export const useScaleStore = defineStore('scale', () => {
 	const previewMode = ref<TPreviewMode>('scale')
 	const activePresetId = ref<null | string>(null)
 
-	watch(
-		() => [settings.ratio, settings.intermediateSteps],
-		() => {
-			activePresetId.value = null
-		},
-		{ immediate: false, flush: 'sync' },
-	)
-
 	function applyPreset(presetId: string) {
 		const preset = PRESETS.find((p) => p.id === presetId)
 
