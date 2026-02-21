@@ -19,7 +19,6 @@ export const PRESETS: IPreset[] = [
 		intermediateSteps: 4,
 		ratio: 2,
 		shouldSnapToGrid: false,
-		unit: 'px',
 	},
 	{
 		base: 16,
@@ -39,7 +38,6 @@ export const PRESETS: IPreset[] = [
 		intermediateSteps: 2,
 		ratio: 1.5,
 		shouldSnapToGrid: true,
-		unit: 'px',
 	},
 	{
 		base: 16,
@@ -65,7 +63,6 @@ export const PRESETS: IPreset[] = [
 		intermediateSteps: 4,
 		ratio: 3.375,
 		shouldSnapToGrid: false,
-		unit: 'px',
 	},
 	{
 		base: 16,
@@ -91,7 +88,6 @@ export const PRESETS: IPreset[] = [
 		intermediateSteps: 2,
 		ratio: 1.5,
 		shouldSnapToGrid: true,
-		unit: 'px',
 	},
 	{
 		base: 1,
@@ -111,7 +107,6 @@ export const PRESETS: IPreset[] = [
 		intermediateSteps: 2,
 		ratio: 2,
 		shouldSnapToGrid: false,
-		unit: 'em',
 	},
 	{
 		base: 1,
@@ -131,7 +126,6 @@ export const PRESETS: IPreset[] = [
 		intermediateSteps: 3,
 		ratio: 2,
 		shouldSnapToGrid: false,
-		unit: 'em',
 	},
 	{
 		base: 20,
@@ -146,11 +140,10 @@ export const PRESETS: IPreset[] = [
 			em: 0.25,
 			px: 4,
 		},
-		i18nNameKey: 'presets.lowContrast',
-		id: 'lowContrast',
+		i18nNameKey: 'presets.majorThird',
+		id: 'majorThird',
 		intermediateSteps: 0,
 		ratio: 1.25,
 		shouldSnapToGrid: true,
-		unit: 'px',
 	},
 ]

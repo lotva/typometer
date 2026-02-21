@@ -41,7 +41,7 @@ export default defineI18nLocale(async () => {
 			classic: 'Classic, from The Elements of Typographic Style',
 			geist: 'Geist Design System',
 			kontur: 'Kontur Guides',
-			lowContrast: 'Low contrast',
+			majorThird: 'Major Third',
 			musicalTetratonic: 'Musical tetratonic scale',
 			musicalTrinonic: 'Musical trinonic scale',
 		},

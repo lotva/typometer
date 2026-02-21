@@ -4,7 +4,7 @@ export interface ICustomStep {
 	referenceIndex: number
 }
 
-export interface IPreset extends ISettings {
+export interface IPreset extends Omit<ISettings, 'unit'> {
 	i18nNameKey: string
 	id: string
 }

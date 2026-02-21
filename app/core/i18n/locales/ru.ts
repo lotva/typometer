@@ -41,7 +41,7 @@ export default defineI18nLocale(async () => {
 			classic: 'Классическая шкала из книги «Основы стиля в типографике»',
 			geist: 'Дизайн-система Geist',
 			kontur: 'Гайды «Контура»',
-			lowContrast: 'Пониженный контраст кеглей',
+			majorThird: 'Большая терция',
 			musicalTetratonic: 'Музыкальная тетратоника',
 			musicalTrinonic: 'Музыкальная трихотоника',
 		},

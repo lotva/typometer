@@ -45,6 +45,8 @@ export const useScaleStore = defineStore('scale', () => {
 
 		if (preset) {
 			Object.assign(settings, preset)
+			settings.base = preset.baseByUnit[settings.unit]
+			settings.gridStep = preset.gridStepByUnit[settings.unit]
 			activePresetId.value = presetId
 		}
 	}
