@@ -1,4 +1,4 @@
-import { useUrlSearchParams } from '@vueuse/core'
+import { useUrlSearchParams, watchDebounced } from '@vueuse/core'
 
 import type { TOutputFormat, TUnit } from './types'
 
@@ -8,7 +8,7 @@ export function useSyncWithHash() {
 	const store = useScaleStore()
 	const parameters = useUrlSearchParams('hash')
 
-	watch(
+	watchDebounced(
 		() => [
 			store.settings.base,
 			store.settings.ratio,
@@ -26,11 +26,10 @@ export function useSyncWithHash() {
 			parameters.unit = store.settings.unit
 			parameters.snap = String(store.settings.shouldSnapToGrid)
 			parameters.module = String(store.settings.gridStep)
-
 			parameters.custom = encodeCustomSteps(store.settings.customSteps)
-
 			parameters.format = store.outputFormat
 		},
+		{ debounce: 100 },
 	)
 
 	const restore = () => {
