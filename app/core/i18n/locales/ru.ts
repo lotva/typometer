@@ -26,6 +26,7 @@ export default defineI18nLocale(async () => {
 		},
 		description: 'Составляет типографическую шкалу в виде ЦСС-токенов',
 		hotkey: 'Горячая клавиша',
+		loading: 'Загрузка...',
 		outputFormat: {
 			label: 'Формат токенов',
 			numeric: 'Числовой',

@@ -1,4 +1,6 @@
 <template>
+	<AppLoader />
+
 	<NuxtRouteAnnouncer />
 
 	<NuxtLayout>
@@ -19,6 +21,8 @@
 	import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 	import { useIsLocaleChanging } from './common/lib/useIsLocaleChanging'
+	import AppLoader from './common/ui/AppLoader.vue'
+	import { SHOW_LOADER_SCRIPT, SHOW_LOADER_STYLE } from './core/lib/show-loader'
 
 	const getRouteBaseName = useRouteBaseName()
 	const { isLocaleChanging } = useIsLocaleChanging()
@@ -26,12 +30,32 @@
 	const getPageKey = (route: RouteLocationNormalizedLoaded) => {
 		return getRouteBaseName(route) || 'unknown'
 	}
+
+	useHead({
+		script: [
+			{
+				innerHTML: SHOW_LOADER_SCRIPT,
+			},
+		],
+		style: [
+			{
+				innerHTML: SHOW_LOADER_STYLE,
+			},
+		],
+	})
+
+	onMounted(() => {
+		nextTick(() => {
+			document.documentElement.classList.remove('_loading')
+		})
+	})
 </script>
 
 <style>
 	[data-route-transition],
 	[data-locale-transition] {
-		transition: opacity 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+		transition: opacity var(--animation__duration--transition)
+			var(--animation__timing--transition);
 
 		.is-locale-changing & {
 			opacity: 0;

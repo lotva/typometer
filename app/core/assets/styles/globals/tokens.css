@@ -37,9 +37,11 @@
 
 	--animation__duration: 300ms;
 	--animation__duration--fast: 150ms;
+	--animation__duration--transition: 1.5s;
 	--animation__ease: ease;
 	--animation__ease-out: cubic-bezier(0, 0, 0.2, 1);
 	--animation__ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	--animation__timing--transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 
 	--color__background: rgb(255 255 255);
 	--color__surface: rgb(248 248 248);

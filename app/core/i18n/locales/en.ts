@@ -26,6 +26,7 @@ export default defineI18nLocale(async () => {
 		},
 		description: 'Compose typographic scale as CSS tokens',
 		hotkey: 'Hotkey',
+		loading: 'Loading...',
 		outputFormat: {
 			label: 'Output format',
 			numeric: 'Numeric',
