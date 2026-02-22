@@ -1,16 +1,16 @@
 <template>
 	<div class="controls-root">
-		<label
-			for="unit-segments"
+		<span
+			id="unit-label"
 			class="label text-metrics-fix has-compensator"
 			data-route-transition
 		>
 			{{ $t('controls.unit.label') }}
-		</label>
+		</span>
 
 		<SegmentGroup
-			id="unit-segments"
 			v-model="unit"
+			aria-labelledby="unit-label"
 			class="controls-content"
 			:items="[
 				{ label: $t('controls.unit.pixel'), value: 'px' },
