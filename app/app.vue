@@ -44,6 +44,34 @@
 		],
 	})
 
+	useSeoMeta({
+		applicationName: computed(() => $t('title')),
+		description: computed(() => $t('description')),
+		mobileWebAppCapable: 'yes',
+		ogDescription: computed(() => $t('description')),
+		ogImage: '/open-graph.png',
+		ogImageAlt: '',
+		ogImageHeight: '630',
+		ogImageType: 'image/png',
+		ogImageWidth: '1200',
+		ogLocaleAlternate: 'ru_RU',
+		ogTitle: computed(() => $t('title')),
+		ogType: 'website',
+		ogUrl: 'https://typometer.lotva.ru',
+		themeColor: [
+			{
+				content: '#0a0a0a',
+				media: '(prefers-color-scheme: dark)',
+			},
+			{
+				content: '#ffffff',
+				media: '(prefers-color-scheme: light)',
+			},
+		],
+		title: computed(() => $t('title')),
+		twitterCard: 'summary_large_image',
+	})
+
 	onMounted(() => {
 		nextTick(() => {
 			document.documentElement.classList.remove('_loading')

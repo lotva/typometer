@@ -1,4 +1,22 @@
 export default defineNuxtConfig({
+	app: {
+		head: {
+			link: [
+				{
+					href: '/favicon.ico',
+					rel: 'icon',
+					sizes: '48x48',
+					type: 'image/x-icon',
+				},
+				{ href: '/icon-any.svg', rel: 'icon', type: 'image/svg+xml' },
+				{
+					href: '/icon-180.png',
+					rel: 'apple-touch-icon',
+				},
+			],
+		},
+	},
+
 	compatibilityDate: '2025-07-15',
 
 	css: ['~~/app/core/assets/styles/index.css'],
@@ -10,12 +28,12 @@ export default defineNuxtConfig({
 		layouts: '~~/app/core/layouts',
 		plugins: '~~/app/core/plugins',
 	},
-
 	eslint: {
 		config: {
 			standalone: false,
 		},
 	},
+
 	experimental: {
 		typedPages: true,
 	},
