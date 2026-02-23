@@ -46,7 +46,7 @@
 	--color__background: rgb(255 255 255);
 	--color__surface: rgb(248 248 248);
 
-	--color__foreground--muted: rgb(115 115 115);
+	--color__foreground--muted: rgb(109 109 109);
 	--color__foreground: rgb(10 10 10);
 	--color__foreground--strong: var(--color__foreground);
 	--color__foreground--subtitle: var(--color__foreground--muted);
