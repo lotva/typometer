@@ -3,7 +3,12 @@
 		class="section"
 		:aria-label="$t('preview.ariaLabel')"
 	>
-		<TabsRoot v-model="previewMode">
+		<TabsRoot
+			v-model="previewMode"
+			:ids="{
+				content: (id) => `${id}-tab-content`,
+			}"
+		>
 			<TabList>
 				<TabTrigger
 					v-for="{ value, label } in tabs"
@@ -34,7 +39,6 @@
 			</TabList>
 
 			<TabContent
-				id="scale-tab-content"
 				ref="scaleTabContent"
 				value="scale"
 				class="box"
