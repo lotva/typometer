@@ -1,0 +1,33 @@
+name: Lighthouse
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  run-lighthouse:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24.5.0]
+        pnpm-version: [10.13.1]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ matrix.pnpm-version }}
+      - run: pnpm install
+      - run: pnpm generate
+        env:
+          NUXT_PUBLIC_I18N_BASE_URL: ${{ vars.NUXT_PUBLIC_I18N_BASE_URL }}
+      - run: pnpm install -g @lhci/cli@0.15.x
+      - run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
