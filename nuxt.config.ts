@@ -3,6 +3,14 @@ export default defineNuxtConfig({
 		head: {
 			link: [
 				{
+					as: 'font',
+					crossorigin: 'anonymous',
+					href: '/fonts/pt-root-ui-vf.woff2',
+					rel: 'preload',
+					tagPriority: -1,
+					type: 'font/woff2',
+				},
+				{
 					href: '/favicon.ico',
 					rel: 'icon',
 					sizes: '48x48',
