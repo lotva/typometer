@@ -45,10 +45,12 @@ export default defineNuxtConfig({
 			{
 				code: 'en',
 				file: 'en.ts',
+				language: 'en-US',
 			},
 			{
 				code: 'ru',
 				file: 'ru.ts',
+				language: 'ru-RU',
 			},
 		],
 		restructureDir: 'app/core/i18n',

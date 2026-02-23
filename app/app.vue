@@ -15,6 +15,29 @@
 			:page-key="getPageKey"
 		/>
 	</NuxtLayout>
+
+	<Head>
+		<template
+			v-for="link in localeHead.link"
+			:key="`link-${link.rel}-${link.hreflang || 'default'}`"
+		>
+			<Link
+				:rel="link.rel"
+				:href="link.href"
+				:hreflang="link.hreflang"
+			/>
+		</template>
+
+		<template
+			v-for="meta in localeHead.meta"
+			:key="meta.key"
+		>
+			<Meta
+				:property="meta.property"
+				:content="meta.content"
+			/>
+		</template>
+	</Head>
 </template>
 
 <script setup lang="ts">
@@ -31,7 +54,13 @@
 		return getRouteBaseName(route) || 'unknown'
 	}
 
+	const localeHead = useLocaleHead()
+
 	useHead({
+		htmlAttrs: {
+			dir: computed(() => localeHead.value.htmlAttrs?.dir as 'ltr' | 'rtl'),
+			lang: computed(() => localeHead.value.htmlAttrs?.lang),
+		},
 		script: [
 			{
 				innerHTML: SHOW_LOADER_SCRIPT,
@@ -54,10 +83,8 @@
 		ogImageHeight: '630',
 		ogImageType: 'image/png',
 		ogImageWidth: '1200',
-		ogLocaleAlternate: 'ru_RU',
 		ogTitle: computed(() => $t('title')),
 		ogType: 'website',
-		ogUrl: 'https://typometer.lotva.ru',
 		themeColor: [
 			{
 				content: '#0a0a0a',
