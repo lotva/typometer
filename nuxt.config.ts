@@ -67,6 +67,7 @@ export default defineNuxtConfig({
 		'@nuxtjs/i18n',
 		'@pinia/nuxt',
 		'motion-v/nuxt',
+		'@vite-pwa/nuxt',
 	],
 
 	postcss: {
@@ -75,6 +76,55 @@ export default defineNuxtConfig({
 				files: ['app/core/assets/styles/globals/breakpoints.pcss'],
 			},
 			'postcss-custom-media': {},
+		},
+	},
+
+	pwa: {
+		disable: process.env.NODE_ENV !== 'production',
+		experimental: {
+			enableWorkboxPayloadQueryParams: true,
+		},
+		manifest: {
+			description: 'Compose typographic scale as CSS tokens',
+			icons: [
+				{
+					sizes: '192x192',
+					src: 'icon-192.png',
+					type: 'image/png',
+				},
+				{
+					purpose: 'maskable',
+					sizes: '512x512',
+					src: 'icon-512-maskable.png',
+					type: 'image/png',
+				},
+				{
+					sizes: '512x512',
+					src: 'icon-512.png',
+					type: 'image/png',
+				},
+			],
+			name: 'Typometer',
+			short_name: 'Typometer',
+			theme_color: '#0a0a0a',
+		},
+		registerType: 'autoUpdate',
+		workbox: {
+			globIgnores: ['manifest**.webmanifest'],
+			globPatterns: ['**/*.{js,json,css,html,txt,svg,png,ico,webp,woff2,wasm}'],
+			runtimeCaching: [
+				{
+					handler: 'StaleWhileRevalidate',
+					options: {
+						cacheName: 'payload-cache',
+						expiration: {
+							maxAgeSeconds: 7 * 24 * 60 * 60,
+							maxEntries: 10,
+						},
+					},
+					urlPattern: /^\/_payload\.json(\?.*)?$/,
+				},
+			],
 		},
 	},
 

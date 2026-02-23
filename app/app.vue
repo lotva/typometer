@@ -38,6 +38,8 @@
 			/>
 		</template>
 	</Head>
+
+	<NuxtPwaManifest />
 </template>
 
 <script setup lang="ts">
