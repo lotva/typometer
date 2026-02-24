@@ -1,56 +1,84 @@
 <template>
-	<div
-		class="tokens"
-		v-html="html"
-	></div>
+	<pre class="pre"><code class="code" v-html="html"></code></pre>
 </template>
 
 <script setup lang="ts">
+	import { generateTokenHtml } from '~/modules/root/lib/html.utilities'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 
-	import { highlight } from '../lib/highlighter'
+	const { tokens } = toRefs(useScaleStore())
 
-	const { css } = toRefs(useScaleStore())
-
-	const html = ref('')
-
-	watch(
-		css,
-		async (updatedCss) => {
-			if (updatedCss) {
-				html.value = await highlight(updatedCss)
-			}
-		},
-		{ immediate: true },
-	)
+	const html = computed(() => generateTokenHtml(tokens.value))
 </script>
 
 <style scoped>
-	.tokens :deep() {
-		@media (prefers-color-scheme: dark) {
-			.shiki,
-			.shiki span {
-				font-weight: var(--shiki-dark-font-weight) !important;
-				font-style: var(--shiki-dark-font-style) !important;
-				color: var(--shiki-dark) !important;
-				text-decoration: var(--shiki-dark-text-decoration) !important;
+	.code {
+		--color__punctuation: #999;
+		--color__brackets: #999;
+		--color__semi: #999;
+		--color__foreground: #b07d48;
+		--color__selector: #b07d48;
+		--color__value: #2f798a;
+		--color__unit: #ab5959;
+		--color__comment: #a0ada0;
 
-				background-color: var(--shiki-dark-bg) !important;
+		@media (prefers-color-scheme: dark) {
+			--color__punctuation: #a0a0a0;
+			--color__brackets: var(--color__foreground);
+			--color__semi: var(--color__foreground);
+			--color__foreground: var(--color__foreground);
+			--color__selector: #a0a0a0;
+			--color__value: #ffc799;
+			--color__unit: #ffc799;
+			--color__comment: #8b8b8b94;
+		}
+
+		&:deep() {
+			.punctuation {
+				color: var(--color__punctuation);
+			}
+
+			.brackets {
+				color: var(--color__brackets);
+			}
+
+			.semi {
+				color: var(--color__semi);
+			}
+
+			.selector {
+				color: var(--color__selector);
+			}
+
+			.property {
+				color: var(--color__foreground);
+			}
+
+			.value {
+				color: var(--color__value);
+			}
+
+			.unit {
+				color: var(--color__unit);
+			}
+
+			.comment {
+				color: var(--color__comment);
 			}
 		}
+	}
 
-		pre {
-			max-inline-size: 100%;
-			margin-block: calc(-1 * var(--container-padding-block-start))
-				calc(-1 * var(--container-padding-block-end));
-			margin-inline: calc(-1 * var(--container-padding-inline));
-			padding-block: var(--container-padding-block-start)
-				var(--container-padding-block-end);
-			padding-inline: var(--container-padding-inline);
+	.pre {
+		max-inline-size: 100%;
+		margin-block: calc(-1 * var(--container-padding-block-start))
+			calc(-1 * var(--container-padding-block-end));
+		margin-inline: calc(-1 * var(--container-padding-inline));
+		padding-block: var(--container-padding-block-start)
+			var(--container-padding-block-end);
+		padding-inline: var(--container-padding-inline);
 
-			font-size: 0.84rem;
-			line-height: 1.5;
-			white-space: pre-wrap;
-		}
+		font-size: 0.84rem;
+		line-height: 1.5;
+		white-space: pre-wrap;
 	}
 </style>

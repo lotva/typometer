@@ -10,8 +10,8 @@ import type {
 
 import { PRESETS } from '../config/presets'
 import { convert } from '../lib/scale.utilities'
+import { generateTokens } from '../lib/tokens.utilities'
 import { useCalculateScale } from '../lib/useCalculateScale'
-import { useGenerateTokens } from '../lib/useGenerateTokens'
 
 export const useScaleStore = defineStore('scale', () => {
 	const settings = reactive<ISettings>({
@@ -102,12 +102,14 @@ export const useScaleStore = defineStore('scale', () => {
 
 	const { mergedScale } = useCalculateScale(settings)
 
-	const { css, tokens } = useGenerateTokens(
-		mergedScale,
-		() => settings.unit,
-		outputFormat,
-		() => settings.base,
-		() => settings.disabledIndices,
+	const tokens = computed(() =>
+		generateTokens(
+			mergedScale.value,
+			settings.unit,
+			outputFormat.value,
+			settings.base,
+			settings.disabledIndices,
+		),
 	)
 
 	return {
@@ -117,7 +119,6 @@ export const useScaleStore = defineStore('scale', () => {
 		activePresetId,
 
 		scale: mergedScale,
-		css,
 		tokens,
 
 		applyPreset,
