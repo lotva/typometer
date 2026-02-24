@@ -1,4 +1,4 @@
-import type { ICustomStep, IScalePoint, ISettings } from '../model/types'
+import type { IScalePoint, ISettings } from '../model/types'
 
 export function convert(
 	value: number,
@@ -18,7 +18,7 @@ export function convert(
 
 export function generateRawScale(
 	settings: Pick<ISettings, 'base' | 'intermediateSteps' | 'ratio' | 'unit'>,
-): IScalePoint[] {
+) {
 	const { base, intermediateSteps, ratio } = settings
 	const stepsPerOctave = intermediateSteps + 1
 	const result: IScalePoint[] = []
@@ -58,16 +58,20 @@ export function generateRawScale(
 
 export function mergeScaleWithCustomSteps(
 	rawScale: IScalePoint[],
-	customSteps: ICustomStep[],
-	settings: Pick<ISettings, 'base' | 'intermediateSteps' | 'ratio' | 'unit'>,
-): IScalePoint[] {
+	settings: Pick<
+		ISettings,
+		'base' | 'customSteps' | 'intermediateSteps' | 'ratio' | 'unit'
+	>,
+) {
+	if (!settings.customSteps.length) {
+		return rawScale
+	}
+
 	const result = [...rawScale]
-	const { base, intermediateSteps, ratio, unit } = settings
+	const { base, customSteps, intermediateSteps, ratio, unit } = settings
 	const stepsPerOctave = intermediateSteps + 1
 
-	for (const customStep of customSteps) {
-		const { offsetExponent, position, referenceIndex } = customStep
-
+	for (const { offsetExponent, position, referenceIndex } of customSteps) {
 		let insertIndex = referenceIndex
 		let targetExponent = 0
 
@@ -96,7 +100,6 @@ export function mergeScaleWithCustomSteps(
 
 				break
 			}
-			// No default
 		}
 
 		let value = base * Math.pow(ratio, targetExponent / stepsPerOctave)

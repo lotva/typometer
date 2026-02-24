@@ -31,7 +31,6 @@ export function useCalculateScale(settings: MaybeRefOrGetter<ISettings>) {
 	const mergedScale = computed(() => {
 		const points = mergeScaleWithCustomSteps(
 			snappedScale.value,
-			toValue(settings).customSteps,
 			toValue(settings),
 		)
 
