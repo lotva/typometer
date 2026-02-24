@@ -6,7 +6,9 @@ import { useScaleStore } from './useScaleStore'
 
 export function useSyncWithHash() {
 	const store = useScaleStore()
-	const parameters = useUrlSearchParams('hash')
+	const parameters = useUrlSearchParams('hash', {
+		write: false,
+	})
 
 	watchDebounced(
 		() => [
