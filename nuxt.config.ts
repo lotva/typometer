@@ -46,6 +46,27 @@ export default defineNuxtConfig({
 		typedPages: true,
 	},
 
+	features: {
+		inlineStyles: true,
+	},
+
+	hooks: {
+		'build:manifest': (manifest) => {
+			Object.values(manifest).forEach((entry) => {
+				const css = entry.css
+				const type = entry.resourceType
+
+				if (css) {
+					entry.css = []
+				}
+
+				if (type === 'style') {
+					entry = null!
+				}
+			})
+		},
+	},
+
 	i18n: {
 		defaultLocale: 'en',
 		detectBrowserLanguage: false,
