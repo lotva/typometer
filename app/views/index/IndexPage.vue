@@ -23,7 +23,7 @@
 
 		@media (--desktop) {
 			display: grid;
-			grid-template-columns: 28ch auto;
+			grid-template-columns: 17.5em auto;
 		}
 	}
 
