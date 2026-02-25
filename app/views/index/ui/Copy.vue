@@ -1,5 +1,8 @@
 <template>
-	<aside class="copy text-metrics-fix">
+	<aside
+		class="copy text-metrics-fix"
+		data-route-transition
+	>
 		{{ $t('copyright.text') }}
 
 		<br />

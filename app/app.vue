@@ -9,9 +9,6 @@
 				name: 'route',
 				mode: 'out-in',
 			}"
-			:class="{
-				'is-locale-changing': isLocaleChanging,
-			}"
 			:page-key="getPageKey"
 		/>
 	</NuxtLayout>
@@ -45,12 +42,12 @@
 <script setup lang="ts">
 	import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-	import { useIsLocaleChanging } from './common/lib/useIsLocaleChanging'
+	import { useLocaleTransition } from './common/lib/useLocaleTransition'
 	import AppLoader from './common/ui/AppLoader.vue'
 	import { SHOW_LOADER_SCRIPT, SHOW_LOADER_STYLE } from './core/lib/show-loader'
 
 	const getRouteBaseName = useRouteBaseName()
-	const { isLocaleChanging } = useIsLocaleChanging()
+	useLocaleTransition()
 
 	const getPageKey = (route: RouteLocationNormalizedLoaded) => {
 		return getRouteBaseName(route) || 'unknown'

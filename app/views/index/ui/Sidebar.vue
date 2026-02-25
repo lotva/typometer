@@ -144,6 +144,7 @@
 	}
 
 	.switcher {
+		position: relative;
 		font-size: 0.875em;
 
 		@media (--desktop) {

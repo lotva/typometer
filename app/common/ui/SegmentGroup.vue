@@ -1,5 +1,7 @@
 <template>
 	<SegmentGroupRoot v-bind="forwarded">
+		<SegmentGroupIndicator />
+
 		<SegmentGroupItem
 			v-for="item in items"
 			:key="item.value"
@@ -16,21 +18,13 @@
 			<SegmentGroupItemControl />
 
 			<SegmentGroupItemHiddenInput />
-
-			<AnimatePresence mode="wait">
-				<motion.span
-					v-if="props.modelValue === item.value"
-					layout-id="indicator"
-					class="indicator"
-					:transition="{ duration: 0.15, ease: 'easeOut' }"
-				/>
-			</AnimatePresence>
 		</SegmentGroupItem>
 	</SegmentGroupRoot>
 </template>
 
 <script setup lang="ts">
 	import {
+		SegmentGroupIndicator,
 		SegmentGroupItem,
 		SegmentGroupItemControl,
 		SegmentGroupItemHiddenInput,
@@ -40,7 +34,6 @@
 		type SegmentGroupRootProps,
 		useForwardPropsEmits,
 	} from '@ark-ui/vue'
-	import { motion } from 'motion-v'
 
 	interface IProps extends SegmentGroupRootProps {
 		items: SegmentItem[]
@@ -69,10 +62,26 @@
 		padding: var(--typography__outline-thickness);
 		border-radius: var(--radius-lg);
 
-		background: var(--color__muted);
+		background-color: var(--color__muted);
 
 		&[data-disabled] {
 			opacity: var(--color__disabled-state-opacity);
+		}
+
+		[data-part='indicator'] {
+			inset-inline-start: var(--left);
+
+			inline-size: var(--width);
+			block-size: calc(100% - var(--typography__outline-thickness) * 2);
+			border-radius: calc(
+				var(--radius-lg) - var(--typography__outline-thickness)
+			);
+
+			background-color: var(--color__background);
+
+			transition-timing-function: var(--animation__ease-in-out);
+			transition-duration: var(--animation__duration--fast);
+			transition-property: width, left, top;
 		}
 
 		[data-part='item'] {
@@ -112,25 +121,8 @@
 			}
 		}
 
-		[data-part='item-text'] {
-			position: relative;
-			z-index: 1;
-		}
-
 		[data-part='item-control'] {
 			display: none;
 		}
-	}
-
-	.indicator {
-		position: absolute;
-		inset-block: 0;
-		inset-inline: 0;
-
-		border-radius: calc(
-			var(--radius-lg) - var(--typography__outline-thickness)
-		);
-
-		background: var(--color__background);
 	}
 </style>

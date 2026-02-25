@@ -16,26 +16,14 @@
 					:value="value"
 				>
 					<span
-						class="trigger-text text-metrics-fix"
+						class="text-metrics-fix"
 						data-route-transition
 					>
 						{{ $t(label) }}
 					</span>
-
-					<AnimatePresence mode="wait">
-						<motion.span
-							v-if="previewMode === value"
-							layout-id="preview-tabs-indicator"
-							class="indicator"
-							:transition="{ duration: 0.15, ease: 'easeOut' }"
-						/>
-					</AnimatePresence>
-
-					<span
-						v-if="previewMode === value"
-						class="indicator _mobile"
-					></span>
 				</TabTrigger>
+
+				<TabIndicator />
 			</TabList>
 
 			<TabContent
@@ -74,8 +62,13 @@
 </template>
 
 <script setup lang="ts">
-	import { TabContent, TabList, TabsRoot, TabTrigger } from '@ark-ui/vue'
-	import { motion } from 'motion-v'
+	import {
+		TabContent,
+		TabIndicator,
+		TabList,
+		TabsRoot,
+		TabTrigger,
+	} from '@ark-ui/vue'
 
 	import type { TPreviewMode } from '../../model/types'
 
@@ -190,35 +183,20 @@
 			}
 		}
 
-		.trigger-text {
-			position: relative;
-			z-index: 1;
-		}
+		[data-part='indicator'] {
+			z-index: -1;
 
-		.indicator {
-			position: absolute;
-			inset-block: 0;
-			inset-inline: 0;
-
-			display: none;
-
+			inline-size: var(--width);
+			block-size: calc(100% - var(--typography__outline-thickness) * 2);
 			border-radius: calc(
 				var(--radius-lg) - var(--typography__outline-thickness)
 			);
 
 			background-color: var(--color__background);
 
-			@media (--desktop) {
-				display: inline;
-			}
-
-			&._mobile {
-				display: inline;
-
-				@media (--desktop) {
-					display: none;
-				}
-			}
+			transition-timing-function: var(--animation__ease-in-out);
+			transition-duration: var(--animation__duration--fast);
+			transition-property: width, left, top;
 		}
 
 		[data-part='content'] {

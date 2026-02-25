@@ -95,7 +95,6 @@ export default defineNuxtConfig({
 		'@nuxt/devtools',
 		'@nuxtjs/i18n',
 		'@pinia/nuxt',
-		'motion-v/nuxt',
 		'@vite-pwa/nuxt',
 	],
 
