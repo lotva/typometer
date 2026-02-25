@@ -1,12 +1,6 @@
 /* eslint-disable perfectionist/sort-objects */
 
-import type {
-	ICustomStep,
-	ISettings,
-	TOutputFormat,
-	TPreviewMode,
-	TUnit,
-} from './types'
+import type { ICustomStep, ISettings, TOutputFormat, TUnit } from './types'
 
 import { PRESETS } from '../config/presets'
 import { convert } from '../lib/scale.utilities'
@@ -37,7 +31,6 @@ export const useScaleStore = defineStore('scale', () => {
 	})
 
 	const outputFormat = ref<TOutputFormat>('semantic')
-	const previewMode = ref<TPreviewMode>('scale')
 	const activePresetId = ref<null | string>(null)
 
 	function applyPreset(presetId: string) {
@@ -51,7 +44,6 @@ export const useScaleStore = defineStore('scale', () => {
 		}
 	}
 
-	// TODO: вынести в компосабл (вероятно?)
 	function updateSettings(updated: Partial<ISettings>) {
 		Object.assign(settings, updated)
 	}
@@ -82,7 +74,6 @@ export const useScaleStore = defineStore('scale', () => {
 		activePresetId.value = null
 	}
 
-	// TODO: вынести в компосабл
 	function addCustomStep(step: Omit<ICustomStep, 'offsetExponent'>) {
 		const offsetExponent = 0.5
 		settings.customSteps.push({ ...step, offsetExponent })
@@ -115,7 +106,6 @@ export const useScaleStore = defineStore('scale', () => {
 	return {
 		settings,
 		outputFormat,
-		previewMode,
 		activePresetId,
 
 		scale: mergedScale,

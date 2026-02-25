@@ -70,15 +70,12 @@
 		TabTrigger,
 	} from '@ark-ui/vue'
 
-	import type { TPreviewMode } from '../../model/types'
-
-	import { useScaleStore } from '../../model/useScaleStore'
 	import { useSyncWithHash } from '../../model/useSyncWithHash'
 	import { scrollBeforeRenderScript } from './lib/scrollBeforeRenderScript'
+	import { usePreviewMode } from './lib/usePreviewMode'
 	import Scale from './ui/Scale.vue'
 	import Tokens from './ui/Tokens.vue'
 
-	const store = useScaleStore()
 	useSyncWithHash()
 
 	const tabs = [
@@ -94,19 +91,14 @@
 		const element = scaleTabContent.value.$el
 
 		const scrollPosition = element.clientHeight + element.scrollTop
-		const isAtBottom = Math.abs(element.scrollHeight - scrollPosition) < 1
+		const isAtBottom = Math.abs(element.scrollHeight - scrollPosition) < 5
 
 		if (isAtBottom) {
 			nextTick(() => (element.scrollTop = element.scrollHeight))
 		}
 	}
 
-	const previewMode = computed({
-		get: () => store.previewMode,
-		set: (value: TPreviewMode) => {
-			store.previewMode = value
-		},
-	})
+	const { previewMode } = usePreviewMode()
 </script>
 
 <style scoped>
