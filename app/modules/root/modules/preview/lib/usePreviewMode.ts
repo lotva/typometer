@@ -1,30 +1,43 @@
 import type { TPreviewMode } from '~/modules/root/model/types'
 
-import { scrollPositions } from '~/router.options'
+const scrollPositions = new Map<TPreviewMode, number>()
+const HEADER_HEIGHT = 56
 
 export const usePreviewMode = () => {
-	const route = useRoute()
-	const router = useRouter()
-
-	const previewMode = computed({
-		get: () => (route.query.tab as TPreviewMode) ?? 'scale',
-		set: (value: TPreviewMode) => {
-			router.replace({
-				query: {
-					...route.query,
-					tab: value,
-				},
-			})
-		},
-	})
+	const previewMode = ref<TPreviewMode>('scale')
 
 	watch(
-		() => route.query.tab,
-		(_, previousTab) => {
-			if (previousTab) {
-				scrollPositions.set(previousTab as string, window.scrollY)
-			}
+		previewMode,
+		async (_, previousMode) => {
+			scrollPositions.set(previousMode, window.scrollY)
 		},
+		{ flush: 'pre' },
+	)
+
+	watch(
+		previewMode,
+		async (currentMode) => {
+			if (window.scrollY < 5) {
+				window.scrollTo({ top: 0 })
+				return
+			}
+
+			if (scrollPositions.has(currentMode)) {
+				await nextTick()
+				await new Promise(requestAnimationFrame)
+
+				if (scrollPositions.get(currentMode)! < 5) {
+					window.scrollTo({ top: HEADER_HEIGHT })
+					return
+				}
+
+				window.scrollTo({ top: scrollPositions.get(currentMode) })
+				return
+			}
+
+			window.scrollTo({ top: HEADER_HEIGHT })
+		},
+		{ flush: 'post' },
 	)
 
 	return {
