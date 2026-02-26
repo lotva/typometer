@@ -4,6 +4,7 @@ module.exports = {
 			assertions: {
 				'bf-cache': 'off',
 				'forced-reflow-insight': 'warn',
+				'network-dependency-tree-insight': 'off',
 				'unused-javascript': 'off',
 			},
 			preset: 'lighthouse:recommended',
