@@ -73,6 +73,7 @@
 	import { useSyncWithHash } from '../../model/useSyncWithHash'
 	import { scrollBeforeRenderScript } from './lib/scrollBeforeRenderScript'
 	import { usePreviewMode } from './lib/usePreviewMode'
+	import { useScrollToBottom } from './lib/useScrollToBottom'
 	import Scale from './ui/Scale.vue'
 	import Tokens from './ui/Tokens.vue'
 
@@ -85,18 +86,7 @@
 	]
 
 	const scaleTabContent = ref<null | { $el: HTMLDivElement }>(null)
-
-	function handleScrollToBottom() {
-		if (!scaleTabContent.value) return
-		const element = scaleTabContent.value.$el
-
-		const scrollPosition = element.clientHeight + element.scrollTop
-		const isAtBottom = Math.abs(element.scrollHeight - scrollPosition) < 5
-
-		if (isAtBottom) {
-			nextTick(() => (element.scrollTop = element.scrollHeight))
-		}
-	}
+	const { handleScrollToBottom } = useScrollToBottom(scaleTabContent)
 
 	const { previewMode } = usePreviewMode()
 </script>
