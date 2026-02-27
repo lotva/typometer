@@ -50,23 +50,6 @@ export default defineNuxtConfig({
 		inlineStyles: true,
 	},
 
-	hooks: {
-		'build:manifest': (manifest) => {
-			Object.values(manifest).forEach((entry) => {
-				const css = entry.css
-				const type = entry.resourceType
-
-				if (css) {
-					entry.css = []
-				}
-
-				if (type === 'style') {
-					entry = null!
-				}
-			})
-		},
-	},
-
 	i18n: {
 		defaultLocale: 'en',
 		detectBrowserLanguage: false,
@@ -96,6 +79,7 @@ export default defineNuxtConfig({
 		'@nuxtjs/i18n',
 		'@pinia/nuxt',
 		'@vite-pwa/nuxt',
+		'nuxt-vitalizer',
 	],
 
 	postcss: {
@@ -159,6 +143,16 @@ export default defineNuxtConfig({
 	typescript: {
 		tsConfig: {
 			include: ['../commitlint.config.ts'],
+		},
+	},
+
+	vitalizer: {
+		disableStylesheets: true,
+	},
+
+	vite: {
+		build: {
+			cssCodeSplit: false,
 		},
 	},
 })
