@@ -8,6 +8,7 @@
 @import 'globals/tap-highlight.css';
 @import 'globals/theme.css';
 @import 'globals/tokens.css';
+@import 'globals/compensate-drawer.css';
 
 @import 'utils/visually-hidden.css';
 @import 'utils/clickable-area.css';

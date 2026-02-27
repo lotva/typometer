@@ -1,0 +1,14 @@
+:root {
+	--drawer__max-position: 460px;
+	--drawer__translate: 260px;
+	--drawer__handle-height: calc(var(--gap) * 2.5);
+}
+
+body:has(.drawer) {
+	@media (--mobile) {
+		padding-block-end: calc(
+			var(--drawer__handle-height) + var(--drawer__max-position) -
+				var(--drawer__translate)
+		);
+	}
+}

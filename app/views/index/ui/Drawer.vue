@@ -93,7 +93,7 @@
 
 			box-sizing: content-box;
 			inline-size: stretch;
-			block-size: calc(var(--gap) * 2.5);
+			block-size: var(--drawer__handle-height);
 			padding-block-end: var(--gap);
 
 			background-image: linear-gradient(
@@ -121,14 +121,14 @@
 			overflow-block: auto;
 			overscroll-behavior: contain;
 
-			max-block-size: 460px;
+			max-block-size: var(--drawer__max-position);
 			margin-block-start: calc(-1 * var(--gap));
 			padding-block: var(--gap) calc(var(--gap) * 3);
 			padding-inline: var(--container-padding-inline);
 		}
 
 		.spacer {
-			block-size: 260px;
+			block-size: var(--drawer__translate);
 		}
 	}
 
@@ -143,14 +143,6 @@
 
 		.handle {
 			display: none;
-		}
-	}
-</style>
-
-<style>
-	body:has(.drawer) {
-		@media (--mobile) {
-			padding-block-end: calc(var(--gap) * 2.5 + 460px - 260px);
 		}
 	}
 </style>
