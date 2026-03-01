@@ -1,4 +1,4 @@
-import { useUrlSearchParams, watchDebounced } from '@vueuse/core'
+import { watchDebounced } from '@vueuse/core'
 
 import type { TOutputFormat, TUnit } from './types'
 
@@ -6,9 +6,8 @@ import { useScaleStore } from './useScaleStore'
 
 export function useSyncWithHash() {
 	const store = useScaleStore()
-	const parameters = useUrlSearchParams('hash-params', {
-		write: false,
-	})
+	const router = useRouter()
+	const route = useRoute()
 
 	watchDebounced(
 		() => [
@@ -22,46 +21,59 @@ export function useSyncWithHash() {
 			store.outputFormat,
 		],
 		() => {
-			parameters.base = String(store.settings.base)
-			parameters.ratio = String(store.settings.ratio)
-			parameters.steps = String(store.settings.intermediateSteps)
-			parameters.unit = store.settings.unit
-			parameters.snap = String(store.settings.shouldSnapToGrid)
-			parameters.module = String(store.settings.gridStep)
-			parameters.custom = encodeCustomSteps(store.settings.customSteps)
-			parameters.format = store.outputFormat
+			const parameters: Record<string, string> = {
+				base: String(store.settings.base),
+				custom: encodeCustomSteps(store.settings.customSteps),
+				format: store.outputFormat,
+				module: String(store.settings.gridStep),
+				ratio: String(store.settings.ratio),
+				snap: String(store.settings.shouldSnapToGrid),
+				steps: String(store.settings.intermediateSteps),
+				unit: store.settings.unit,
+			}
+
+			router.replace({
+				hash: buildHash(parameters),
+			})
 		},
 		{ debounce: 100 },
 	)
 
 	const restore = () => {
+		const parameters = parseHash(route.hash)
+
 		if (parameters.unit) {
 			store.updateSettings({ unit: parameters.unit as TUnit })
 		}
+
 		if (parameters.base) {
 			store.updateBase(Number(parameters.base), store.settings.unit)
 		}
+
 		if (parameters.ratio) {
 			store.updateSettings({ ratio: Number(parameters.ratio) })
 		}
+
 		if (parameters.steps) {
 			store.updateIntermediateSteps(Number(parameters.steps))
 		}
+
 		if (parameters.snap) {
 			store.updateSettings({
 				shouldSnapToGrid: parameters.snap === 'true',
 			})
 		}
+
 		if (parameters.module) {
 			store.updateGridStep(Number(parameters.module), store.settings.unit)
 		}
+
 		if (parameters.format) {
 			store.outputFormat = parameters.format as TOutputFormat
 		}
+
 		if (parameters.custom) {
-			store.settings.customSteps = decodeCustomSteps(
-				parameters.custom as string,
-			)
+			store.settings.customSteps = decodeCustomSteps(parameters.custom)
 		}
 	}
 
@@ -92,4 +104,17 @@ const decodeCustomSteps = (encoded: string) => {
 	} catch {
 		return []
 	}
+}
+
+const buildHash = (parameters: Record<string, string>) => {
+	const search = new URLSearchParams(parameters)
+	const string = search.toString()
+	return string ? `#${string}` : ''
+}
+
+const parseHash = (hash: string) => {
+	const clean = hash.startsWith('#') ? hash.slice(1) : hash
+	const parameters = new URLSearchParams(clean)
+
+	return Object.fromEntries(parameters.entries())
 }
