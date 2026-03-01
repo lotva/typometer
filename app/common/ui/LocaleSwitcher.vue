@@ -10,6 +10,7 @@
 			class="locale-link box"
 			:data-locale="locale.code"
 			:data-selected="locale.code === selectedLocale"
+			replace
 			@mouseover="preloadLocale(locale.code)"
 		>
 			<span class="label capitals text-metrics-fix">
