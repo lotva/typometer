@@ -43,6 +43,7 @@ export default defineNuxtConfig({
 	},
 
 	experimental: {
+		payloadExtraction: false,
 		typedPages: true,
 	},
 
@@ -93,9 +94,6 @@ export default defineNuxtConfig({
 
 	pwa: {
 		disable: process.env.NODE_ENV !== 'production',
-		experimental: {
-			enableWorkboxPayloadQueryParams: true,
-		},
 		manifest: {
 			description: 'Compose typographic scale as CSS tokens',
 			icons: [
@@ -124,19 +122,6 @@ export default defineNuxtConfig({
 		workbox: {
 			globIgnores: ['manifest**.webmanifest'],
 			globPatterns: ['**/*.{js,json,css,html,txt,svg,png,ico,webp,woff2,wasm}'],
-			runtimeCaching: [
-				{
-					handler: 'StaleWhileRevalidate',
-					options: {
-						cacheName: 'payload-cache',
-						expiration: {
-							maxAgeSeconds: 7 * 24 * 60 * 60,
-							maxEntries: 10,
-						},
-					},
-					urlPattern: /^\/_payload\.json(\?.*)?$/,
-				},
-			],
 		},
 	},
 
