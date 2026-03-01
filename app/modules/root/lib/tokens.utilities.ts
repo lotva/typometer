@@ -8,8 +8,6 @@ export interface ITokens {
 	recommended: Record<string, string>
 }
 
-const RECOMMENDED_RATIOS = [0.75, 1, 1.25, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
-
 const CATEGORIES = [
 	{ maxRatio: 1, name: 'label', startRatio: 0 },
 	{ maxRatio: 1.5, name: 'body', startRatio: 1 },
@@ -43,22 +41,13 @@ export function generateTokens(
 	disabledIndices: Set<number>,
 ): ITokens {
 	const config = TOKEN_NAMES[outputFormat]
-
 	const enabledScaleValues = scaleValues.filter(
 		(_, index) => !disabledIndices.has(index),
 	)
 
-	const recommendedScaleValues = enabledScaleValues.filter((value) => {
-		const ratio = value / baseValue
-		return RECOMMENDED_RATIOS.some((r) => Math.abs(ratio - r) < 0.2)
-	})
-
 	const fullTokens: Record<string, string> = {}
-	const recommendedTokens: Record<string, string> = {}
-	const mobileFirstTokens: Record<string, string> = {}
-
 	enabledScaleValues.forEach((value, enabledIndex) => {
-		const fullTokenName = getFullTokenName(
+		const fullTokenName = getTokenNameByIndex(
 			value,
 			enabledIndex,
 			enabledScaleValues,
@@ -66,35 +55,20 @@ export function generateTokens(
 			config,
 			outputFormat,
 		)
-
 		const cssVariable = fullTokenName
-			? `--${config.prefix}${fullTokenName ? '--' : ''}${fullTokenName}`
+			? `--${config.prefix}--${fullTokenName}`
 			: `--${config.prefix}`
-
 		fullTokens[cssVariable] = `${value}${unit}`
-		mobileFirstTokens[cssVariable] = `${value}${unit}`
 	})
 
-	recommendedScaleValues.forEach((value) => {
-		const recommendedIndex = recommendedScaleValues.indexOf(value)
+	const mobileFirstTokens = { ...fullTokens }
 
-		const recommendedTokenName = getRecommendedTokenName(
-			value,
-			recommendedIndex,
-			recommendedScaleValues,
-			baseValue,
-			config,
-			outputFormat,
-		)
-
-		if (recommendedTokenName) {
-			const recommendedCssVariable = recommendedTokenName
-				? `--${config.prefix}${recommendedTokenName ? '--' : ''}${recommendedTokenName}`
-				: `--${config.prefix}`
-
-			recommendedTokens[recommendedCssVariable] = `${value}${unit}`
-		}
-	})
+	const recommendedTokens = generateRecommendedTokens(
+		enabledScaleValues,
+		baseValue,
+		unit,
+		config,
+	)
 
 	return {
 		full: fullTokens,
@@ -106,61 +80,80 @@ export function generateTokens(
 function findClosestIndex(values: number[], target: number) {
 	if (values.length === 0) return -1
 
-	if (target <= values[0]!) return 0
+	let closestIndex = 0
+	let minDiff = Math.abs(values[0]! - target)
 
-	if (target >= values[values.length - 1]!) return values.length - 1
-
-	for (let index = 0; index < values.length - 1; index++) {
-		const current = values[index]
-		const next = values[index + 1]
-
-		if (current === target) return index
-		if (next === target) return index + 1
-
-		if (current! < target && target < next!) {
-			const diff1 = target - current!
-			const diff2 = next! - target
-			return diff1 <= diff2 ? index : index + 1
+	for (let index = 1; index < values.length; index++) {
+		const diff = Math.abs(values[index]! - target)
+		if (
+			diff < minDiff ||
+			(diff === minDiff && values[index]! > values[closestIndex]!)
+		) {
+			minDiff = diff
+			closestIndex = index
 		}
 	}
 
-	return values.length - 1
+	return closestIndex
 }
 
-function getFullTokenName(
-	value: number,
-	index: number,
-	scaleValues: number[],
+function generateRecommendedTokens(
+	values: number[],
 	baseValue: number,
+	unit: TUnit,
 	config: TTokenConfig,
-	outputFormat: TOutputFormat,
 ) {
-	return getTokenNameByIndex(
-		value,
-		index,
-		scaleValues,
-		baseValue,
-		config,
-		outputFormat,
-	)
-}
+	const baseIndex = findClosestIndex(values, baseValue)
+	const baseValueActual = values[baseIndex]!
 
-function getRecommendedTokenName(
-	value: number,
-	index: number,
-	scaleValues: number[],
-	baseValue: number,
-	config: TTokenConfig,
-	outputFormat: TOutputFormat,
-) {
-	return getTokenNameByIndex(
-		value,
-		index,
-		scaleValues,
-		baseValue,
-		config,
-		outputFormat,
-	)
+	const result: Record<string, string> = {}
+
+	const leftValues = values.slice(0, baseIndex)
+	if (leftValues.length >= 2) {
+		result[`--${config.prefix}--label-s`] = `${leftValues[0]}${unit}`
+		result[`--${config.prefix}--label`] = `${leftValues[1]}${unit}`
+	} else if (leftValues.length === 1) {
+		result[`--${config.prefix}--label`] = `${leftValues[0]}${unit}`
+	} else {
+		result[`--${config.prefix}--label`] = `${baseValueActual}${unit}`
+	}
+
+	result[`--${config.prefix}`] = `${baseValueActual}${unit}`
+
+	const allRightValues = values.slice(baseIndex + 1)
+	const maxRecommended = baseValueActual * 4
+	const rightValues = allRightValues.filter((v) => v <= maxRecommended)
+	const availableCount = rightValues.length
+
+	if (availableCount > 0) {
+		const largeNames = [
+			'lead',
+			'heading-s',
+			'heading-m',
+			'heading-l',
+			'heading-xl',
+			'display',
+		]
+
+		const tokensToCreate = Math.min(largeNames.length, availableCount)
+		const selectedNames = largeNames.slice(0, tokensToCreate)
+
+		if (tokensToCreate === 1) {
+			result[`--${config.prefix}--${selectedNames[0]}`] =
+				`${rightValues[0]}${unit}`
+		} else {
+			const step = (availableCount - 1) / (tokensToCreate - 1)
+
+			for (let tokenIndex = 0; tokenIndex < tokensToCreate; tokenIndex++) {
+				const valueIndex = Math.round(tokenIndex * step)
+				const tokenName = selectedNames[tokenIndex]
+				result[`--${config.prefix}--${tokenName}`] =
+					`${rightValues[valueIndex]}${unit}`
+			}
+		}
+	}
+
+	return result
 }
 
 function getTokenName(
