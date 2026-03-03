@@ -35,7 +35,7 @@ export interface ISettings {
 }
 
 export type TOutputFormat = 'numeric' | 'semantic' | 'tshirt'
-export type TPreviewMode = 'example' | 'scale' | 'tokens'
+export type TPreviewMode = 'scale' | 'tokens'
 export type TUnit = 'em' | 'px'
 
 interface IValueByUnit {

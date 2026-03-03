@@ -45,13 +45,6 @@
 			/>
 
 			<TabContent
-				value="example"
-				class="box"
-			>
-				Content
-			</TabContent>
-
-			<TabContent
 				value="tokens"
 				class="box"
 			>
@@ -71,17 +64,16 @@
 	} from '@ark-ui/vue'
 
 	import { useSyncWithHash } from '../../model/useSyncWithHash'
+	import { Tokens } from '../tokens/index.ui'
 	import { scrollBeforeRenderScript } from './lib/scrollBeforeRenderScript'
 	import { usePreviewMode } from './lib/usePreviewMode'
 	import { useScrollToBottom } from './lib/useScrollToBottom'
 	import Scale from './ui/Scale.vue'
-	import Tokens from './ui/Tokens.vue'
 
 	useSyncWithHash()
 
 	const tabs = [
 		{ label: 'preview.scale', value: 'scale' },
-		{ label: 'preview.example', value: 'example' },
 		{ label: 'preview.tokens', value: 'tokens' },
 	]
 

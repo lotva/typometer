@@ -18,4 +18,13 @@ export const TOKEN_NAMES = {
 	},
 }
 
+export const RECOMMENDED_TOKEN_NAMES = [
+	'lead',
+	'heading-s',
+	'heading-m',
+	'heading-l',
+	'heading-xl',
+	'display',
+]
+
 export type TTokenConfig = (typeof TOKEN_NAMES)[keyof typeof TOKEN_NAMES]

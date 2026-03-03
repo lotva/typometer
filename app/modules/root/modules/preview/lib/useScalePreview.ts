@@ -1,5 +1,5 @@
-import { categorizeToken } from '../../../lib/tokens.utilities'
 import { useScaleStore } from '../../../model/useScaleStore'
+import { categorizeToken } from '../../tokens'
 
 export function useScalePreview() {
 	const store = useScaleStore()

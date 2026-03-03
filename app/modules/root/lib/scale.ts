@@ -23,7 +23,7 @@ export function generateRawScale(
 	const stepsPerOctave = intermediateSteps + 1
 	const result: IScalePoint[] = []
 
-	const [min, max] = [base * 0.7, base * 6.5]
+	const [min, max] = [base * 0.65, base * 6.25]
 
 	let currentValue = base
 	let currentExponent = 0

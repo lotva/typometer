@@ -3,9 +3,9 @@
 import type { ICustomStep, ISettings, TOutputFormat, TUnit } from './types'
 
 import { PRESETS } from '../config/presets'
-import { convert } from '../lib/scale.utilities'
-import { generateTokens } from '../lib/tokens.utilities'
+import { convert } from '../lib/scale'
 import { useCalculateScale } from '../lib/useCalculateScale'
+import { generateTokens } from '../modules/tokens'
 
 export const useScaleStore = defineStore('scale', () => {
 	const settings = reactive<ISettings>({
@@ -94,13 +94,7 @@ export const useScaleStore = defineStore('scale', () => {
 	const { mergedScale } = useCalculateScale(settings)
 
 	const tokens = computed(() =>
-		generateTokens(
-			mergedScale.value,
-			settings.unit,
-			outputFormat.value,
-			settings.base,
-			settings.disabledIndices,
-		),
+		generateTokens(mergedScale.value, outputFormat.value, settings),
 	)
 
 	return {

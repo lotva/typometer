@@ -3,8 +3,9 @@
 </template>
 
 <script setup lang="ts">
-	import { generateTokenHtml } from '~/modules/root/lib/html.utilities'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
+
+	import { generateTokenHtml } from '../lib/html'
 
 	const { tokens } = toRefs(useScaleStore())
 
@@ -50,11 +51,13 @@
 				color: var(--color__selector);
 			}
 
-			.property {
+			.property,
+			.media {
 				color: var(--color__foreground);
 			}
 
-			.value {
+			.value,
+			.atrule {
 				color: var(--color__value);
 			}
 
@@ -79,6 +82,7 @@
 
 		font-size: 0.84rem;
 		line-height: 1.5;
+		tab-size: 2;
 		white-space: pre-wrap;
 	}
 </style>

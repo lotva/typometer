@@ -5,7 +5,7 @@ import {
 	mergeScaleWithCustomSteps,
 	round,
 	snapToGrid,
-} from './scale.utilities'
+} from './scale'
 
 export function useCalculateScale(settings: MaybeRefOrGetter<ISettings>) {
 	const rawScale = computed(() => generateRawScale(toValue(settings)))

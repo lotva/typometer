@@ -48,6 +48,7 @@ export default withNuxt(
 					{
 						replacements: {
 							e: false,
+							i: false,
 							props: false,
 							ref: false,
 						},
