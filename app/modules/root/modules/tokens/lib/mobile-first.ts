@@ -1,5 +1,6 @@
 import type { IBreakpoint, ITokenContext, TBreakpointKey } from '../model'
 
+import { PREFIX } from '../config'
 import { getTokenNameByIndex } from './naming'
 import { categorizeToken, findClosestIndex, format } from './utilities'
 
@@ -104,9 +105,7 @@ function buildClamp(
 function buildTokenInfos(context: ITokenContext) {
 	return context.values.map((value, index) => {
 		const name = getTokenNameByIndex(index, context)
-		const cssVariable = name
-			? `--${context.config.prefix}--${name}`
-			: `--${context.config.prefix}`
+		const cssVariable = name ? `${PREFIX}--${name}` : `${PREFIX}`
 
 		const category = categorizeToken(value, context.settings.base).name
 

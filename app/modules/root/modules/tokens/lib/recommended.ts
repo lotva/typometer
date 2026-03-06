@@ -1,12 +1,12 @@
 import type { ITokenContext } from '../model'
 
-import { RECOMMENDED_TOKEN_NAMES } from '../config'
+import { PREFIX, RECOMMENDED_TOKEN_NAMES } from '../config'
 import { findClosestIndex } from './utilities'
 
 export function generateRecommendedTokens(
 	context: ITokenContext,
 ): Record<string, string> {
-	const { config, settings, values } = context
+	const { settings, values } = context
 	const base = settings.base
 	const unit = settings.unit
 
@@ -20,15 +20,15 @@ export function generateRecommendedTokens(
 
 	const leftValues = values.slice(0, baseIndex)
 	if (leftValues.length >= 2) {
-		result[`--${config.prefix}--label-s`] = `${leftValues[0]}${unit}`
-		result[`--${config.prefix}--label`] = `${leftValues[1]}${unit}`
+		result[`${PREFIX}--label-s`] = `${leftValues[0]}${unit}`
+		result[`${PREFIX}--label`] = `${leftValues[1]}${unit}`
 	} else if (leftValues.length === 1) {
-		result[`--${config.prefix}--label`] = `${leftValues[0]}${unit}`
+		result[`${PREFIX}--label`] = `${leftValues[0]}${unit}`
 	} else {
-		result[`--${config.prefix}--label`] = `${snappedBase}${unit}`
+		result[`${PREFIX}--label`] = `${snappedBase}${unit}`
 	}
 
-	result[`--${config.prefix}`] = `${snappedBase}${unit}`
+	result[`${PREFIX}`] = `${snappedBase}${unit}`
 
 	const rightValues = values
 		.slice(baseIndex + 1)
@@ -57,7 +57,7 @@ export function generateRecommendedTokens(
 
 	const names = RECOMMENDED_TOKEN_NAMES.slice(0, selected.length)
 	names.forEach((name, index) => {
-		result[`--${config.prefix}--${name}`] = `${selected[index]}${unit}`
+		result[`${PREFIX}--${name}`] = `${selected[index]}${unit}`
 	})
 
 	return result

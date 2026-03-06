@@ -2,7 +2,6 @@ import type { ISettings, TOutputFormat } from '~/modules/root/model/types'
 
 import type { ITokenContext, ITokens } from '../model'
 
-import { TOKEN_NAMES } from '../config'
 import { generateComputedTokens } from './computed'
 import { generateFullTokens } from './full'
 import { generateMobileFirstTokens } from './mobile-first'
@@ -13,13 +12,11 @@ export function generateTokens(
 	outputFormat: TOutputFormat,
 	settings: ISettings,
 ): ITokens {
-	const config = TOKEN_NAMES[outputFormat]
 	const enabledValues = scaleValues.filter(
 		(_, index) => !settings.disabledIndices.has(index),
 	)
 
 	const context: ITokenContext = {
-		config,
 		outputFormat,
 		settings,
 		values: enabledValues,

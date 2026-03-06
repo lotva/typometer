@@ -1,5 +1,6 @@
 import type { ITokenContext } from '../model'
 
+import { PREFIX } from '../config'
 import { getTokenNameByIndex } from './naming'
 
 export function generateFullTokens(context: ITokenContext) {
@@ -7,9 +8,7 @@ export function generateFullTokens(context: ITokenContext) {
 
 	context.values.forEach((value, index) => {
 		const name = getTokenNameByIndex(index, context)
-		const cssVariable = name
-			? `--${context.config.prefix}--${name}`
-			: `--${context.config.prefix}`
+		const cssVariable = name ? `${PREFIX}--${name}` : `${PREFIX}`
 		tokens[cssVariable] = `${value}${context.settings.unit}`
 	})
 

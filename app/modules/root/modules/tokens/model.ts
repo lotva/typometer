@@ -1,8 +1,6 @@
 import type { ISettings, TOutputFormat } from '../../model/types'
-import type { TTokenConfig } from './config'
 
 export interface ITokenContext {
-	config: TTokenConfig
 	outputFormat: TOutputFormat
 	settings: ISettings
 	values: number[]

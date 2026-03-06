@@ -1,21 +1,9 @@
-export const TOKEN_NAMES = {
-	numeric: {
-		names: [''],
-		overflowStrategy: 'numeric',
-		prefix: 'font-size',
-	},
+import type { TOutputFormat } from '../../model/types'
 
-	semantic: {
-		names: ['body', 'accent', 'heading'],
-		overflowStrategy: 'categories',
-		prefix: 'font-size',
-	},
-
-	tshirt: {
-		names: ['xs', 's', '', 'l', 'xl'],
-		overflowStrategy: 'tshirt',
-		prefix: 'font-size',
-	},
+export const TOKEN_NAMES_BY_OUTPUT_FORMAT: Record<TOutputFormat, string[]> = {
+	numeric: [''],
+	semantic: ['body', 'accent', 'heading'],
+	tshirt: ['xs', 's', 'm', 'l', 'xl'],
 }
 
 export const RECOMMENDED_TOKEN_NAMES = [
@@ -27,4 +15,4 @@ export const RECOMMENDED_TOKEN_NAMES = [
 	'display',
 ]
 
-export type TTokenConfig = (typeof TOKEN_NAMES)[keyof typeof TOKEN_NAMES]
+export const PREFIX = '--font-size'
