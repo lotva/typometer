@@ -27,7 +27,9 @@ function generateBlock(tokens: Record<string, string>) {
 }
 
 function generateComputedSection(tokens: ITokens) {
-	if (Object.keys(tokens.computed).length === 0) return []
+	if (!tokens.computed || Object.keys(tokens.computed).length === 0) return []
+
+	const rootTokens = tokens.computed['root'] || {}
 
 	return [
 		'',
@@ -39,7 +41,11 @@ function generateComputedSection(tokens: ITokens) {
 		`<span class="token comment"> * the entire scale updates automatically.</span>`,
 		`<span class="token comment"> */</span>`,
 		'',
-		...generateRootBlock(tokens.computed),
+		...renderRootWithMedia(
+			rootTokens,
+			tokens.computed,
+			'Override the ratio to adjust for mobile screens:',
+		),
 	]
 }
 
@@ -54,9 +60,13 @@ function generateFullSection(tokens: ITokens) {
 }
 
 function generateMobileFirstSection(tokens: ITokens) {
-	if (Object.keys(tokens.mobileFirst).length === 0) return []
+	if (!tokens.mobileFirst || Object.keys(tokens.mobileFirst).length === 0) {
+		return []
+	}
 
-	const lines: string[] = [
+	const rootTokens = tokens.mobileFirst['root'] || {}
+
+	const header: string[] = [
 		'',
 		`<span class="token comment">/**</span>`,
 		`<span class="token comment"> * Mobile-First Scale</span>`,
@@ -68,27 +78,7 @@ function generateMobileFirstSection(tokens: ITokens) {
 		'',
 	]
 
-	const rootTokens = tokens.mobileFirst['root'] || {}
-	const mediaQueries: string[] = []
-
-	for (const [breakpoint, tokenMap] of Object.entries(tokens.mobileFirst)) {
-		if (breakpoint === 'root') continue
-
-		mediaQueries.push(
-			`\n	<span class="token atrule">@media</span> <span class="token brackets">(</span><span class="token media">${highlightMediaQuery(breakpoint)}</span><span class="token brackets">)</span> <span class="token brackets">{</span>`,
-			...generateBlock(tokenMap).map((line) => `	${line}`),
-			`	<span class="token brackets">}</span>`,
-		)
-	}
-
-	lines.push(
-		`<span class="token selector">:root</span> <span class="token brackets">{</span>`,
-		...generateBlock(rootTokens),
-		...mediaQueries,
-		`<span class="token brackets">}</span>`,
-	)
-
-	return lines
+	return [...header, ...renderRootWithMedia(rootTokens, tokens.mobileFirst)]
 }
 
 function generateRecommendedSection(tokens: ITokens) {
@@ -113,6 +103,41 @@ function generateRootBlock(tokens: Record<string, string>) {
 		...generateBlock(tokens),
 		`<span class="token brackets">}</span>`,
 	]
+
+	return lines
+}
+
+function renderRootWithMedia(
+	rootTokens: Record<string, string>,
+	mediaMap: Record<string, Record<string, string>>,
+	comment?: string,
+) {
+	const mediaQueries: string[] = []
+
+	for (const [breakpoint, tokenMap] of Object.entries(mediaMap)) {
+		if (breakpoint === 'root') continue
+
+		mediaQueries.push(
+			`\n	<span class="token atrule">@media</span> <span class="token brackets">(</span><span class="token media">${highlightMediaQuery(breakpoint)}</span><span class="token brackets">)</span> <span class="token brackets">{</span>`,
+			...generateBlock(tokenMap).map((line) => `	${line}`),
+			`	<span class="token brackets">}</span>`,
+		)
+	}
+
+	const lines: string[] = [
+		`<span class="token selector">:root</span> <span class="token brackets">{</span>`,
+		...generateBlock(rootTokens),
+	]
+
+	if (comment) {
+		const commentLines = comment
+			.split('\n')
+			.map((line) => `	<span class="token comment">/* ${line} */</span>`)
+
+		lines.push('', ...commentLines)
+	}
+
+	lines.push(...mediaQueries, `<span class="token brackets">}</span>`)
 
 	return lines
 }

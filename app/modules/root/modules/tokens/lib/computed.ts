@@ -11,9 +11,9 @@ export function generateComputedTokens(context: ITokenContext) {
 	const unit = settings.unit
 
 	const baseIndex = findClosestIndex(values, base)
-	if (baseIndex === -1) return {}
+	if (baseIndex === -1) return { root: {}, 'width < 768px': {} }
 
-	const result: Record<string, string> = {
+	const root: Record<string, string> = {
 		'--base': `${base}${unit}`,
 		'--ratio': String(ratio),
 		'--step': 'calc(1 / (var(--steps) + 1))',
@@ -27,11 +27,34 @@ export function generateComputedTokens(context: ITokenContext) {
 		const offset = index - baseIndex
 		const variableName = `--${name}`
 
-		result[variableName] =
+		root[variableName] =
 			offset === 0
 				? 'var(--base)'
 				: `calc(var(--base) * pow(var(--ratio), ${offset} * var(--step)))`
 	})
 
-	return result
+	const mobileRatio = computeMobileRatio(ratio)
+
+	const mobile: Record<string, string> = {
+		'--ratio': String(mobileRatio),
+	}
+
+	return {
+		root,
+		'width < 768px': mobile,
+	}
+}
+
+function computeMobileRatio(originalRatio: number) {
+	if (originalRatio <= 1) return originalRatio
+
+	const MAX_REDUCTION = 0.3
+	const POWER = 1.5
+	const delta = Math.min(
+		MAX_REDUCTION,
+		Math.pow(originalRatio - 1, POWER) * MAX_REDUCTION,
+	)
+
+	const mobile = originalRatio - delta
+	return Math.max(1, parseFloat(mobile.toFixed(2)))
 }
