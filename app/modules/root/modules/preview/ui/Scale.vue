@@ -21,6 +21,7 @@
 					<em
 						v-if="item.value === store.settings.base"
 						class="hint"
+						data-route-transition
 					>
 						{{ $t('controls.base') }}
 					</em>
