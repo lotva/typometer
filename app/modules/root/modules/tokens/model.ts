@@ -9,6 +9,7 @@ export interface ITokenContext {
 }
 
 export interface ITokens {
+	computed: Record<string, string>
 	full: Record<string, string>
 	mobileFirst: Record<string, Record<string, string>>
 	recommended: Record<string, string>

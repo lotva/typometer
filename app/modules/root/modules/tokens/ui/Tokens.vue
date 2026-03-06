@@ -21,6 +21,7 @@
 		--color__selector: #b07d48;
 		--color__value: #2f798a;
 		--color__unit: #ab5959;
+		--color__operator: #ab5959;
 		--color__comment: #a0ada0;
 
 		@media (prefers-color-scheme: dark) {
@@ -31,6 +32,7 @@
 			--color__selector: #a0a0a0;
 			--color__value: #ffc799;
 			--color__unit: #ffc799;
+			--color__operator: #a0a0a0;
 			--color__comment: #8b8b8b94;
 		}
 
@@ -63,6 +65,10 @@
 
 			.unit {
 				color: var(--color__unit);
+			}
+
+			.operator {
+				color: var(--color__operator);
 			}
 
 			.comment {

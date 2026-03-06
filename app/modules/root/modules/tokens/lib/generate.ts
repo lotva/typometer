@@ -3,6 +3,7 @@ import type { ISettings, TOutputFormat } from '~/modules/root/model/types'
 import type { ITokenContext, ITokens } from '../model'
 
 import { TOKEN_NAMES } from '../config'
+import { generateComputedTokens } from './computed'
 import { generateFullTokens } from './full'
 import { generateMobileFirstTokens } from './mobile-first'
 import { generateRecommendedTokens } from './recommended'
@@ -25,8 +26,9 @@ export function generateTokens(
 	}
 
 	const full = generateFullTokens(context)
-	const mobileFirst = generateMobileFirstTokens(context)
 	const recommended = generateRecommendedTokens(context)
+	const computed = generateComputedTokens(context)
+	const mobileFirst = generateMobileFirstTokens(context)
 
-	return { full, mobileFirst, recommended }
+	return { computed, full, mobileFirst, recommended }
 }
