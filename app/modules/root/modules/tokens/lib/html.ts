@@ -31,10 +31,13 @@ function generateComputedSection(tokens: ITokens) {
 
 	return [
 		'',
-		`<span class="token comment">/* Computed Scale */</span>`,
-		`<span class="token comment">/* Dynamic scale calculated in the browser using */</span>`,
-		`<span class="token comment">/* CSS pow() function. Change any variable, and */</span>`,
-		`<span class="token comment">/* the entire scale updates automatically. */</span>`,
+		`<span class="token comment">/**</span>`,
+		`<span class="token comment"> * Computed Scale</span>`,
+		`<span class="token comment"> *</span>`,
+		`<span class="token comment"> * Dynamic scale calculated in the browser using</span>`,
+		`<span class="token comment"> * the CSS pow() function. Change any variable and</span>`,
+		`<span class="token comment"> * the entire scale updates automatically.</span>`,
+		`<span class="token comment"> */</span>`,
 		'',
 		...generateRootBlock(tokens.computed),
 	]
@@ -55,10 +58,13 @@ function generateMobileFirstSection(tokens: ITokens) {
 
 	const lines: string[] = [
 		'',
-		`<span class="token comment">/* Mobile-first Scale */</span>`,
-		`<span class="token comment">/* Base values are set for mobile, then elegantly overridden */</span>`,
-		`<span class="token comment">/* at strategic breakpoints using variable reassignment */</span>`,
-		`<span class="token comment">/* within media queries. */</span>`,
+		`<span class="token comment">/**</span>`,
+		`<span class="token comment"> * Mobile-First Scale</span>`,
+		`<span class="token comment"> *</span>`,
+		`<span class="token comment"> * Base values are defined for mobile devices and</span>`,
+		`<span class="token comment"> * progressively overridden at larger breakpoints</span>`,
+		`<span class="token comment"> * using CSS variables inside media queries.</span>`,
+		`<span class="token comment"> */</span>`,
 		'',
 	]
 
@@ -90,9 +96,12 @@ function generateRecommendedSection(tokens: ITokens) {
 
 	return [
 		'',
-		`<span class="token comment">/* Recommended Scale */</span>`,
-		`<span class="token comment">/* A curated selection for most common use cases. */</span>`,
-		`<span class="token comment">/* Feel free to mix and match tokens from either scale. */</span>`,
+		`<span class="token comment">/**</span>`,
+		`<span class="token comment"> * Recommended Scale</span>`,
+		`<span class="token comment"> *</span>`,
+		`<span class="token comment"> * A curated subset of tokens suitable for</span>`,
+		`<span class="token comment"> * most interface and content use cases.</span>`,
+		`<span class="token comment"> */</span>`,
 		'',
 		...generateRootBlock(tokens.recommended),
 	]
