@@ -90,5 +90,9 @@
 		line-height: 1.5;
 		tab-size: 2;
 		white-space: pre-wrap;
+
+		@media (--mobile) {
+			font-variation-settings: 'wdth' 90;
+		}
 	}
 </style>
