@@ -1,7 +1,9 @@
 html {
 	font-family: var(--font__text);
 	font-weight: var(--typography__font-weight);
+	line-height: var(--typography__leading);
 	color: var(--color__foreground);
+
 	background-color: var(--color__background);
 }
 

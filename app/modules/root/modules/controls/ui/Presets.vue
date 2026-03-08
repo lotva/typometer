@@ -62,6 +62,7 @@
 		padding: calc(var(--gap) * 1) calc(var(--gap) / 2) calc(var(--gap) * 2);
 		border-radius: var(--radius);
 
+		line-height: var(--typography__leading--tight);
 		text-align: start;
 
 		background-color: var(--color__muted);

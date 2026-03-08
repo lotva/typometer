@@ -101,6 +101,7 @@
 
 	.tagline {
 		margin-block-start: calc(var(--gap) * 1.5);
+		line-height: var(--typography__leading--tight);
 		color: var(--color__foreground--subtitle);
 
 		@media (--mobile) {
