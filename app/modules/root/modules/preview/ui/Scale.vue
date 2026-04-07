@@ -87,7 +87,7 @@
 		const unitValue = `${value}${store.settings.unit}`
 
 		return (
-			Object.entries(store.tokens.full).find(
+			Object.entries(store.tokens.static).find(
 				([, value]) => value === unitValue,
 			)?.[0] || ''
 		)

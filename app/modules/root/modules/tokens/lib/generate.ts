@@ -3,9 +3,8 @@ import type { ISettings, TOutputFormat } from '~/modules/root/model/types'
 import type { ITokenContext, ITokens } from '../model'
 
 import { generateComputedTokens } from './computed'
-import { generateFullTokens } from './full'
-import { generateMobileFirstTokens } from './mobile-first'
-import { generateRecommendedTokens } from './recommended'
+import { generateFluidTokens } from './fluid'
+import { generateStaticTokens } from './static'
 
 export function generateTokens(
 	scaleValues: number[],
@@ -22,10 +21,9 @@ export function generateTokens(
 		values: enabledValues,
 	}
 
-	const full = generateFullTokens(context)
-	const recommended = generateRecommendedTokens(context)
-	const computed = generateComputedTokens(context)
-	const mobileFirst = generateMobileFirstTokens(context)
+	const staticTokens = generateStaticTokens(context)
+	const computedTokens = generateComputedTokens(context)
+	const fluidTokens = generateFluidTokens(context)
 
-	return { computed, full, mobileFirst, recommended }
+	return { computed: computedTokens, fluid: fluidTokens, static: staticTokens }
 }

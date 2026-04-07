@@ -1,5 +1,13 @@
 import type { ISettings, TOutputFormat } from '../../model/types'
 
+export type CssNode =
+	| { children: CssNode[]; name: string; params: string; type: 'at-rule' }
+	| { children: CssNode[]; prop: string; type: 'property' }
+	| { children: CssNode[]; selector: string; type: 'rule' }
+	| { isBlock?: boolean; type: 'comment'; value: string }
+	| { prop: string; type: 'declaration'; value: string }
+	| { type: 'empty-line' }
+
 export interface ITokenContext {
 	outputFormat: TOutputFormat
 	settings: ISettings
@@ -7,30 +15,7 @@ export interface ITokenContext {
 }
 
 export interface ITokens {
-	computed: Record<string, Record<string, string>>
-	full: Record<string, string>
-	mobileFirst: Record<string, Record<string, string>>
-	recommended: Record<string, string>
+	computed: CssNode[]
+	fluid: CssNode[]
+	static: Record<string, string>
 }
-
-export const CATEGORIES = [
-	{ maxRatio: 1, name: 'label', startRatio: 0 },
-	{ maxRatio: 1.5, name: 'body', startRatio: 1 },
-	{ maxRatio: 2, name: 'accent', startRatio: 1.5 },
-	{ maxRatio: undefined, name: 'heading', startRatio: 2 },
-] as const
-
-export interface IBreakpoint {
-	key: TBreakpointKey
-	maxRatio: number
-	minWidth: number
-	rootScale: number
-}
-
-export type TBreakpointKey =
-	| 'root'
-	| 'width >= 768px'
-	| 'width >= 1024px'
-	| 'width >= 1440px'
-
-export type TTokenCategory = (typeof CATEGORIES)[number]

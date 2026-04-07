@@ -3,7 +3,7 @@ import type { ITokenContext } from '../model'
 import { PREFIX } from '../config'
 import { getTokenNameByIndex } from './naming'
 
-export function generateFullTokens(context: ITokenContext) {
+export function generateStaticTokens(context: ITokenContext) {
 	const tokens: Record<string, string> = {}
 
 	context.values.forEach((value, index) => {

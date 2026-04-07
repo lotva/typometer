@@ -97,7 +97,7 @@ export function highlightValue(value: string) {
 export function isCalcExpression(value: string) {
 	const trimmed = value.trim()
 
-	return ['calc(', 'clamp(', 'var('].some((prefix) =>
+	return ['calc(', 'clamp(', 'var(', 'tan(', 'atan2('].some((prefix) =>
 		trimmed.startsWith(prefix),
 	)
 }

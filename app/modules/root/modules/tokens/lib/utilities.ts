@@ -1,4 +1,4 @@
-import { CATEGORIES, type TTokenCategory } from '../model'
+import { CATEGORIES, type TTokenCategory } from '../config'
 
 export function categorizeToken(value: number, base: number): TTokenCategory {
 	const ratio = value / base

@@ -1,24 +1,26 @@
-import type { ITokenContext } from '../model'
+import type { CssNode, ITokenContext } from '../model'
 
 import { getTokenNameByIndex } from './naming'
 import { findClosestIndex } from './utilities'
 
-export function generateComputedTokens(context: ITokenContext) {
+export function generateComputedTokens(context: ITokenContext): CssNode[] {
 	const { settings, values } = context
-	const base = settings.base
-	const ratio = settings.ratio
-	const steps = settings.intermediateSteps
-	const unit = settings.unit
+	const { base, intermediateSteps, ratio, unit } = settings
 
 	const baseIndex = findClosestIndex(values, base)
-	if (baseIndex === -1) return { root: {}, 'width < 768px': {} }
+	if (baseIndex === -1) return []
 
-	const root: Record<string, string> = {
-		'--base': `${base}${unit}`,
-		'--ratio': String(ratio),
-		'--step': 'calc(1 / (var(--steps) + 1))',
-		'--steps': String(steps),
-	}
+	const rootNodes: CssNode[] = [
+		{ prop: '--base', type: 'declaration', value: `${base}${unit}` },
+		{ prop: '--ratio', type: 'declaration', value: String(ratio) },
+		{
+			prop: '--steps',
+			type: 'declaration',
+			value: String(intermediateSteps + 1),
+		},
+		{ prop: '--step', type: 'declaration', value: 'calc(1 / var(--steps))' },
+		{ type: 'empty-line' },
+	]
 
 	values.forEach((_, index) => {
 		const name = getTokenNameByIndex(index, context)
@@ -27,22 +29,39 @@ export function generateComputedTokens(context: ITokenContext) {
 		const offset = index - baseIndex
 		const variableName = `--${name}`
 
-		root[variableName] =
-			offset === 0
-				? 'var(--base)'
-				: `calc(var(--base) * pow(var(--ratio), ${offset} * var(--step)))`
+		rootNodes.push({
+			prop: variableName,
+			type: 'declaration',
+			value:
+				offset === 0
+					? 'var(--base)'
+					: `calc(var(--base) * pow(var(--ratio), ${offset} * var(--step)))`,
+		})
 	})
 
 	const mobileRatio = computeMobileRatio(ratio)
 
-	const mobile: Record<string, string> = {
-		'--ratio': String(mobileRatio),
-	}
+	const mobileNodes: CssNode[] = [
+		{ prop: '--ratio', type: 'declaration', value: String(mobileRatio) },
+	]
 
-	return {
-		root,
-		'width < 768px': mobile,
-	}
+	rootNodes.push(
+		{ type: 'empty-line' },
+		{
+			isBlock: false,
+			type: 'comment',
+			value: 'Override the ratio to adjust for mobile screens:',
+		},
+		{ type: 'empty-line' },
+		{
+			children: mobileNodes,
+			name: 'media',
+			params: 'width < 768px',
+			type: 'at-rule',
+		},
+	)
+
+	return [{ children: rootNodes, selector: ':root', type: 'rule' }]
 }
 
 function computeMobileRatio(originalRatio: number) {

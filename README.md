@@ -4,11 +4,23 @@
 
 <img width="128" height="128" align="right" title="Typometer logo" src="./public/icon-any.svg">
 
-A typographic scale builder with CSS token export. Built for UI engineers and design system authors.
+A typographic scale builder for UI engineers and design system maintainers. Generates consistent CSS `font-size` tokens based on geometric progression and the classic typographic scale.
 
-Features: PWA with offline support, i18n, URL-synced state, keyboard shortcuts.
+**Fluid typography.** Type scales smoothly from mobile to desktop without breakpoints.
 
-Live on Render: https://typometer.lotva.ru/
+**Pure CSS output.** Uses native `pow()` and `clamp()` functions. No preprocessors required.
+
+**Curated presets.** Choose from industry-standard intervals to jumpstart your type set.
+
+**Shareable URLs.** Settings are synced to the URL for instant sharing and bookmarks.
+
+**PWA.** Works offline and supports full keyboard navigation.
+
+🔗 https://typometer.lotva.ru/
+
+<a href="https://typometer.lotva.ru/">
+	<img width="2400" height="1440" alt="Typometer interface" src="./public/preview.webp">
+</a>
 
 ## Development
 
@@ -61,17 +73,23 @@ Each directory is divided into `config`, `lib`, `model`, and `ui` segments.
 
 ## References
 
-_[The Typographic Scale](https://spencermortensen.com/articles/typographic-scale/)_ — Spencer Mortensen
+[The typographic scale](https://spencermortensen.com/articles/typographic-scale/) — Spencer Mortensen
 
-_[Fluid Heading Styles](https://carbondesignsystem.com/elements/typography/type-sets/#fluid-heading-styles)_ — Carbon Design System
+[Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()](https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow.html) — Always Twisted
 
-_[How to Name Design Tokens](https://thedesignsystem.guide/design-tokens-naming-playbook)_ — The Design System Guide
+[CSS Type Casting to Numeric: tan(atan2()) Scalars](https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j) — Jane Ori
 
-_[Modular Grid](https://guides.kontur.ru/principles/base/grid/)_ — Kontur Guides
+[Every Layout: Modular scale](https://every-layout.dev/rudiments/modular-scale/) — Heydon Pickering & Andy Bell
 
-_[Typemetric](https://design.profi.travel/typemetric)_ — Profi.Travel Design Guide
+[Fluid heading styles](https://carbondesignsystem.com/elements/typography/type-sets/#fluid-heading-styles) — Carbon Design System
 
-_[Font Size Ratios](https://t.me/ne_znal_ai/1498)_ — Sergey Steblina
+[How to name design tokens](https://thedesignsystem.guide/design-tokens-naming-playbook) — The Design System Guide
+
+[Modular grid](https://guides.kontur.ru/principles/base/grid/) — Kontur Guides
+
+[Typemetric](https://design.profi.travel/typemetric) — Profi.Travel Design Guide
+
+[Font size ratios](https://t.me/ne_znal_ai/1498) — Sergey Steblina
 
 ---
 
@@ -81,9 +99,9 @@ _[Font Size Ratios](https://t.me/ne_znal_ai/1498)_ — Sergey Steblina
 
 Конструктор типографической шкалы с экспортом в CSS-токены. Адресован разработчикам интерфейсов и авторам дизайн-систем.
 
-Фичи: PWA и работа в офлайне, i18n, синхронизация состояния и URL, хоткеи.
+Фичи: флюидная типографика, пресеты, PWA и работа в офлайне, сохранение состояния в URL, хоткеи.
 
-Задеплоен на Render: https://typometer.lotva.ru/
+🔗 https://typometer.lotva.ru/
 
 ## Команды для разработки
 
@@ -134,9 +152,15 @@ _[Документация FEOD](https://habr.com/ru/companies/sportmaster_lab/a
 
 [The typographic scale](https://spencermortensen.com/articles/typographic-scale/). Spencer Mortensen
 
+[Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()](https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow.html). Always Twisted
+
+[CSS Type Casting to Numeric: tan(atan2()) Scalars](https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j). Jane Ori
+
+[Every Layout: Modular scale](https://every-layout.dev/rudiments/modular-scale/). Heydon Pickering, Andy Bell
+
 [Fluid heading styles](https://carbondesignsystem.com/elements/typography/type-sets/#fluid-heading-styles). Carbon Design System
 
-[How to name design tokens](https://thedesignsystem.guide/design-tokens-naming-playbook). The Design System Guide
+[How to name design tokens](https://thedesignsystem.guide/design-tokens-naming-playbook). The Design System Guide
 
 [Модуль](https://guides.kontur.ru/principles/base/grid/). Гайды «Контура»
 
