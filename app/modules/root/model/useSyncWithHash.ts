@@ -23,14 +23,23 @@ export function useSyncWithHash() {
 		() => {
 			const parameters: Record<string, string> = {
 				base: String(store.settings.base),
-				custom: encodeCustomSteps(store.settings.customSteps),
-				format: store.outputFormat,
-				module: String(store.settings.gridStep),
 				ratio: String(store.settings.ratio),
-				snap: String(store.settings.shouldSnapToGrid),
-				steps: String(store.settings.intermediateSteps),
 				unit: store.settings.unit,
+
+				steps: String(store.settings.intermediateSteps),
+
+				snap: String(store.settings.shouldSnapToGrid),
+
+				module: String(store.settings.gridStep),
+
+				format: store.outputFormat,
+
+				custom: encodeCustomSteps(store.settings.customSteps),
 			}
+
+			if (store.settings.shouldSnapToGrid === false) delete parameters.snap
+			if (store.settings.shouldSnapToGrid === false) delete parameters.module
+			if (store.settings.customSteps.length === 0) delete parameters.custom
 
 			router.replace({
 				hash: buildHash(parameters),
