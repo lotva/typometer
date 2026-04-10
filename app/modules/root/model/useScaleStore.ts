@@ -1,5 +1,3 @@
-/* eslint-disable perfectionist/sort-objects */
-
 import type { ICustomStep, ISettings, TOutputFormat, TUnit } from './types'
 
 import { PRESETS } from '../config/presets'
@@ -11,20 +9,20 @@ export const useScaleStore = defineStore('scale', () => {
 	const settings = reactive<ISettings>({
 		base: 21,
 		baseByUnit: {
-			px: 21,
 			em: 1,
+			px: 21,
 		},
 		intermediateSteps: 2,
 		ratio: 1.5,
 
 		unit: 'px',
 
-		shouldSnapToGrid: false,
 		gridStep: 4,
 		gridStepByUnit: {
-			px: 4,
 			em: 0.25,
+			px: 4,
 		},
+		shouldSnapToGrid: false,
 
 		customSteps: [],
 		disabledIndices: new Set<number>(),
@@ -98,20 +96,20 @@ export const useScaleStore = defineStore('scale', () => {
 	)
 
 	return {
-		settings,
-		outputFormat,
 		activePresetId,
+		outputFormat,
+		settings,
 
 		scale: mergedScale,
 		tokens,
 
+		addCustomStep,
 		applyPreset,
-		updateSettings,
+		removeCustomStep,
+		toggleDisableIndex,
 		updateBase,
 		updateGridStep,
 		updateIntermediateSteps,
-		addCustomStep,
-		removeCustomStep,
-		toggleDisableIndex,
+		updateSettings,
 	}
 })

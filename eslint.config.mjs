@@ -43,6 +43,8 @@ export default withNuxt(
 				'import-x/newline-after-import': 'warn',
 				'import-x/no-cycle': 'error',
 
+				'perfectionist/sort-objects': ['warn', { partitionByNewLine: true }],
+
 				'unicorn/prevent-abbreviations': [
 					'warn',
 					{
