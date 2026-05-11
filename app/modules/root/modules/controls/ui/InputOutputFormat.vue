@@ -1,35 +1,36 @@
 <template>
-	<RadioGroupRoot v-model="outputFormat">
-		<RadioGroupLabel data-route-transition>
+	<fieldset class="group">
+		<legend
+			class="label text-metrics-fix"
+			data-route-transition
+		>
 			{{ $t('outputFormat.label') }}
-		</RadioGroupLabel>
+		</legend>
 
-		<RadioGroupItem
+		<label
 			v-for="option in options"
 			:key="option.value"
-			:value="option.value"
+			class="item"
 		>
-			<RadioGroupItemControl />
+			<input
+				v-model="outputFormat"
+				type="radio"
+				:name="'output-format'"
+				:value="option.value"
+				class="input"
+			/>
 
-			<RadioGroupItemText data-route-transition>
+			<span
+				class="caption"
+				data-route-transition
+			>
 				{{ $t(`outputFormat.${option.value}`) }}
-			</RadioGroupItemText>
-
-			<RadioGroupItemHiddenInput />
-		</RadioGroupItem>
-	</RadioGroupRoot>
+			</span>
+		</label>
+	</fieldset>
 </template>
 
 <script setup lang="ts">
-	import {
-		RadioGroupItem,
-		RadioGroupItemControl,
-		RadioGroupItemHiddenInput,
-		RadioGroupItemText,
-		RadioGroupLabel,
-		RadioGroupRoot,
-	} from '@ark-ui/vue'
-
 	import type { TOutputFormat } from '~/modules/root/model/types'
 
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
@@ -51,57 +52,86 @@
 </script>
 
 <style scoped>
-	[data-scope='radio-group'][data-part='root'] {
+	.group {
 		display: flex;
 		flex-direction: column;
+
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+
+	.label {
+		user-select: none;
+		padding: 0;
+	}
+
+	.item {
+		display: inline-flex;
 		gap: calc(var(--gap) / 2);
+		align-items: center;
+		margin-block-start: calc(var(--gap) / 2);
 
-		[data-part='label'] {
-			user-select: none;
+		&:first-of-type {
+			margin-block-start: var(--gap);
+		}
+	}
+
+	.input {
+		--color: var(--color__border);
+		--color-checked: var(--color__primary);
+		--color-hover: var(--color__muted);
+		--color-focus: var(--color__outline);
+
+		display: inline-grid;
+		place-content: center;
+
+		inline-size: 1.25em;
+		block-size: 1.25em;
+		margin: 0;
+		border: 1px solid var(--color);
+		border-radius: 50%;
+
+		appearance: none;
+
+		transition: border-width var(--animation__duration--fast)
+			var(--animation__ease-in-out);
+
+		@media (forced-colors: active) {
+			--color: ButtonText;
+			--color-checked: Highlight;
 		}
 
-		[data-part='item'] {
-			display: inline-flex;
-			gap: calc(var(--gap) / 2);
-			align-items: center;
+		&::before {
+			inline-size: 0.6em;
+			block-size: 0.6em;
+			border-radius: 50%;
+
+			background-color: transparent;
+
+			transition: background-color var(--animation__duration)
+				var(--animation__ease);
 		}
 
-		[data-part='item-control'] {
-			display: inline-flex;
-			flex-shrink: 0;
-			align-items: center;
-			justify-content: center;
+		&:focus-visible {
+			box-shadow: 0 0 0 var(--typography__outline-thickness) var(--color-focus);
+		}
 
-			inline-size: 1.25em;
-			block-size: 1.25em;
-			border: 1px solid var(--color__border);
-			border-radius: 100vi;
+		&:checked {
+			border-color: var(--color-checked);
+			border-width: 0.3em;
 
-			transition:
-				border-color var(--animation__duration) var(--animation__ease),
-				background-color var(--animation__duration) var(--animation__ease),
-				text-decoration-color var(--animation__duration) var(--animation__ease),
-				box-shadow var(--animation__duration--fast)
-					var(--animation__ease-in-out),
-				text-decoration-thickness var(--animation__duration--fast)
-					var(--animation__ease-in-out),
-				border-width var(--animation__duration--fast)
-					var(--animation__ease-in-out);
-
-			&[data-state='checked'] {
-				border-color: var(--color__primary);
-				border-width: 0.3em;
-			}
-
-			&[data-hover]:not([data-state='checked']) {
-				background-color: var(--color__muted);
-				transition-property: border-color, border-width, box-shadow;
-			}
-
-			&[data-focus-visible] {
-				box-shadow: 0 0 0 var(--typography__outline-thickness)
-					var(--color__outline);
+			&::before {
+				background-color: var(--color-checked);
 			}
 		}
+
+		&:hover:not(:checked) {
+			background-color: var(--color-hover);
+		}
+	}
+
+	.caption {
+		user-select: none;
 	}
 </style>

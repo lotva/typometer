@@ -1,24 +1,27 @@
 <template>
 	<div class="controls-root">
-		<SwitchRoot
-			:checked="store.settings.shouldSnapToGrid"
-			@checked-change="
-				(details) => store.updateSettings({ shouldSnapToGrid: details.checked })
-			"
+		<label
+			class="label"
+			data-route-transition
 		>
-			<SwitchControl>
-				<SwitchThumb />
-			</SwitchControl>
+			<input
+				class="switch"
+				type="checkbox"
+				role="switch"
+				:aria-controls="inputId"
+				:checked="store.settings.shouldSnapToGrid"
+				@change="
+					(e) =>
+						store.updateSettings({
+							shouldSnapToGrid: (e.target as HTMLInputElement).checked,
+						})
+				"
+			/>
 
-			<SwitchLabel
-				class="text-metrics-fix"
-				data-route-transition
-			>
+			<span class="text text-metrics-fix">
 				{{ $t('controls.grid') }}
-			</SwitchLabel>
-
-			<SwitchHiddenInput :aria-controls="inputId" />
-		</SwitchRoot>
+			</span>
+		</label>
 
 		<div
 			:id="inputId"
@@ -54,14 +57,7 @@
 </template>
 
 <script setup lang="ts">
-	import {
-		type NumberInputValueChangeDetails,
-		SwitchControl,
-		SwitchHiddenInput,
-		SwitchLabel,
-		SwitchRoot,
-		SwitchThumb,
-	} from '@ark-ui/vue'
+	import type { NumberInputValueChangeDetails } from '@ark-ui/vue'
 
 	import { withValidation } from '~/common/lib/withValidation'
 	import NumberInputInline from '~/common/ui/NumberInputInline.vue'
@@ -88,61 +84,48 @@
 </script>
 
 <style scoped>
-	[data-scope='switch'] {
-		&[data-part='root'] {
-			position: relative;
-			display: inline-flex;
-			gap: calc(var(--gap) / 2);
-			align-items: center;
-		}
+	.label {
+		display: inline-flex;
+		gap: calc(var(--gap) / 2);
+		align-items: center;
+	}
 
-		[data-part='control'] {
-			--control-inline-size: 2em;
+	.text {
+		user-select: none;
+	}
 
-			display: inline-flex;
-			flex-shrink: 0;
-			align-items: center;
+	.switch {
+		--control-inline-size: 2em;
+		--thumb-size: 1.2cap;
+		--thumb-padding: var(--typography__outline-thickness);
 
-			inline-size: var(--control-inline-size);
-			block-size: 1.5cap;
-			padding: 0.125rem;
-			border-radius: 100vi;
+		position: relative;
 
-			background-color: var(--color__muted);
+		flex-shrink: 0;
 
-			transition:
-				background-color var(--animation__duration--fast) var(--animation__ease),
-				box-shadow var(--animation__duration--fast) var(--animation__ease);
+		inline-size: var(--control-inline-size);
+		block-size: 1.5cap;
+		margin: 0;
+		padding: var(--thumb-padding);
+		border-radius: 100vi;
 
-			&[data-state='checked'] {
-				background-color: var(--color__primary);
-			}
+		appearance: none;
+		background-color: var(--color__muted);
 
-			&[data-hover] {
-				&[data-state='checked'] {
-					background-color: var(--color__primary--hover);
-				}
+		transition:
+			background-color var(--animation__duration--fast) var(--animation__ease),
+			box-shadow var(--animation__duration--fast) var(--animation__ease);
 
-				&[data-state='unchecked'] {
-					background-color: var(--color__muted--hover);
-				}
-			}
+		&::before {
+			content: '';
 
-			&[data-focus-visible] {
-				box-shadow: 0 0 0 var(--typography__outline-thickness)
-					var(--color__outline);
-			}
-		}
+			position: absolute;
+			inset-block-start: 50%;
+			inset-inline-start: var(--thumb-padding);
+			transform: translateY(-50%);
 
-		[data-part='thumb'] {
-			--size: 1.2cap;
-
-			display: flex;
-			align-items: center;
-			justify-content: center;
-
-			inline-size: var(--size);
-			block-size: var(--size);
+			inline-size: var(--thumb-size);
+			block-size: var(--thumb-size);
 			border-radius: 100vi;
 
 			background-color: var(--color__background);
@@ -153,28 +136,42 @@
 			@media (prefers-color-scheme: dark) {
 				background-color: var(--color__foreground);
 			}
+		}
 
-			&[data-state='checked'] {
+		&:hover {
+			background-color: var(--color__muted--hover);
+		}
+
+		&:checked {
+			background-color: var(--color__primary);
+
+			&::before {
 				translate: calc(
-						var(--control-inline-size) - var(--size) - 0.125rem - 0.125rem
+						var(--control-inline-size) - var(--thumb-size) -
+							var(--thumb-padding) * 2
 					)
 					0;
 				background-color: var(--color__background);
 			}
-		}
 
-		[data-part='label'] {
-			user-select: none;
+			&:hover {
+				background-color: var(--color__primary--hover);
+			}
 		}
 	}
 
 	.module {
 		display: flex;
+		flex-basis: 100%;
 		column-gap: calc(var(--gap) / 2);
 		align-items: baseline;
 
+		transition: none;
+
 		&[aria-hidden='true'] {
 			opacity: var(--color__disabled-state-opacity);
+			transition: opacity var(--animation__duration--fast)
+				var(--animation__ease);
 		}
 	}
 
