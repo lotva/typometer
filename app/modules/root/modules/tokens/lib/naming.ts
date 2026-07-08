@@ -1,6 +1,6 @@
 import type { ITokenContext } from '../model'
 
-import { TOKEN_NAMES_BY_OUTPUT_FORMAT } from '../config'
+import { TOKEN_NAMES_BY_OUTPUT_FORMAT, TOKEN_PROPERTY_PREFIX } from '../config'
 import { categorizeToken, findClosestIndex } from './utilities'
 
 export function getTokenNameByIndex(index: number, context: ITokenContext) {
@@ -19,6 +19,10 @@ export function getTokenNameByIndex(index: number, context: ITokenContext) {
 		default:
 			return ''
 	}
+}
+
+export function getTokenProperty(name: string): string {
+	return name ? `${TOKEN_PROPERTY_PREFIX}${name}` : ''
 }
 
 function generateTshirtName(offset: number, centerIndex: number) {

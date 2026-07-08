@@ -32,6 +32,3 @@ export function findClosestIndex(values: number[], target: number) {
 
 	return closestIndex
 }
-
-export const format = (n: number, precision = 3): string =>
-	parseFloat(n.toFixed(precision)).toString()

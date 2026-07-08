@@ -13,9 +13,3 @@ export interface ITokenContext {
 	settings: ISettings
 	values: number[]
 }
-
-export interface ITokens {
-	computed: CssNode[]
-	fluid: CssNode[]
-	static: Record<string, string>
-}

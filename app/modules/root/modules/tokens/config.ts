@@ -1,5 +1,7 @@
 import type { TOutputFormat } from '../../model/types'
 
+export const TOKEN_PROPERTY_PREFIX = '--fs-'
+
 export const TOKEN_NAMES_BY_OUTPUT_FORMAT: Record<TOutputFormat, string[]> = {
 	numeric: [''],
 	semantic: ['body', 'accent', 'heading'],
@@ -19,8 +21,6 @@ export const MUSICAL_SCALES = [
 	1.875, // Major Seventh
 	2, // Octave
 ] as const
-
-export const PREFIX = '--font-size'
 
 export const CATEGORIES = [
 	{ maxRatio: 1, name: 'label', startRatio: 0 },

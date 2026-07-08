@@ -31,9 +31,9 @@
 			<NumberInputInline
 				:model-value="String(store.settings.gridStep)"
 				class="input"
-				:min="min"
-				:max="max"
-				:step="step"
+				:min="2"
+				:max="16"
+				:step="1"
 				:disabled="!store.settings.shouldSnapToGrid"
 				:aria-describedby="descriptionId"
 				@value-change="updateGridStep"
@@ -43,7 +43,7 @@
 				class="unit"
 				data-route-transition
 			>
-				{{ $t(`controls.${store.settings.unit}`) }}
+				{{ $t('controls.px') }}
 			</span>
 
 			<span
@@ -68,17 +68,13 @@
 	const inputId = useId()
 	const descriptionId = useId()
 
-	const step = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
-	const min = computed(() => (store.settings.unit === 'px' ? 2 : 0.1))
-	const max = computed(() => (store.settings.unit === 'px' ? 16 : 1))
-
 	const updateGridStep = withValidation(
 		(details: NumberInputValueChangeDetails) => {
-			store.updateGridStep(details.valueAsNumber, store.settings.unit)
+			store.updateGridStep(details.valueAsNumber)
 		},
 		{
-			max: () => max.value,
-			min: () => min.value,
+			max: () => 16,
+			min: () => 2,
 		},
 	)
 </script>

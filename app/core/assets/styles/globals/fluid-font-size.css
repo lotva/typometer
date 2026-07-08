@@ -1,33 +1,38 @@
-html {
-	--font-size--mobile-min: 18;
-	--font-size--mobile-max: 24;
-	--font-size--desktop-min: 16;
-	--font-size--desktop-max: 21;
-	--breakpoint--mobile: 320;
-	--breakpoint--desktop: 768;
-	--breakpoint--max: 1440;
+@property --vi-100 {
+	inherits: false;
+	initial-value: 0px;
+	syntax: '<length>';
+}
 
-	font-size: calc(
-		var(--font-size--mobile-min) * 1px +
-			(var(--font-size--mobile-max) - var(--font-size--mobile-min)) *
-			(
-				(100vi - var(--breakpoint--mobile) * 1px) /
-					(var(--breakpoint--desktop) - var(--breakpoint--mobile))
-			)
+html {
+	font-size: calc(var(--base) / 16 * 100%);
+}
+
+:root {
+	--base-min: 18;
+	--base-max: 24;
+
+	--vw-min: 320;
+	--vw-max: 640;
+
+	--vi-100: 100vi;
+	--w: calc(tan(atan2(var(--vi-100), 1px)));
+
+	--progress: clamp(
+		0,
+		(var(--w) - var(--vw-min)) / (var(--vw-max) - var(--vw-min)),
+		1
+	);
+
+	--base: calc(
+		(var(--base-min) + (var(--base-max) - var(--base-min)) * var(--progress))
 	);
 
 	@media (--desktop) {
-		font-size: calc(
-			var(--font-size--desktop-min) * 1px +
-				(var(--font-size--desktop-max) - var(--font-size--desktop-min)) *
-				(
-					(100vi - var(--breakpoint--desktop) * 1px) /
-						(var(--breakpoint--max) - var(--breakpoint--desktop))
-				)
-		);
-	}
+		--base-min: 14;
+		--base-max: 21;
 
-	@media (width >= 1440px) {
-		font-size: calc(var(--font-size--desktop-max) * 1px);
+		--vw-min: 640;
+		--vw-max: 1440;
 	}
 }

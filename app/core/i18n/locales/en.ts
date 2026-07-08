@@ -3,8 +3,6 @@ export default defineI18nLocale(async () => {
 		controls: {
 			ariaLabel: 'Typographic scale settings',
 			base: 'Base',
-			em: 'em',
-			formula: 'Formula',
 			grid: 'Snap to grid',
 			gridDescription:
 				'All typographic scale values will be multiples of the entered value',
@@ -12,11 +10,6 @@ export default defineI18nLocale(async () => {
 			px: 'px',
 			ratio: 'Ratio',
 			steps: 'Intermediate steps',
-			unit: {
-				em: 'Em',
-				label: 'Unit',
-				pixel: 'Pixels',
-			},
 		},
 		copied: 'Copied',
 		copyright: {

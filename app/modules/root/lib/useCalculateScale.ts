@@ -13,7 +13,7 @@ export function useCalculateScale(settings: MaybeRefOrGetter<ISettings>) {
 	const roundedScale = computed(() =>
 		rawScale.value.map((point) => ({
 			exponent: point.exponent,
-			value: round(point.value, toValue(settings).unit),
+			value: round(point.value),
 		})),
 	)
 
@@ -40,8 +40,5 @@ export function useCalculateScale(settings: MaybeRefOrGetter<ISettings>) {
 
 	return {
 		mergedScale,
-		rawScale,
-		roundedScale,
-		snappedScale,
 	}
 }

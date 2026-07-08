@@ -1,6 +1,6 @@
 import { watchDebounced } from '@vueuse/core'
 
-import type { TOutputFormat, TUnit } from './types'
+import type { TOutputFormat } from './types'
 
 import { useScaleStore } from './useScaleStore'
 
@@ -14,7 +14,6 @@ export function useSyncWithHash() {
 			store.settings.base,
 			store.settings.ratio,
 			store.settings.intermediateSteps,
-			store.settings.unit,
 			store.settings.shouldSnapToGrid,
 			store.settings.gridStep,
 			store.settings.customSteps,
@@ -24,7 +23,6 @@ export function useSyncWithHash() {
 			const parameters: Record<string, string> = {
 				base: String(store.settings.base),
 				ratio: String(store.settings.ratio),
-				unit: store.settings.unit,
 
 				steps: String(store.settings.intermediateSteps),
 
@@ -51,12 +49,8 @@ export function useSyncWithHash() {
 	const restore = () => {
 		const parameters = parseHash(route.hash)
 
-		if (parameters.unit) {
-			store.updateSettings({ unit: parameters.unit as TUnit })
-		}
-
 		if (parameters.base) {
-			store.updateBase(Number(parameters.base), store.settings.unit)
+			store.updateBase(Number(parameters.base))
 		}
 
 		if (parameters.ratio) {
@@ -74,7 +68,7 @@ export function useSyncWithHash() {
 		}
 
 		if (parameters.module) {
-			store.updateGridStep(Number(parameters.module), store.settings.unit)
+			store.updateGridStep(Number(parameters.module))
 		}
 
 		if (parameters.format) {

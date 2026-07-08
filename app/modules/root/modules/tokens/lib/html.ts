@@ -1,59 +1,28 @@
-import type { ITokens } from '../model'
+import type { CssNode } from '../model'
 
 import { highlightValue } from './highlight'
 import { renderAst } from './renderer'
 
-export function generateTokenHtml(tokens: ITokens) {
-	const sections = [
-		...generateStaticSection(tokens),
-		...generateFluidSection(tokens),
-		...generateComputedSection(tokens),
-	]
+export function generateTokenHtml(nodes: CssNode[]) {
+	if (nodes.length === 0) return ''
 
-	return sections.join('\n')
-}
-
-function generateBlock(tokens: Record<string, string>) {
-	const lines: string[] = []
-
-	Object.entries(tokens).forEach(([key, value]) => {
-		const valueHtml = highlightValue(value)
-		lines.push(
-			`	<span class="token property">${key}</span><span class="token punctuation">:</span> ${valueHtml}<span class="token semi">;</span>`,
-		)
-	})
-
-	return lines
-}
-
-function generateComputedSection(tokens: ITokens) {
-	if (!tokens.computed || tokens.computed.length === 0) return []
+	const fontSizeValue = 'calc(var(--base) / 16 * 100%)'
 
 	return [
-		'',
 		`<span class="token comment">/**</span>`,
-		`<span class="token comment"> * Computed Scale</span>`,
+		`<span class="token comment"> * Fluid Modular Scale</span>`,
 		`<span class="token comment"> *</span>`,
-		`<span class="token comment"> * No automatic fluid behavior. Override variables inside</span>`,
-		`<span class="token comment"> * @media rules to adapt to different screens.</span>`,
+		`<span class="token comment"> * Copy this code into your global styles.</span>`,
+		`<span class="token comment"> *</span>`,
+		`<span class="token comment"> * --base-min/--base-max and --ratio-min/--ratio-max are the two</span>`,
+		`<span class="token comment"> * endpoints of the scale. At --vw-min the scale uses the min</span>`,
+		`<span class="token comment"> * values, at --vw-max it uses the max values, and the browser</span>`,
+		`<span class="token comment"> * interpolates everything in between as the viewport resizes.</span>`,
 		`<span class="token comment"> */</span>`,
 		'',
-		...renderAst(tokens.computed),
-	]
-}
-
-function generateFluidSection(tokens: ITokens) {
-	if (!tokens.fluid || tokens.fluid.length === 0) return []
-
-	return [
-		'',
-		`<span class="token comment">/**</span>`,
-		`<span class="token comment"> * Fluid Scale</span>`,
-		`<span class="token comment"> *</span>`,
-		`<span class="token comment"> * Define the minimum and maximum base size and ratio,</span>`,
-		`<span class="token comment"> * then let the browser handle the transition. As the</span>`,
-		`<span class="token comment"> * viewport grows, every token scales smoothly in between.</span>`,
-		`<span class="token comment"> */</span>`,
+		`<span class="token selector">html</span> <span class="token brackets">{</span>`,
+		`	<span class="token property">font-size</span><span class="token punctuation">:</span> ${highlightValue(fontSizeValue)}<span class="token semi">;</span>`,
+		`<span class="token brackets">}</span>`,
 		'',
 		...renderAst([
 			{
@@ -67,30 +36,10 @@ function generateFluidSection(tokens: ITokens) {
 			},
 			{ type: 'empty-line' },
 			{
-				children: tokens.fluid,
+				children: nodes,
 				selector: ':root',
 				type: 'rule',
 			},
 		]),
-	]
-}
-
-function generateRootBlock(tokens: Record<string, string>) {
-	const lines: string[] = [
-		`<span class="token selector">:root</span> <span class="token brackets">{</span>`,
-		...generateBlock(tokens),
-		`<span class="token brackets">}</span>`,
-	]
-
-	return lines
-}
-
-function generateStaticSection(tokens: ITokens) {
-	if (Object.keys(tokens.static).length === 0) return []
-
-	return [
-		`<span class="token comment">/* Static Scale */</span>`,
-		'',
-		...generateRootBlock(tokens.static),
-	]
+	].join('\n')
 }

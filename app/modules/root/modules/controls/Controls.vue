@@ -7,8 +7,6 @@
 
 		<InputRatio />
 
-		<InputUnit />
-
 		<InputSteps />
 
 		<InputGrid />
@@ -25,7 +23,6 @@
 	import InputOutputFormat from './ui/InputOutputFormat.vue'
 	import InputRatio from './ui/InputRatio.vue'
 	import InputSteps from './ui/InputSteps.vue'
-	import InputUnit from './ui/InputUnit.vue'
 	import Presets from './ui/Presets.vue'
 </script>
 

@@ -36,13 +36,6 @@ export function useScalePreview() {
 		})
 	}
 
-	function isValueDisabled(value: number) {
-		const index = store.scale.indexOf(value)
-		if (index === -1) return false
-
-		return store.settings.disabledIndices.has(index)
-	}
-
 	function removeCustomStepByValue(value: number) {
 		const index = store.scale.indexOf(value)
 		if (index !== -1) {
@@ -68,7 +61,6 @@ export function useScalePreview() {
 		capitalize,
 		categorizedScale,
 		isCustomStep,
-		isValueDisabled,
 		locale,
 		removeCustomStepByValue,
 	}

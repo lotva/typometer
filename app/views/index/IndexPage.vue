@@ -35,7 +35,7 @@
 			block-size: 100dvb;
 			padding: var(--container-padding-block) var(--container-padding-inline)
 				calc(var(--container-padding-block) + var(--gap))
-				clamp(calc(var(--gap) * 1), 6vi, calc(var(--gap) * 5));
+				clamp(calc(var(--gap) * 1), 5vi, calc(var(--gap) * 5));
 		}
 	}
 </style>

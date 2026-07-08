@@ -1,23 +1,7 @@
 import type { IScalePoint, ISettings } from '../model/types'
 
-export function convert(
-	value: number,
-	fromUnit: ISettings['unit'],
-	toUnit: ISettings['unit'],
-) {
-	if (fromUnit === 'px' && toUnit === 'em') {
-		return value / 16
-	}
-
-	if (fromUnit === 'em' && toUnit === 'px') {
-		return value * 16
-	}
-
-	return value
-}
-
 export function generateRawScale(
-	settings: Pick<ISettings, 'base' | 'intermediateSteps' | 'ratio' | 'unit'>,
+	settings: Pick<ISettings, 'base' | 'intermediateSteps' | 'ratio'>,
 ) {
 	const { base, intermediateSteps, ratio } = settings
 	const stepsPerOctave = intermediateSteps + 1
@@ -60,7 +44,7 @@ export function mergeScaleWithCustomSteps(
 	rawScale: IScalePoint[],
 	settings: Pick<
 		ISettings,
-		'base' | 'customSteps' | 'intermediateSteps' | 'ratio' | 'unit'
+		'base' | 'customSteps' | 'intermediateSteps' | 'ratio'
 	>,
 ) {
 	if (!settings.customSteps.length) {
@@ -68,7 +52,7 @@ export function mergeScaleWithCustomSteps(
 	}
 
 	const result = [...rawScale]
-	const { base, customSteps, intermediateSteps, ratio, unit } = settings
+	const { base, customSteps, intermediateSteps, ratio } = settings
 	const stepsPerOctave = intermediateSteps + 1
 
 	for (const { offsetExponent, position, referenceIndex } of customSteps) {
@@ -103,7 +87,7 @@ export function mergeScaleWithCustomSteps(
 		}
 
 		let value = base * Math.pow(ratio, targetExponent / stepsPerOctave)
-		value = round(value, unit)
+		value = round(value)
 
 		result.splice(insertIndex, 0, { exponent: targetExponent, value })
 	}
@@ -111,8 +95,8 @@ export function mergeScaleWithCustomSteps(
 	return result
 }
 
-export function round(value: number, unit: ISettings['unit']) {
-	return unit === 'px' ? Math.round(value) : Math.round(value * 100) / 100
+export function round(value: number) {
+	return Math.round(value)
 }
 
 export function snapToGrid(

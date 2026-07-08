@@ -6,11 +6,8 @@
 		>
 			<div
 				class="item"
-				:class="{
-					_disabled: isValueDisabled(item.value),
-				}"
 				:style="{
-					fontSize: `${item.value}${store.settings.unit}`,
+					fontSize: `${item.value}px`,
 				}"
 				@click="copyTokenName(item.value)"
 			>
@@ -51,6 +48,8 @@
 	import { useToast } from '~/modules/root/modules/preview/lib/useToast'
 	import Toast from '~/modules/root/modules/preview/ui/Toast.vue'
 
+	import { getTokenNameByIndex, getTokenProperty } from '../../tokens'
+
 	const props = defineProps<{
 		scrollContainerRef: null | { $el: HTMLElement }
 	}>()
@@ -67,30 +66,26 @@
 		capitalize,
 		categorizedScale,
 		isCustomStep,
-		isValueDisabled,
 		locale,
 		removeCustomStepByValue,
 	} = useScalePreview()
 
 	function copyTokenName(value: number) {
-		if (isValueDisabled(value)) return
+		const index = store.scale.indexOf(value)
+		if (index === -1) return
 
-		const tokenName = getTokenNameByValue(value)
-
-		if (tokenName) {
-			navigator.clipboard.writeText(tokenName)
-			showToast(`${$t('copied')}: ${tokenName}`)
-		}
-	}
-
-	function getTokenNameByValue(value: number): string {
-		const unitValue = `${value}${store.settings.unit}`
-
-		return (
-			Object.entries(store.tokens.static).find(
-				([, value]) => value === unitValue,
-			)?.[0] || ''
+		const property = getTokenProperty(
+			getTokenNameByIndex(index, {
+				outputFormat: store.outputFormat,
+				settings: store.settings,
+				values: store.scale,
+			}),
 		)
+
+		if (property) {
+			navigator.clipboard.writeText(property)
+			showToast(`${$t('copied')}: ${property}`)
+		}
 	}
 
 	watch(
@@ -112,6 +107,8 @@
 	}
 
 	.item {
+		cursor: copy;
+
 		position: relative;
 
 		display: grid;
@@ -124,23 +121,15 @@
 		transition: background-color var(--animation__duration)
 			var(--animation__ease);
 
-		&._disabled {
-			opacity: 0.5;
+		@media (hover: hover) and (pointer: fine) {
+			&:hover {
+				background-color: var(--color__surface);
+				transition: none;
+			}
 		}
 
 		&:first-child {
 			border-block-start: 0;
-		}
-
-		&:not(._disabled) {
-			cursor: copy;
-
-			@media (hover: hover) and (pointer: fine) {
-				&:hover {
-					background-color: var(--color__surface);
-					transition: none;
-				}
-			}
 		}
 	}
 

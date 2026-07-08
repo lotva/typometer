@@ -3,8 +3,6 @@ export default defineI18nLocale(async () => {
 		controls: {
 			ariaLabel: 'Настройка типографической шкалы',
 			base: 'Основа',
-			em: 'em',
-			formula: 'Формула',
 			grid: 'Привязать к модулю',
 			gridDescription:
 				'Все значения типографической шкалы будут кратны введённому значению модуля',
@@ -12,11 +10,6 @@ export default defineI18nLocale(async () => {
 			px: 'пк',
 			ratio: 'Множитель',
 			steps: 'Промежуточные шаги',
-			unit: {
-				em: 'Эмы',
-				label: 'Единица измерения',
-				pixel: 'Пиксели',
-			},
 		},
 		copied: 'Скопировано',
 		copyright: {

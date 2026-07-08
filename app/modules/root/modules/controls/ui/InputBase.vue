@@ -1,10 +1,10 @@
 <template>
 	<NumberInput
 		:model-value="baseLocalized"
-		:step="step"
-		:min="min"
-		:max="max"
-		:label="`${$t('controls.base')}, ${$t('controls.' + store.settings.unit)}`"
+		:step="1"
+		:min="12"
+		:max="72"
+		:label="`${$t('controls.base')}, ${$t('controls.px')}`"
 		hotkey="B"
 		@value-change="updateBase"
 	/>
@@ -20,19 +20,15 @@
 
 	const store = useScaleStore()
 
-	const step = computed(() => (store.settings.unit === 'px' ? 1 : 0.1))
-	const min = computed(() => (store.settings.unit === 'px' ? 12 : 1))
-	const max = computed(() => (store.settings.unit === 'px' ? 72 : 6))
-
 	const baseLocalized = useLocalizedNumber(() => store.settings.base)
 
 	const updateBase = withValidation(
 		(details: NumberInputValueChangeDetails) => {
-			store.updateBase(details.valueAsNumber, store.settings.unit)
+			store.updateBase(details.valueAsNumber)
 		},
 		{
-			max: () => max.value,
-			min: () => min.value,
+			max: () => 72,
+			min: () => 12,
 		},
 	)
 </script>
