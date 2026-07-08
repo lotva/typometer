@@ -41,6 +41,7 @@ export default defineI18nLocale(async () => {
 		},
 		preview: {
 			ariaLabel: 'Предпросмотр шкалы и копирование токенов',
+			copy: 'Скопировать',
 			scale: 'Шкала',
 			tokens: 'Токены',
 		},

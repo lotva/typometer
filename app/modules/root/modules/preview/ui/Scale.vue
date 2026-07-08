@@ -83,8 +83,10 @@
 		)
 
 		if (property) {
-			navigator.clipboard.writeText(property)
-			showToast(`${$t('copied')}: ${property}`)
+			const variable = `var(${property})`
+
+			navigator.clipboard.writeText(variable)
+			showToast(`${$t('copied')}: ${variable}`)
 		}
 	}
 

@@ -6,7 +6,9 @@
 			role="status"
 			aria-live="polite"
 		>
-			<span class="text-metrics-fix">{{ message }}</span>
+			<span class="text-metrics-fix has-compensator">
+				{{ message }}
+			</span>
 		</div>
 	</Transition>
 </template>
@@ -26,10 +28,16 @@
 		inset-inline-end: var(--container-padding-inline);
 		transform-origin: bottom center;
 
+		display: flex;
+
 		inline-size: fit-content;
+		block-size: fit-content;
 		margin-block-start: -3rem;
 		margin-inline-start: auto;
-		padding: calc(var(--gap) * 0.75) var(--gap);
+		padding: calc(
+				var(--gap) * 0.75 + var(--typography__surface-capital-compensator)
+			)
+			var(--gap) calc(var(--gap) * 0.75);
 		border-radius: var(--radius);
 
 		color: var(--color__background);

@@ -1,18 +1,91 @@
 <template>
-	<pre class="pre"><code class="code" v-html="html"></code></pre>
+	<div class="tokens">
+		<pre
+			ref="preRef"
+			class="pre"
+		><code class="code" v-html="html"></code></pre>
+
+		<button
+			type="button"
+			class="action"
+			@click="copyCode"
+		>
+			<span
+				class="text-metrics-fix"
+				data-route-transition
+			>
+				{{ $t('preview.copy') }}
+			</span>
+		</button>
+
+		<Toast
+			:message="message"
+			:is-visible="isVisible"
+		/>
+	</div>
 </template>
 
 <script setup lang="ts">
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
+	import { useToast } from '~/modules/root/modules/preview/lib/useToast'
+	import Toast from '~/modules/root/modules/preview/ui/Toast.vue'
 
 	import { generateTokenHtml } from '../lib/html'
 
 	const { tokens } = toRefs(useScaleStore())
+	const { isVisible, message, showToast } = useToast()
+
+	const preRef = useTemplateRef('preRef')
 
 	const html = computed(() => generateTokenHtml(tokens.value))
+
+	function copyCode() {
+		const text = preRef.value?.textContent
+
+		if (text) {
+			navigator.clipboard.writeText(text)
+			showToast($t('copied'))
+		}
+	}
 </script>
 
 <style scoped>
+	.tokens {
+		display: grid;
+		margin-block: calc(-1 * var(--container-padding-block-start))
+			calc(-1 * var(--container-padding-block-end));
+		margin-inline: calc(-1 * var(--container-padding-inline));
+	}
+
+	.pre,
+	.action {
+		grid-area: 1 / 1;
+	}
+
+	.action {
+		position: sticky;
+		z-index: 1;
+		inset-block-start: 0;
+
+		place-self: start end;
+
+		margin-inline-end: var(--container-padding-inline);
+		padding: calc(
+				var(--gap) * 0.5 + var(--typography__surface-capital-compensator)
+			)
+			calc(var(--gap) * 0.75) calc(var(--gap) * 0.5);
+		border: 1px solid var(--color__border);
+		border-radius: var(--radius-sm);
+
+		font-size: 0.875rem;
+
+		background-color: var(--color__muted);
+
+		&:hover {
+			background-color: var(--color__muted--hover);
+		}
+	}
+
 	.code {
 		--color__punctuation: #999;
 		--color__brackets: #999;
@@ -79,9 +152,6 @@
 
 	.pre {
 		max-inline-size: 100%;
-		margin-block: calc(-1 * var(--container-padding-block-start))
-			calc(-1 * var(--container-padding-block-end));
-		margin-inline: calc(-1 * var(--container-padding-inline));
 		padding-block: var(--container-padding-block-start)
 			var(--container-padding-block-end);
 		padding-inline: var(--container-padding-inline);
