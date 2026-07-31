@@ -1,6 +1,7 @@
 <template>
 	<aside
 		class="copy text-metrics-fix"
+		:aria-label="$t('copyright.ariaLabel')"
 		data-route-transition
 	>
 		{{ $t('copyright.text') }}

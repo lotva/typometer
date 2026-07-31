@@ -1,5 +1,5 @@
 <template>
-	<div class="controls-root">
+	<div class="root">
 		<label
 			class="label"
 			data-route-transition
@@ -28,13 +28,14 @@
 			class="module"
 			:aria-hidden="!store.settings.shouldSnapToGrid"
 		>
-			<NumberInputInline
+			<NumberInput
 				:model-value="String(store.settings.gridStep)"
 				class="input"
-				:min="2"
-				:max="16"
+				:min="GRID_STEP_BOUNDS.min"
+				:max="GRID_STEP_BOUNDS.max"
 				:step="1"
 				:disabled="!store.settings.shouldSnapToGrid"
+				:aria-label="$t('controls.gridStep', { unit: $t('controls.px') })"
 				:aria-describedby="descriptionId"
 				@value-change="updateGridStep"
 			/>
@@ -60,7 +61,8 @@
 	import type { NumberInputValueChangeDetails } from '@ark-ui/vue'
 
 	import { withValidation } from '~/common/lib/withValidation'
-	import NumberInputInline from '~/common/ui/NumberInputInline.vue'
+	import NumberInput from '~/common/ui/NumberInput.vue'
+	import { GRID_STEP_BOUNDS } from '~/modules/root/config/setting-bounds'
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 
 	const store = useScaleStore()
@@ -73,13 +75,18 @@
 			store.updateGridStep(details.valueAsNumber)
 		},
 		{
-			max: () => 16,
-			min: () => 2,
+			max: () => GRID_STEP_BOUNDS.max,
+			min: () => GRID_STEP_BOUNDS.min,
 		},
 	)
 </script>
 
 <style scoped>
+	.root {
+		display: grid;
+		row-gap: var(--gap);
+	}
+
 	.label {
 		display: inline-flex;
 		gap: calc(var(--gap) / 2);
@@ -162,6 +169,8 @@
 		column-gap: calc(var(--gap) / 2);
 		align-items: baseline;
 
+		font-size: var(--fs-l);
+
 		transition: none;
 
 		&[aria-hidden='true'] {
@@ -172,11 +181,10 @@
 	}
 
 	.input {
-		max-inline-size: 13ch;
+		inline-size: calc(50% - var(--gap) / 4);
 	}
 
 	.unit {
 		flex-shrink: 0;
-		font-size: 1.25em;
 	}
 </style>

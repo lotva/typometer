@@ -88,3 +88,16 @@ textarea {
 	color: inherit;
 	background-color: transparent;
 }
+
+fieldset {
+	min-inline-size: 0;
+	margin: 0;
+	padding: 0;
+	border: none;
+
+	appearance: none;
+}
+
+legend {
+	padding: 0;
+}

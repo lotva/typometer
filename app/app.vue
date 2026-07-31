@@ -79,9 +79,9 @@
 		ogDescription: computed(() => $t('description')),
 		ogImage: '/open-graph.png',
 		ogImageAlt: '',
-		ogImageHeight: '630',
+		ogImageHeight: '742',
 		ogImageType: 'image/png',
-		ogImageWidth: '1200',
+		ogImageWidth: '1440',
 		ogTitle: computed(() => $t('title')),
 		ogType: 'website',
 		themeColor: [

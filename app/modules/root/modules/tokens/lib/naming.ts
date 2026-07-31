@@ -4,7 +4,8 @@ import { TOKEN_NAMES_BY_OUTPUT_FORMAT, TOKEN_PROPERTY_PREFIX } from '../config'
 import { categorizeToken, findClosestIndex } from './utilities'
 
 export function getTokenNameByIndex(index: number, context: ITokenContext) {
-	const { outputFormat, settings, values } = context
+	const { outputFormat, scale, settings } = context
+	const values = scale.map((point) => point.value)
 
 	const value = values[index]
 	if (value === undefined) return ''
@@ -13,9 +14,9 @@ export function getTokenNameByIndex(index: number, context: ITokenContext) {
 		case 'numeric':
 			return String(index + 1)
 		case 'semantic':
-			return getSemanticTokenName(value, values, settings.base)
+			return getSemanticTokenName(value, values, settings.baseMax)
 		case 'tshirt':
-			return getTshirtTokenName(index, values, settings.base)
+			return getTshirtTokenName(index, values, settings.baseMax)
 		default:
 			return ''
 	}
@@ -32,8 +33,7 @@ function generateTshirtName(offset: number, centerIndex: number) {
 	if (offset > 0) {
 		const rightIndex = centerIndex + offset
 		if (rightIndex < names.length) {
-			const name = names[rightIndex]
-			return name === '' ? '' : (name ?? '')
+			return names[rightIndex] ?? ''
 		}
 		const overflow = offset - (names.length - centerIndex - 1)
 		return `${overflow + 1}xl`
@@ -41,8 +41,7 @@ function generateTshirtName(offset: number, centerIndex: number) {
 
 	const leftIndex = centerIndex + offset
 	if (leftIndex >= 0) {
-		const name = names[leftIndex]
-		return name === '' ? '' : (name ?? '')
+		return names[leftIndex] ?? ''
 	}
 
 	const overflow = Math.abs(offset) - centerIndex
