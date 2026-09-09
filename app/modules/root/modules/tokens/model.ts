@@ -1,4 +1,4 @@
-import type { ISettings, TOutputFormat } from '../../model/types'
+import type { IScalePoint, ISettings, TOutputFormat } from '../../model/types'
 
 export type CssNode =
 	| { children: CssNode[]; name: string; params: string; type: 'at-rule' }
@@ -10,6 +10,6 @@ export type CssNode =
 
 export interface ITokenContext {
 	outputFormat: TOutputFormat
+	scale: IScalePoint[]
 	settings: ISettings
-	values: number[]
 }

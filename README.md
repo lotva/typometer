@@ -1,20 +1,29 @@
-[![Vue-TSC](https://github.com/lotva/typometer/actions/workflows/check-types.yaml/badge.svg)](https://github.com/lotva/typometer/actions/workflows/check-types.yaml) [![Lighthouse](https://github.com/lotva/typometer/actions/workflows/run-lighthouse.yaml/badge.svg)](https://github.com/lotva/typometer/actions/workflows/run-lighthouse.yaml) [![Oxlint · ESLint](https://github.com/lotva/typometer/actions/workflows/check-scripts.yaml/badge.svg)](https://github.com/lotva/typometer/actions/workflows/check-scripts.yaml) [![Stylelint](https://github.com/lotva/typometer/actions/workflows/check-styles.yaml/badge.svg)](https://github.com/lotva/typometer/actions/workflows/check-styles.yaml) [![Prettier](https://github.com/lotva/typometer/actions/workflows/check-formatting.yaml/badge.svg)](https://github.com/lotva/typometer/actions/workflows/check-formatting.yaml)
-
 # Typometer
 
 <img width="128" height="128" align="right" title="Typometer logo" src="./public/icon-any.svg">
 
-A typographic scale builder for UI engineers and design system maintainers. Generates consistent CSS `font-size` tokens based on geometric progression and the classic typographic scale.
+A typographic scale builder that turns two viewport-bound type configs into CSS custom properties. Type grows with the window, and larger steps grow faster than the base. You edit the tokens in the project — no preprocessor, no `@media (768px)` / `(1024px)` / `(1440px)` stack for font size.
 
-**Fluid typography.** Type scales smoothly from mobile to desktop without breakpoints.
+**Fluid typography.** One `--progress` value interpolates between `--vw-min` and `--vw-max`. The same signal can drive tracking and leading.
 
-**Pure CSS output.** Uses native `pow()` and `clamp()` functions. No preprocessors required.
+**Geometric scale.** Contrast increases with size: a heading outruns body text as the viewport widens.
 
-**Curated presets.** Choose from industry-standard intervals to jumpstart your type set.
+**Pure CSS.** Native `pow()`, `clamp()`, and `calc()`. Change settings in the file; you don't need to reopen the site.
 
-**Shareable URLs.** Settings are synced to the URL for instant sharing and bookmarks.
+**Presets.** Start from Adobe Spectrum, Shopify Polaris, Geist, or a classic interval.
 
-**PWA.** Works offline and supports full keyboard navigation.
+**Shareable URLs.** Settings live in the URL.
+
+```css
+:root {
+	/* 27px at 320px → 42px at 1440px */
+	--fs-xl: calc(1rem * pow(var(--ratio), 5 * var(--step)));
+}
+
+.loud {
+	font-size: var(--fs-xl);
+}
+```
 
 🔗 https://typometer.lotva.ru/
 
@@ -22,54 +31,104 @@ A typographic scale builder for UI engineers and design system maintainers. Ge
 	<img width="2400" height="1440" alt="Typometer interface" src="./public/preview.webp">
 </a>
 
-## Development
+## How to use
 
-Start the dev server:
+Tune the scale in the app, then copy CSS from the _Tokens_ tab.
 
-```bash
-pnpm install
-pnpm dev
+### Paste into a project
+
+Keep the interpolation block. Delete `--fs-*` tokens the project doesn't need.
+
+```css
+/* https://typometer.lotva.ru/#base=16,21&ratio=1.667,2&steps=4&vw=320,1440 */
+
+@property --vi-100 {
+	inherits: false;
+	initial-value: 0px;
+	syntax: '<length>';
+}
+
+:root {
+	--base-min: 16;
+	--base-max: 21;
+	--ratio-min: 1.667;
+	--ratio-max: 2;
+
+	--vw-min: 320;
+	--vw-max: 520;
+
+	--vi-100: 100vi;
+	--w: calc(tan(atan2(var(--vi-100), 1px)));
+
+	--progress: clamp(
+		0,
+		(var(--w) - var(--vw-min)) / (var(--vw-max) - var(--vw-min)),
+		1
+	);
+
+	--base: calc(
+		(var(--base-min) + (var(--base-max) - var(--base-min)) * var(--progress))
+	);
+	--ratio: calc(
+		var(--ratio-min) + (var(--ratio-max) - var(--ratio-min)) * var(--progress)
+	);
+
+	--steps: 5;
+	--step: calc(1 / var(--steps));
+
+	--fs-s: calc(1rem * pow(var(--ratio), -2 * var(--step)));
+	--fs: 1rem;
+	--fs-l: calc(1rem * pow(var(--ratio), 2 * var(--step)));
+	--fs-xl: calc(1rem * pow(var(--ratio), 4 * var(--step)));
+	--fs-2xl: calc(1rem * pow(var(--ratio), 5 * var(--step)));
+	--fs-3xl: calc(1rem * pow(var(--ratio), 9 * var(--step)));
+}
 ```
 
-Build and preview a static production bundle:
+### Interpolate leading and tracking
 
-```bash
-pnpm generate
-pnpm preview
+Reuse `--progress` for `line-height` and `letter-spacing`:
+
+```diff
+ :root {
+ 	/* ... */
+
++	--tracking-min: 0;
++	--tracking-max: -0.02;
++
++	--leading-min: 1.3;
++	--leading-max: 1.4;
++
++	--tracking: calc(
++		var(--tracking-min) + (var(--tracking-max) - var(--tracking-min)) * var(--progress)
++	);
++	--leading: calc(var(--leading-min) + (var(--leading-max) - var(--leading-min)) * var(--progress));
+ }
 ```
 
-Update dependencies:
+### Add a custom breakpoint
 
-```bash
-pnpx npm-check-updates
-pnpm install
+Override bounds for viewports that need separate values:
+
+```diff
+ :root {
+ 	/* ... */
+
++	@media (width >= 640px) {
++		--base-min: 16;
++		--base-max: 22;
++
++		--leading-min: 1.35;
++		--leading-max: 1.45;
++		--ratio-max: 2;
++
++		--vw-min: 640;
++		--vw-max: 1440;
++	}
+ }
 ```
 
-Install skills:
-
-```bash
-pnpx skills add addyosmani/web-quality-skills
-pnpx skills add vuejs-ai/skills
-```
-
-## Tech Stack
-
-| Category  | Technologies                            |
-| --------- | --------------------------------------- |
-| Framework | TypeScript, Vue 3, Nuxt 4, Pinia        |
-| UI        | PostCSS, Ark UI                         |
-| Linting   | Prettier, Stylelint, Oxlint, Commitlint |
-| Tooling   | Rolldown, Lefthook, pnpm                |
-
-## Project Structure
-
-**Architecture: FEOD.**
-
-The codebase is organized into `core`, `pages`, `views`, `modules`, and `common` directories.
-
-Each directory is divided into `config`, `lib`, `model`, and `ui` segments.
-
-[FEOD documentation (Russian)](https://habr.com/ru/companies/sportmaster_lab/articles/972410/)
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for local development.
 
 ## References
 
@@ -90,80 +149,3 @@ Each directory is divided into `config`, `lib`, `model`, and `ui` segments.
 [Typemetric](https://design.profi.travel/typemetric) — Profi.Travel Design Guide
 
 [Font size ratios](https://t.me/ne_znal_ai/1498) — Sergey Steblina
-
----
-
-# Типометр
-
-<img width="128" height="128" align="right" title="Логотип Типометра" src="./public/icon-any.svg">
-
-Конструктор типографической шкалы с экспортом в CSS-токены. Адресован разработчикам интерфейсов и авторам дизайн-систем.
-
-Фичи: флюидная типографика, пресеты, PWA и работа в офлайне, сохранение состояния в URL, хоткеи.
-
-🔗 https://typometer.lotva.ru/
-
-## Команды для разработки
-
-Запустить дев-сервер:
-
-```bash
-pnpm install
-pnpm dev
-```
-
-Собрать и развернуть локально статический билд:
-
-```bash
-pnpm generate
-pnpm preview
-```
-
-Обновить зависимости:
-
-```bash
-pnpx npm-check-updates
-pnpm install
-```
-
-Подключить скиллы:
-
-```bash
-pnpx skills add addyosmani/web-quality-skills
-pnpx skills add vuejs-ai/skills
-```
-
-## Стек
-
-| Категория | Технологии                              |
-| --------- | --------------------------------------- |
-| Фреймворк | TypeScript, Vue 3, Nuxt 4, Pinia        |
-| Интерфейс | PostCSS, Ark UI                         |
-| Линтеры   | Prettier, Stylelint, Oxlint, Commitlint |
-| Тулинг    | Rolldown, Lefthook, pnpm                |
-
-## Файловая структура
-
-**Архитектурная методология — FEOD.** Код поделён на директории `core`, `pages`, `views`, `modules` и `common`; директории поделены на сегменты `config`, `lib`, `model`, `ui`.
-
-_[Документация FEOD](https://habr.com/ru/companies/sportmaster_lab/articles/972410/)_
-
-## Источники
-
-[The typographic scale](https://spencermortensen.com/articles/typographic-scale/). Spencer Mortensen
-
-[Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()](https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow.html). Always Twisted
-
-[CSS Type Casting to Numeric: tan(atan2()) Scalars](https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j). Jane Ori
-
-[Every Layout: Modular scale](https://every-layout.dev/rudiments/modular-scale/). Heydon Pickering, Andy Bell
-
-[Fluid heading styles](https://carbondesignsystem.com/elements/typography/type-sets/#fluid-heading-styles). Carbon Design System
-
-[How to name design tokens](https://thedesignsystem.guide/design-tokens-naming-playbook). The Design System Guide
-
-[Модуль](https://guides.kontur.ru/principles/base/grid/). Гайды «Контура»
-
-[Типометрия](https://design.profi.travel/typemetric). Гайды «Профи-трэвел»
-
-[Соотношение кеглей](https://t.me/ne_znal_ai/1498). Сергей Стеблина

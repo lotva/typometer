@@ -1,41 +1,39 @@
-import { round } from '~/modules/root/lib/scale'
+import { getFluidBaseBounds } from '~/modules/root/lib/scale'
 
 import type { CssNode, ITokenContext } from '../model'
 
-import { MUSICAL_SCALES } from '../config'
+import { getFluidTokenSizeValue, GRID_STEP_VAR } from './fluid-token'
 import { getTokenNameByIndex, getTokenProperty } from './naming'
-import { findClosestIndex } from './utilities'
 
 /**
  * Generates fluid tokens using CSS custom properties and `calc()`, `pow()`, `clamp()`.
  * Interpolates base and ratio between two viewports.
  */
 export function generateTokens(context: ITokenContext): CssNode[] {
-	const { settings, values } = context
-	const { base, intermediateSteps, ratio } = settings
+	const { scale, settings } = context
+	const {
+		gridStep,
+		intermediateSteps,
+		ratioMax,
+		ratioMin,
+		shouldSnapToGrid,
+		viewportMax,
+		viewportMin,
+	} = settings
+	const { baseMax, baseMin } = getFluidBaseBounds(settings)
 
-	const ratioMax = ratio
-	const ratioMin = findClosestMusicalScale(ratioMax - (ratioMax - 1) * 0.3)
-
-	const baseMax = base
-	const baseMin = lerp(baseMax, baseMax / ratioMax, 0.5)
-
-	const viewportMin = 360
-	const viewportMax = 1440
-
-	const baseIndex = findClosestIndex(values, base)
-	if (baseIndex === -1) return []
+	if (scale.length === 0) return []
 
 	const nodes: CssNode[] = [
 		{
 			prop: '--base-min',
 			type: 'declaration',
-			value: `${round(baseMin)}`,
+			value: `${Math.round(baseMin)}`,
 		},
 		{
 			prop: '--base-max',
 			type: 'declaration',
-			value: `${round(baseMax)}`,
+			value: `${Math.round(baseMax)}`,
 		},
 		{ prop: '--ratio-min', type: 'declaration', value: String(ratioMin) },
 		{ prop: '--ratio-max', type: 'declaration', value: String(ratioMax) },
@@ -93,32 +91,29 @@ export function generateTokens(context: ITokenContext): CssNode[] {
 		{ type: 'empty-line' },
 	]
 
-	values.forEach((_, index) => {
+	if (shouldSnapToGrid) {
+		nodes.push(
+			{
+				prop: GRID_STEP_VAR,
+				type: 'declaration',
+				value: `${gridStep}px`,
+			},
+			{ type: 'empty-line' },
+		)
+	}
+
+	scale.forEach((point, index) => {
 		const tokenName = getTokenNameByIndex(index, context)
 		if (!tokenName) return
 
-		const offset = index - baseIndex
 		const variableName = getTokenProperty(tokenName)
 
 		nodes.push({
 			prop: variableName,
 			type: 'declaration',
-			value:
-				offset === 0
-					? '1rem'
-					: `calc(1rem * pow(var(--ratio), ${offset} * var(--step)))`,
+			value: getFluidTokenSizeValue(point.exponent, settings),
 		})
 	})
 
 	return nodes
-}
-
-function findClosestMusicalScale(value: number): number {
-	return MUSICAL_SCALES.reduce((previous, current) =>
-		Math.abs(current - value) < Math.abs(previous - value) ? current : previous,
-	)
-}
-
-function lerp(a: number, b: number, t: number) {
-	return a + (b - a) * t
 }

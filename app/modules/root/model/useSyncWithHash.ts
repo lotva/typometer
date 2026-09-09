@@ -4,6 +4,8 @@ import type { TOutputFormat } from './types'
 
 import { useScaleStore } from './useScaleStore'
 
+const DEFAULT_OUTPUT_FORMAT: TOutputFormat = 'semantic'
+
 export function useSyncWithHash() {
 	const store = useScaleStore()
 	const router = useRouter()
@@ -11,33 +13,33 @@ export function useSyncWithHash() {
 
 	watchDebounced(
 		() => [
-			store.settings.base,
-			store.settings.ratio,
+			store.settings.baseMin,
+			store.settings.baseMax,
+			store.settings.ratioMin,
+			store.settings.ratioMax,
+			store.settings.viewportMin,
+			store.settings.viewportMax,
 			store.settings.intermediateSteps,
 			store.settings.shouldSnapToGrid,
 			store.settings.gridStep,
-			store.settings.customSteps,
 			store.outputFormat,
 		],
 		() => {
 			const parameters: Record<string, string> = {
-				base: String(store.settings.base),
-				ratio: String(store.settings.ratio),
-
+				base: encodeRange(store.settings.baseMin, store.settings.baseMax),
+				ratio: encodeRange(store.settings.ratioMin, store.settings.ratioMax),
 				steps: String(store.settings.intermediateSteps),
-
-				snap: String(store.settings.shouldSnapToGrid),
-
-				module: String(store.settings.gridStep),
-
-				format: store.outputFormat,
-
-				custom: encodeCustomSteps(store.settings.customSteps),
+				vw: encodeRange(store.settings.viewportMin, store.settings.viewportMax),
 			}
 
-			if (store.settings.shouldSnapToGrid === false) delete parameters.snap
-			if (store.settings.shouldSnapToGrid === false) delete parameters.module
-			if (store.settings.customSteps.length === 0) delete parameters.custom
+			if (store.settings.shouldSnapToGrid) {
+				parameters.snap = 'true'
+				parameters.module = String(store.settings.gridStep)
+			}
+
+			if (store.outputFormat !== DEFAULT_OUTPUT_FORMAT) {
+				parameters.format = store.outputFormat
+			}
 
 			router.replace({
 				hash: buildHash(parameters),
@@ -49,13 +51,14 @@ export function useSyncWithHash() {
 	const restore = () => {
 		const parameters = parseHash(route.hash)
 
-		if (parameters.base) {
-			store.updateBase(Number(parameters.base))
-		}
+		const base = decodeRange(parameters.base)
+		if (base) store.updateBaseRange(base)
 
-		if (parameters.ratio) {
-			store.updateSettings({ ratio: Number(parameters.ratio) })
-		}
+		const ratio = decodeRange(parameters.ratio)
+		if (ratio) store.updateRatioRange(ratio)
+
+		const viewport = decodeRange(parameters.vw)
+		if (viewport) store.updateViewportRange(viewport)
 
 		if (parameters.steps) {
 			store.updateIntermediateSteps(Number(parameters.steps))
@@ -72,52 +75,70 @@ export function useSyncWithHash() {
 		}
 
 		if (parameters.format) {
-			store.outputFormat = parameters.format as TOutputFormat
-		}
-
-		if (parameters.custom) {
-			store.settings.customSteps = decodeCustomSteps(parameters.custom)
+			const format = parseOutputFormat(parameters.format)
+			if (format) store.outputFormat = format
 		}
 	}
 
 	onMounted(() => restore())
 }
 
-const encodeCustomSteps = (steps: any[]) => {
-	if (!steps?.length) return ''
+function decodeRange(value: string | undefined): [number, number] | null {
+	if (!value) return null
 
-	return btoa(
-		JSON.stringify(
-			steps.map(({ offsetExponent, position, referenceIndex }) => ({
-				offsetExponent,
-				position,
-				referenceIndex,
-			})),
-		),
-	)
+	const parts = value.split(',').map(Number)
+	const min = parts[0]
+	const max = parts.length === 1 ? parts[0] : parts[1]
+
+	if (min === undefined || max === undefined) return null
+	if (!Number.isFinite(min) || !Number.isFinite(max)) return null
+
+	return [min, max]
 }
 
-const decodeCustomSteps = (encoded: string) => {
-	try {
-		const parsed = JSON.parse(atob(encoded))
-		return Array.isArray(parsed) &&
-			parsed.every((item) => item.offsetExponent !== undefined)
-			? parsed
-			: []
-	} catch {
-		return []
+function encodeHashComponent(value: string) {
+	return encodeURIComponent(value).replaceAll('%2C', ',')
+}
+
+function encodeRange(min: number, max: number) {
+	return min === max ? String(min) : `${min},${max}`
+}
+
+function parseOutputFormat(value: string): null | TOutputFormat {
+	if (value === 'numeric' || value === 'semantic' || value === 'tshirt') {
+		return value
 	}
+
+	return null
 }
 
 const buildHash = (parameters: Record<string, string>) => {
-	const search = new URLSearchParams(parameters)
-	const string = search.toString()
+	const string = Object.entries(parameters)
+		.map(
+			([key, value]) =>
+				`${encodeHashComponent(key)}=${encodeHashComponent(value)}`,
+		)
+		.join('&')
+
 	return string ? `#${string}` : ''
 }
 
 const parseHash = (hash: string) => {
 	const clean = hash.startsWith('#') ? hash.slice(1) : hash
-	const parameters = new URLSearchParams(clean)
+	if (!clean) return {}
 
-	return Object.fromEntries(parameters.entries())
+	return Object.fromEntries(
+		clean.split('&').flatMap((pair) => {
+			const [rawKey, ...rest] = pair.split('=')
+			if (!rawKey) return []
+
+			try {
+				return [
+					[decodeURIComponent(rawKey), decodeURIComponent(rest.join('='))],
+				]
+			} catch {
+				return []
+			}
+		}),
+	)
 }

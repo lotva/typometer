@@ -12,6 +12,8 @@ html {
 	--base-min: 18;
 	--base-max: 24;
 
+	--ratio: 2;
+
 	--vw-min: 320;
 	--vw-max: 640;
 
@@ -27,6 +29,14 @@ html {
 	--base: calc(
 		(var(--base-min) + (var(--base-max) - var(--base-min)) * var(--progress))
 	);
+
+	--steps: 4;
+	--step: calc(1 / var(--steps));
+
+	--fs-s: calc(1rem * pow(var(--ratio), -1 * var(--step)));
+	--fs: 1rem;
+	--fs-l: calc(1rem * pow(var(--ratio), 1 * var(--step)));
+	--fs-xl: calc(1rem * pow(var(--ratio), 4 * var(--step)));
 
 	@media (--desktop) {
 		--base-min: 14;

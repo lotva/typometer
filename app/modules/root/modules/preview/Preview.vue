@@ -31,10 +31,7 @@
 				value="scale"
 				class="box"
 			>
-				<Scale
-					:scroll-container-ref="scaleTabContent"
-					@scroll-to-bottom="handleScrollToBottom"
-				/>
+				<Scale :scroll-container-ref="scaleTabContent" />
 			</TabContent>
 
 			<!-- eslint-disable -->
@@ -67,7 +64,6 @@
 	import { Tokens } from '../tokens/index.ui'
 	import { scrollBeforeRenderScript } from './lib/scrollBeforeRenderScript'
 	import { usePreviewMode } from './lib/usePreviewMode'
-	import { useScrollToBottom } from './lib/useScrollToBottom'
 	import Scale from './ui/Scale.vue'
 
 	useSyncWithHash()
@@ -78,24 +74,30 @@
 	]
 
 	const scaleTabContent = ref<null | { $el: HTMLDivElement }>(null)
-	const { handleScrollToBottom } = useScrollToBottom(scaleTabContent)
 
 	const { previewMode } = usePreviewMode()
 </script>
 
 <style scoped>
 	.section {
+		display: flex;
+		flex: 1 1 auto;
+		flex-direction: column;
+
 		block-size: 100%;
+		min-block-size: 0;
 	}
 
 	[data-scope='tabs'][data-part='root'] {
 		position: relative;
 
 		display: flex;
+		flex: 1 1 auto;
 		flex-direction: column;
 		align-items: center;
 
 		block-size: 100%;
+		min-block-size: 0;
 
 		[data-part='list'] {
 			--header-height: calc(var(--gap) * 2.7);
@@ -174,16 +176,19 @@
 		}
 
 		[data-part='content'] {
-			--container-padding-inline: calc(var(--gap) / 2);
+			--container-padding-inline: calc(var(--gap));
 			--container-padding-block-start: var(--gap);
 			--container-padding-block-end: calc(var(--gap) * 2);
 
 			scrollbar-color: var(--color__border) transparent;
 			scrollbar-width: thin;
 
+			overflow-block: auto;
 			overflow-inline: hidden;
+			flex: 1 1 auto;
 
 			inline-size: 100%;
+			min-block-size: 0;
 			padding-block: var(--container-padding-block-start)
 				var(--container-padding-block-end);
 			padding-inline: var(--container-padding-inline);
@@ -193,9 +198,6 @@
 				var(--animation__ease-in-out);
 
 			@media (--desktop) {
-				overflow-block: auto;
-				overscroll-behavior: contain;
-
 				margin-block-start: calc(-1 * var(--gap));
 				border: 1px solid var(--color__border);
 				border-radius: var(--radius-lg);

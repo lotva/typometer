@@ -1,4 +1,41 @@
-export function highlightCalcExpression(expression: string) {
+const CSS_FUNCTIONS = new Set([
+	'atan2',
+	'calc',
+	'clamp',
+	'pow',
+	'round',
+	'tan',
+	'var',
+])
+
+const CSS_EXPRESSION_PREFIXES = [...CSS_FUNCTIONS].map((name) => `${name}(`)
+
+export function highlightMediaQuery(query: string) {
+	return query.replace(/(\d*\.?\d+)(px|em|rem)/g, (_, number, unit) => {
+		return `<span class="token value">${number}</span><span class="token unit">${unit}</span>`
+	})
+}
+
+export function highlightValue(value: string) {
+	if (isCalcExpression(value)) {
+		return highlightCalcExpression(value)
+	}
+
+	const unitPattern = /^([+-]?\d*\.?\d+)([%a-z]+)?$/i
+	const match = value.trim().match(unitPattern)
+
+	if (match) {
+		const number = match[1]
+		const unit = match[2] || ''
+		return unit
+			? `<span class="token value">${number}</span><span class="token unit">${unit}</span>`
+			: `<span class="token value">${number}</span>`
+	}
+
+	return `<span class="token value">${value}</span>`
+}
+
+function highlightCalcExpression(expression: string) {
 	const tokens: { class?: string; text: string }[] = []
 	const length = expression.length
 
@@ -43,12 +80,7 @@ export function highlightCalcExpression(expression: string) {
 				i++
 			}
 
-			if (
-				ident === 'var' ||
-				ident === 'calc' ||
-				ident === 'pow' ||
-				ident === 'clamp'
-			) {
+			if (CSS_FUNCTIONS.has(ident)) {
 				tokens.push({ class: 'token value', text: ident })
 			} else if (ident.startsWith('--')) {
 				tokens.push({ class: 'token property', text: ident })
@@ -69,35 +101,8 @@ export function highlightCalcExpression(expression: string) {
 		.join('')
 }
 
-export function highlightMediaQuery(query: string) {
-	return query.replace(/(\d*\.?\d+)(px|em|rem)/g, (_, number, unit) => {
-		return `<span class="token value">${number}</span><span class="token unit">${unit}</span>`
-	})
-}
-
-export function highlightValue(value: string) {
-	if (isCalcExpression(value)) {
-		return highlightCalcExpression(value)
-	}
-
-	const unitPattern = /^([+-]?\d*\.?\d+)([%a-z]+)?$/i
-	const match = value.trim().match(unitPattern)
-
-	if (match) {
-		const number = match[1]
-		const unit = match[2] || ''
-		return unit
-			? `<span class="token value">${number}</span><span class="token unit">${unit}</span>`
-			: `<span class="token value">${number}</span>`
-	}
-
-	return `<span class="token value">${value}</span>`
-}
-
-export function isCalcExpression(value: string) {
+function isCalcExpression(value: string) {
 	const trimmed = value.trim()
 
-	return ['calc(', 'clamp(', 'var(', 'tan(', 'atan2('].some((prefix) =>
-		trimmed.startsWith(prefix),
-	)
+	return CSS_EXPRESSION_PREFIXES.some((prefix) => trimmed.startsWith(prefix))
 }

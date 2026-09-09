@@ -19,7 +19,6 @@
 					type="button"
 					class="button"
 					:aria-pressed="preset.id === store.activePresetId"
-					:tabindex="preset.id === store.activePresetId ? -1 : 0"
 					@click="handlePresetClick(preset.id)"
 				>
 					<span

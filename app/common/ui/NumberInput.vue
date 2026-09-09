@@ -1,7 +1,8 @@
 <template>
 	<NumberInputRoot
 		v-bind="mergedProps"
-		:class="[{ '_has-label': label }, `_${size}`]"
+		:class="rootClass"
+		:style="rootStyle"
 	>
 		<NumberInputLabel
 			v-if="label"
@@ -9,31 +10,34 @@
 			data-route-transition
 		>
 			{{ label }}
-
-			<kbd
-				class="hotkey"
-				aria-hidden="true"
+			<span
+				v-if="hotkey"
+				class="visually-hidden"
 			>
-				{{ hotkey }}
-			</kbd>
+				{{ $t('controls.hotkeyHint', { key: hotkey }) }}
+			</span>
 		</NumberInputLabel>
 
-		<NumberInputControl>
-			<NumberInputDecrementTrigger>−</NumberInputDecrementTrigger>
-
+		<NumberInputControl :class="{ '_hotkey-pressed': isHotkeyPressed }">
 			<NumberInputInput as-child>
 				<Input
 					ref="inputRef"
-					:aria-keyshortcuts="hotkey"
+					v-bind="inputAttributes"
 				/>
 			</NumberInputInput>
 
-			<NumberInputIncrementTrigger>+</NumberInputIncrementTrigger>
+			<div class="triggers">
+				<NumberInputDecrementTrigger>−</NumberInputDecrementTrigger>
+
+				<NumberInputIncrementTrigger>+</NumberInputIncrementTrigger>
+			</div>
 		</NumberInputControl>
 	</NumberInputRoot>
 </template>
 
 <script setup lang="ts">
+	import type { StyleValue } from 'vue'
+
 	import {
 		NumberInputControl,
 		NumberInputDecrementTrigger,
@@ -46,47 +50,80 @@
 		useForwardPropsEmits,
 	} from '@ark-ui/vue'
 
+	import { useFocusHotkey } from '~/common/lib/useFocusHotkey'
 	import Input from '~/common/ui/Input.vue'
 
-	import { useFocusHotkey } from '../lib/useFocusHotkey'
+	import { toIntlLocale } from '../lib/toIntlLocale'
+	import { NUMBER_FORMAT_OPTIONS } from '../lib/useLocalizedNumber'
 
 	interface IProps extends NumberInputRootProps {
+		decrementLabel?: string
 		hotkey?: string
+		incrementLabel?: string
 		label?: string
-		size?: TSize
 	}
 
-	type TSize = 'l' | 'm' | 's'
-
 	const {
+		decrementLabel = '',
 		hotkey = '',
+		incrementLabel = '',
 		label = '',
-		size = 'l',
 		...rootProps
 	} = defineProps<IProps>()
 	const emits = defineEmits<NumberInputRootEmits>()
 
-	const { locale: selectedLocale } = useI18n()
+	defineOptions({ inheritAttrs: false })
+
+	const attributes = useAttrs()
+	const { locale } = useI18n()
 
 	const forwarded = useForwardPropsEmits(rootProps, emits)
 
-	const mergedProps = computed<NumberInputRootProps>(() => ({
-		...forwarded.value,
+	const mergedProps = computed<NumberInputRootProps>(() => {
+		const { formatOptions, ...rest } = toValue(forwarded)
 
-		allowMouseWheel: forwarded.value.allowMouseWheel ?? true,
-		focusInputOnChange: forwarded.value.focusInputOnChange ?? false,
-		formatOptions: {
-			localeMatcher: 'best fit',
-			...forwarded.value.formatOptions,
-		},
-		locale: selectedLocale.value === 'ru' ? 'ru-RU' : 'en-US',
-	}))
+		return {
+			...rest,
+
+			allowMouseWheel: rest.allowMouseWheel ?? true,
+			focusInputOnChange: rest.focusInputOnChange ?? false,
+			formatOptions: {
+				localeMatcher: 'best fit',
+				...NUMBER_FORMAT_OPTIONS,
+				...formatOptions,
+				useGrouping: false,
+			},
+			locale: toIntlLocale(locale.value),
+			translations: {
+				...rest.translations,
+				decrementLabel: decrementLabel || $t('controls.decreaseValue'),
+				incrementLabel: incrementLabel || $t('controls.increaseValue'),
+			},
+		}
+	})
+
+	const rootClass = computed(() => [
+		attributes.class,
+		{ '_has-label': Boolean(label) },
+	])
+
+	const rootStyle = computed(() => attributes.style as StyleValue | undefined)
+
+	const inputAttributes = computed(() => {
+		const rest = { ...attributes }
+		delete rest.class
+		delete rest.style
+
+		return {
+			...rest,
+			...(hotkey ? { 'aria-keyshortcuts': hotkey } : {}),
+		}
+	})
 
 	const inputRef = ref<{ $el: HTMLInputElement }>()
+	const isHotkeyPressed = useFocusHotkey(inputRef, hotkey)
 
-	if (hotkey) {
-		useFocusHotkey(inputRef, hotkey)
-	}
+	defineExpose({ inputRef })
 </script>
 
 <style scoped>
@@ -103,62 +140,71 @@
 		}
 
 		&[data-part='control'] {
-			display: grid;
-			grid-template-columns: 1fr 2fr 1fr;
-			column-gap: calc(var(--gap) / 4);
+			position: relative;
+			font-size: var(--fs-l);
+			transition: scale var(--animation__duration--fast) var(--animation__ease);
 
-			[data-part='root']._l & {
-				font-size: 1.25em;
+			&._hotkey-pressed {
+				scale: 0.98;
+				transition: none;
 			}
 		}
 
 		&[data-part='input'] {
 			inline-size: 100%;
-			text-align: center;
+			padding-inline-end: calc(var(--gap) * 3);
+			text-align: start;
+		}
+
+		.triggers {
+			position: absolute;
+			inset-block: 0;
+			inset-inline-end: 0;
+
+			overflow: hidden;
+			display: flex;
+			align-items: stretch;
+
+			border-start-end-radius: var(--radius);
+			border-end-end-radius: var(--radius);
+		}
+
+		&[data-part='increment-trigger'] {
+			position: relative;
+
+			&::before {
+				content: '';
+
+				position: absolute;
+				inset-block: 1px;
+				inset-inline-start: 0;
+
+				inline-size: 1px;
+
+				background: var(--color__border);
+			}
 		}
 
 		&[data-part='increment-trigger'],
 		&[data-part='decrement-trigger'] {
-			border-radius: var(--radius);
-			background-color: var(--color__muted);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			padding-inline: calc(var(--gap) / 2);
+
+			color: var(--color__foreground--muted);
+
+			background: none;
 
 			&:not([disabled]):hover {
-				background-color: var(--color__muted--hover);
+				color: var(--color__primary);
 				transition: none;
 			}
 
 			&[disabled] {
 				opacity: var(--color__disabled-state-opacity);
 			}
-		}
-	}
-
-	.hotkey {
-		position: relative;
-
-		display: none;
-
-		margin-inline-start: calc(var(--typography__space-width) * 2.75);
-
-		font-family: inherit;
-		font-size: 0.65em;
-		font-weight: bold;
-		color: var(--color__foreground--muted);
-		text-align: center;
-
-		&::before {
-			content: '';
-
-			position: absolute;
-			inset-block-start: 50%;
-			inset-inline-start: 50%;
-			translate: -50% -50%;
-
-			inline-size: 3.2ex;
-			block-size: 3.2ex;
-			border: 1px solid var(--color__outline);
-			border-block-end-width: 2px;
-			border-radius: var(--radius);
 		}
 	}
 </style>
