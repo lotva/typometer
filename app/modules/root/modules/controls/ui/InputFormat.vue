@@ -55,15 +55,10 @@
 	.group {
 		display: flex;
 		flex-direction: column;
-
-		margin: 0;
-		padding: 0;
-		border: none;
 	}
 
 	.label {
 		user-select: none;
-		padding: 0;
 	}
 
 	.item {
@@ -86,16 +81,18 @@
 		display: inline-grid;
 		place-content: center;
 
-		inline-size: 1.25em;
-		block-size: 1.25em;
+		inline-size: var(--fs-l);
+		block-size: var(--fs-l);
 		margin: 0;
 		border: 1px solid var(--color);
 		border-radius: 50%;
 
 		appearance: none;
 
-		transition: border-width var(--animation__duration--fast)
-			var(--animation__ease-in-out);
+		transition:
+			border-width var(--animation__duration--fast)
+				var(--animation__ease-in-out),
+			background-color var(--animation__duration) var(--animation__ease);
 
 		@media (forced-colors: active) {
 			--color: ButtonText;
@@ -119,7 +116,7 @@
 
 		&:checked {
 			border-color: var(--color-checked);
-			border-width: 0.3em;
+			border-width: 0.25em;
 
 			&::before {
 				background-color: var(--color-checked);
@@ -128,6 +125,7 @@
 
 		&:hover:not(:checked) {
 			background-color: var(--color-hover);
+			transition: none;
 		}
 	}
 

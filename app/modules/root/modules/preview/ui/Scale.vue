@@ -1,39 +1,32 @@
 <template>
 	<div class="scale">
-		<template
-			v-for="(item, index) in categorizedScale"
-			:key="index"
+		<div
+			class="preview"
+			:style="fluidRootStyle"
 		>
-			<div
-				class="item"
-				:style="{
-					fontSize: `${item.value}px`,
-				}"
-				@click="copyTokenName(item.value)"
+			<p
+				:id="probeLegendId"
+				class="visually-hidden"
 			>
-				<p class="title">
-					{{ item.value.toLocaleString(locale === 'ru' ? 'ru-RU' : 'en-US') }}
-					{{ capitalize(item.category) }}
+				{{ $t('preview.probeLegend') }}
+			</p>
 
-					<em
-						v-if="item.value === store.settings.base"
-						class="hint"
-						data-route-transition
-					>
-						{{ $t('controls.base') }}
-					</em>
-				</p>
+			<ul
+				ref="listRef"
+				:aria-label="$t('preview.scaleTableCaption')"
+				:aria-describedby="probeLegendId"
+			>
+				<ScaleRow
+					v-for="item in categorizedScale"
+					:key="item.offset"
+					:item="item"
+					:viewport-width="renderedViewportWidth"
+					@copy="copyTokenName"
+				/>
+			</ul>
+		</div>
 
-				<button
-					v-if="isCustomStep(item.value)"
-					type="button"
-					class="button"
-					@click.stop="removeCustomStepByValue(item.value)"
-				>
-					<span class="text-metrics-fix">Remove</span>
-				</button>
-			</div>
-		</template>
+		<SliderViewport class="slider" />
 
 		<Toast
 			:message="message"
@@ -43,42 +36,38 @@
 </template>
 
 <script setup lang="ts">
-	import { useScaleStore } from '~/modules/root/model/useScaleStore'
-	import { useScalePreview } from '~/modules/root/modules/preview/lib/useScalePreview'
-	import { useToast } from '~/modules/root/modules/preview/lib/useToast'
-	import Toast from '~/modules/root/modules/preview/ui/Toast.vue'
-
+	import { useScaleStore } from '../../../model/useScaleStore'
 	import { getTokenNameByIndex, getTokenProperty } from '../../tokens'
+	import { useScalePreview } from '../lib/useScalePreview'
+	import { useScaleScrollAnchor } from '../lib/useScaleScrollAnchor'
+	import { useToast } from '../lib/useToast'
+	import ScaleRow from './ScaleRow.vue'
+	import SliderViewport from './SliderViewport.vue'
+	import Toast from './Toast.vue'
 
 	const props = defineProps<{
 		scrollContainerRef: null | { $el: HTMLElement }
-	}>()
-
-	const emit = defineEmits<{
-		scrollToBottom: []
 	}>()
 
 	const store = useScaleStore()
 
 	const { isVisible, message, showToast } = useToast()
 
-	const {
-		capitalize,
-		categorizedScale,
-		isCustomStep,
-		locale,
-		removeCustomStepByValue,
-	} = useScalePreview()
+	const { categorizedScale, fluidRootStyle, renderedViewportWidth } =
+		useScalePreview()
+
+	const listRef = useTemplateRef<HTMLElement>('listRef')
+	const probeLegendId = useId()
 
 	function copyTokenName(value: number) {
-		const index = store.scale.indexOf(value)
+		const index = store.scale.findIndex((point) => point.value === value)
 		if (index === -1) return
 
 		const property = getTokenProperty(
 			getTokenNameByIndex(index, {
 				outputFormat: store.outputFormat,
+				scale: store.scale,
 				settings: store.settings,
-				values: store.scale,
 			}),
 		)
 
@@ -90,81 +79,71 @@
 		}
 	}
 
-	watch(
-		() => categorizedScale.value,
-		() => {
-			if (props.scrollContainerRef) {
-				emit('scrollToBottom')
-			}
-		},
-		{ flush: 'pre' },
-	)
+	useScaleScrollAnchor({
+		layoutSignal: renderedViewportWidth,
+		listRef,
+		scrollContainerRef: () => props.scrollContainerRef?.$el,
+	})
 </script>
 
 <style scoped>
 	.scale {
-		position: relative;
-		margin-block: calc(-1 * var(--container-padding-block-start))
-			calc(-1 * var(--container-padding-block-end));
-	}
-
-	.item {
-		cursor: copy;
+		overflow-anchor: none;
 
 		position: relative;
-
-		display: grid;
-		grid-template-columns: auto 1fr;
-
-		margin-inline: calc(-1 * var(--container-padding-inline));
-		padding-inline: var(--container-padding-inline);
-		border-block-start: 1px solid var(--color__border);
-
-		transition: background-color var(--animation__duration)
-			var(--animation__ease);
-
-		@media (hover: hover) and (pointer: fine) {
-			&:hover {
-				background-color: var(--color__surface);
-				transition: none;
-			}
-		}
-
-		&:first-child {
-			border-block-start: 0;
-		}
-	}
-
-	.title {
-		padding-block: calc(0.4rem + 0.2em) calc(1rem + 0.35em);
-		letter-spacing: calc(0.07rem - 0.07em);
-		white-space: nowrap;
-	}
-
-	.hint {
-		font-style: normal;
-		color: var(--color__foreground--muted);
-	}
-
-	.button {
-		position: absolute;
-		inset-block-start: 0.2em;
-		inset-inline-end: var(--container-padding-inline);
 
 		display: flex;
-		flex-direction: row-reverse;
-		column-gap: calc(var(--gap) / 4);
+		flex-direction: column;
 
-		padding: 0.4rem calc(var(--gap) / 2);
-		border: 1px solid var(--color__border);
-		border-radius: var(--radius-sm);
+		min-block-size: 100%;
+	}
 
-		font-size: min(0.875rem, 0.875em);
+	.preview {
+		--progress: clamp(
+			0,
+			(var(--w) - var(--vw-min)) / (var(--vw-max) - var(--vw-min)),
+			1
+		);
+		--base: calc(
+			var(--base-min) + (var(--base-max) - var(--base-min)) * var(--progress)
+		);
+		--ratio: calc(
+			var(--ratio-min) + (var(--ratio-max) - var(--ratio-min)) * var(--progress)
+		);
 
-		background-color: var(--color__muted);
+		container-name: scale-preview;
+		container-type: inline-size;
+		flex: 1 1 auto;
+		margin-block: calc(-1 * var(--container-padding-block-start))
+			calc(-1 * var(--container-padding-block-end));
 
-		&:hover {
-			background-color: var(--color__muted--hover);
+		@media (--desktop) {
+			margin-block-end: 0;
+		}
+	}
+
+	.slider {
+		position: sticky;
+		z-index: 5;
+		inset-block-end: calc(-1 * var(--container-padding-block-end));
+
+		grid-template-columns: min(100%, max(50%, 24em));
+		justify-content: center;
+
+		max-inline-size: none;
+		margin-block-end: calc(-1 * var(--container-padding-block-end));
+		margin-inline: calc(-1 * var(--container-padding-inline));
+		padding-block: calc(var(--gap) * 1.5) var(--container-padding-block-end);
+		padding-inline: var(--container-padding-inline);
+
+		background-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			var(--color__background) 10%
+		);
+
+		@media (--mobile) {
+			display: none;
 		}
 	}
 </style>

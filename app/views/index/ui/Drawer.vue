@@ -123,7 +123,7 @@
 
 			max-block-size: var(--drawer__max-position);
 			margin-block-start: calc(-1 * var(--gap));
-			padding-block: var(--gap) calc(var(--gap) * 3);
+			padding-block: calc(var(--gap) * 1.5) calc(var(--gap) * 3);
 			padding-inline: var(--container-padding-inline);
 		}
 

@@ -1,12 +1,10 @@
-export interface ICustomStep {
-	offsetExponent: number
-	position: 'after' | 'before' | 'between'
-	referenceIndex: number
-}
-
-export interface IPreset extends ISettings {
+export interface IPreset extends Omit<
+	ISettings,
+	'ratioMin' | 'viewportMax' | 'viewportMin'
+> {
 	i18nNameKey: string
 	id: string
+	ratioMin?: number
 }
 
 export interface IScalePoint {
@@ -15,12 +13,15 @@ export interface IScalePoint {
 }
 
 export interface ISettings {
-	base: number
-	customSteps: ICustomStep[]
+	baseMax: number
+	baseMin: number
 	gridStep: number
 	intermediateSteps: number
-	ratio: number
+	ratioMax: number
+	ratioMin: number
 	shouldSnapToGrid: boolean
+	viewportMax: number
+	viewportMin: number
 }
 
 export type TOutputFormat = 'numeric' | 'semantic' | 'tshirt'

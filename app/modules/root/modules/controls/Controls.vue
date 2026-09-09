@@ -3,6 +3,10 @@
 		class="section"
 		:aria-label="$t('controls.ariaLabel')"
 	>
+		<SliderViewport class="slider" />
+
+		<InputViewport />
+
 		<InputBase />
 
 		<InputRatio />
@@ -11,18 +15,20 @@
 
 		<InputGrid />
 
-		<InputOutputFormat />
+		<InputFormat />
 
 		<Presets />
 	</section>
 </template>
 
 <script setup lang="ts">
+	import { SliderViewport } from '../preview'
 	import InputBase from './ui/InputBase.vue'
+	import InputFormat from './ui/InputFormat.vue'
 	import InputGrid from './ui/InputGrid.vue'
-	import InputOutputFormat from './ui/InputOutputFormat.vue'
 	import InputRatio from './ui/InputRatio.vue'
 	import InputSteps from './ui/InputSteps.vue'
+	import InputViewport from './ui/InputViewport.vue'
 	import Presets from './ui/Presets.vue'
 </script>
 
@@ -30,20 +36,11 @@
 	.section {
 		display: grid;
 		row-gap: calc(var(--gap) * 2);
-	}
 
-	.list {
-		margin-block-start: calc(var(--gap) * 2);
-	}
-
-	:deep() {
-		.controls-root {
-			display: grid;
-			row-gap: var(--gap);
-		}
-
-		.controls-content {
-			font-size: 1.25em;
+		.slider {
+			@media (--desktop) {
+				display: none;
+			}
 		}
 	}
 </style>

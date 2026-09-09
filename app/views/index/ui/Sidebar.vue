@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 	import LocaleSwitcher from '~/common/ui/LocaleSwitcher.vue'
-	import Controls from '~/modules/root/modules/controls/Controls.vue'
+	import { Controls } from '~/modules/root'
 
 	import Copy from './Copy.vue'
 	import Drawer from './Drawer.vue'
@@ -91,10 +91,10 @@
 	}
 
 	.title {
-		font-size: 1rem;
+		font-size: var(--fs);
 
 		@media (--desktop) {
-			font-size: 2em;
+			font-size: var(--fs-xl);
 			letter-spacing: var(--typography__tracking--tight);
 		}
 	}
@@ -146,13 +146,11 @@
 
 	.switcher {
 		position: relative;
-		font-size: 0.875em;
 
 		@media (--desktop) {
 			position: absolute;
 			inset-block-start: calc(var(--gap) * 1);
 			inset-inline-end: calc(var(--gap) * 1);
-			font-size: 1em;
 		}
 	}
 </style>

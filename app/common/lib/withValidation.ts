@@ -5,7 +5,6 @@ export function withValidation<T extends NumberInputValueChangeDetails>(
 	rules: {
 		max?: (() => number) | number
 		min?: (() => number) | number
-		validate?: (value: number) => boolean
 	},
 ) {
 	return (details: T) => {
@@ -17,7 +16,6 @@ export function withValidation<T extends NumberInputValueChangeDetails>(
 		if (Number.isNaN(valueAsNumber)) return
 		if (min !== undefined && valueAsNumber < min) return
 		if (max !== undefined && valueAsNumber > max) return
-		if (rules.validate && !rules.validate(valueAsNumber)) return
 
 		handler(details)
 	}

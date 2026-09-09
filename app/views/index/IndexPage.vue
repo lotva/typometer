@@ -19,11 +19,11 @@
 
 		display: flex;
 		flex-direction: column;
-		min-block-size: 100dvb;
 
 		@media (--desktop) {
 			display: grid;
-			grid-template-columns: 17.5em auto;
+			grid-template-columns: 19em auto;
+			min-block-size: 100dvb;
 		}
 	}
 
@@ -35,7 +35,7 @@
 			block-size: 100dvb;
 			padding: var(--container-padding-block) var(--container-padding-inline)
 				calc(var(--container-padding-block) + var(--gap))
-				clamp(calc(var(--gap) * 1), 5vi, calc(var(--gap) * 5));
+				clamp(calc(var(--gap) * 1), 4vi, calc(var(--gap) * 5));
 		}
 	}
 </style>

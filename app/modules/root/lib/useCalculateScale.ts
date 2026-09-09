@@ -1,44 +1,30 @@
-import type { ISettings } from '../model/types'
+import type { IScalePoint, ISettings } from '../model/types'
 
-import {
-	generateRawScale,
-	mergeScaleWithCustomSteps,
-	round,
-	snapToGrid,
-} from './scale'
+import { generateRawScale, snapValue } from './scale'
 
 export function useCalculateScale(settings: MaybeRefOrGetter<ISettings>) {
-	const rawScale = computed(() => generateRawScale(toValue(settings)))
+	const scale = computed((): IScalePoint[] => {
+		const current = toValue(settings)
+		const seen = new Set<number>()
 
-	const roundedScale = computed(() =>
-		rawScale.value.map((point) => ({
-			exponent: point.exponent,
-			value: round(point.value),
-		})),
-	)
+		return generateRawScale(current)
+			.map((point) => {
+				const value =
+					current.shouldSnapToGrid && point.exponent >= 0
+						? snapValue(point.value, current.gridStep)
+						: Math.round(point.value)
 
-	const snappedScale = computed(() => {
-		if (!toValue(settings).shouldSnapToGrid) return roundedScale.value
-
-		return roundedScale.value
-			.map((point) => ({
-				exponent: point.exponent,
-				value: snapToGrid(point.value, toValue(settings)),
-			}))
-			.filter((point, index, array) => point.value !== array[index + 1]?.value)
+				return {
+					exponent: point.exponent,
+					value,
+				}
+			})
+			.filter((point) => {
+				if (seen.has(point.value)) return false
+				seen.add(point.value)
+				return true
+			})
 	})
 
-	const mergedScale = computed(() => {
-		const points = mergeScaleWithCustomSteps(
-			snappedScale.value,
-			toValue(settings),
-		)
-
-		const values = points.map((p) => p.value)
-		return [...new Set(values)]
-	})
-
-	return {
-		mergedScale,
-	}
+	return { scale }
 }

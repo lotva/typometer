@@ -3,6 +3,7 @@
 		<pre
 			ref="preRef"
 			class="pre"
+			:aria-label="$t('preview.generatedTokens')"
 		><code class="code" v-html="html"></code></pre>
 
 		<button
@@ -14,7 +15,7 @@
 				class="text-metrics-fix"
 				data-route-transition
 			>
-				{{ $t('preview.copy') }}
+				{{ $t('preview.copyCss') }}
 			</span>
 		</button>
 
@@ -52,9 +53,6 @@
 <style scoped>
 	.tokens {
 		display: grid;
-		margin-block: calc(-1 * var(--container-padding-block-start))
-			calc(-1 * var(--container-padding-block-end));
-		margin-inline: calc(-1 * var(--container-padding-inline));
 	}
 
 	.pre,
@@ -69,7 +67,6 @@
 
 		place-self: start end;
 
-		margin-inline-end: var(--container-padding-inline);
 		padding: calc(
 				var(--gap) * 0.5 + var(--typography__surface-capital-compensator)
 			)
@@ -152,9 +149,6 @@
 
 	.pre {
 		max-inline-size: 100%;
-		padding-block: var(--container-padding-block-start)
-			var(--container-padding-block-end);
-		padding-inline: var(--container-padding-inline);
 
 		font-size: 0.84rem;
 		line-height: 1.5;
