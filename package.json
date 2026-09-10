@@ -28,6 +28,7 @@
 		"@vite-pwa/nuxt": "1.1.1",
 		"@vueuse/core": "^14.2.1",
 		"eslint": "^9.39.2",
+		"microlighter": "^2.1.0",
 		"nuxt": "^4.3.0",
 		"nuxt-vitalizer": "2.0.0",
 		"pinia": "^3.0.4",
