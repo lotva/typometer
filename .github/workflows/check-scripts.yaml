@@ -8,26 +8,14 @@ on:
 jobs:
   check-scripts:
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [24.5.0]
-        pnpm-version: [10.13.1]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v2
         with:
-          version: ${{ matrix.pnpm-version }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
+          cache: true
+          runtime: node@26.8.2
 
       - name: Run ESLint
         run: pnpm run check:scripts
