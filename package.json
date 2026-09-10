@@ -1,7 +1,12 @@
 {
 	"name": "typometer",
 	"private": true,
+	"packageManager": "pnpm@12.4.0",
 	"type": "module",
+	"engines": {
+		"node": ">=26.8.2",
+		"pnpm": ">=12.4.0"
+	},
 	"scripts": {
 		"build": "nuxt build",
 		"dev": "nuxt dev",
@@ -58,13 +63,5 @@
 		"unplugin-vue-router": "^0.19.2",
 		"vitest": "^4.0.18",
 		"vue-tsc": "^3.2.4"
-	},
-	"pnpm": {
-		"overrides": {
-			"vite": "npm:rolldown-vite@latest"
-		},
-		"onlyBuiltDependencies": [
-			"lefthook"
-		]
 	}
 }

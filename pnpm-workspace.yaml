@@ -1,0 +1,8 @@
+overrides:
+  vite: npm:rolldown-vite@latest
+
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  lefthook: true
+  unrs-resolver: true

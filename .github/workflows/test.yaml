@@ -6,8 +6,10 @@ on:
     paths:
       - 'app/**/*'
       - 'layers/**/*'
+      - '.node-version'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - 'vitest.config.ts'
       - 'nuxt.config.ts'
   pull_request:
@@ -15,8 +17,10 @@ on:
     paths:
       - 'app/**/*'
       - 'layers/**/*'
+      - '.node-version'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - 'vitest.config.ts'
       - 'nuxt.config.ts'
 
@@ -27,41 +31,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v2
         with:
-          node-version: 24.5.0
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.13.1
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          cache: true
+          runtime: node@26.8.2
 
       - name: Run runtime tests
         run: pnpm test --run --reporter=verbose
