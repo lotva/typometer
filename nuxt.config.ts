@@ -27,7 +27,10 @@ export default defineNuxtConfig({
 
 	compatibilityDate: '2025-07-15',
 
-	css: ['~~/app/core/assets/styles/index.css'],
+	css: [
+		'~~/app/core/assets/styles/index.css',
+		'microlighter/themes/vesper.css',
+	],
 
 	devtools: { enabled: false },
 
@@ -139,5 +142,41 @@ export default defineNuxtConfig({
 		build: {
 			cssCodeSplit: false,
 		},
+		css: {
+			lightningcss: {
+				// Native light-dark() in custom properties. The polyfill
+				// (--lightningcss-light/dark) produces invalid var() values.
+				exclude: 1_048_576, // Features.LightDark
+			},
+		},
+		optimizeDeps: {
+			exclude: ['microlighter'],
+		},
+		plugins: [
+			{
+				name: 'microlighter-css-grammar',
+				transform(code, id) {
+					if (
+						!id.includes('microlighter') ||
+						!id.endsWith('grammar-dependencies.js') ||
+						!code.includes('import(`./grammars/${language}.js`)')
+					) {
+						return
+					}
+
+					return {
+						code: [
+							"import cssGrammar from './grammars/css.js'",
+							'const grammarModules = { css: cssGrammar }',
+							code.replaceAll(
+								'import(`./grammars/${language}.js`)',
+								'Promise.resolve({ default: grammarModules[language] })',
+							),
+						].join('\n'),
+						map: null,
+					}
+				},
+			},
+		],
 	},
 })

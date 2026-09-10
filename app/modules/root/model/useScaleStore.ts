@@ -100,7 +100,7 @@ export const useScaleStore = defineStore('scale', () => {
 
 	const { scale } = useCalculateScale(settings)
 
-	const tokens = computed(() =>
+	const css = computed(() =>
 		generateTokens({
 			outputFormat: outputFormat.value,
 			scale: scale.value,
@@ -114,8 +114,8 @@ export const useScaleStore = defineStore('scale', () => {
 		outputFormat,
 		settings,
 
+		css,
 		scale,
-		tokens,
 
 		applyPreset,
 		updateBaseRange,

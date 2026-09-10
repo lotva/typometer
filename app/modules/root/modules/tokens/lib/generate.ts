@@ -1,6 +1,6 @@
 import { getFluidBaseBounds } from '~/modules/root/lib/scale'
 
-import type { CssNode, ITokenContext } from '../model'
+import type { ITokenContext } from '../model'
 
 import { getFluidTokenSizeValue, GRID_STEP_VAR } from './fluid-token'
 import { getTokenNameByIndex, getTokenProperty } from './naming'
@@ -9,7 +9,7 @@ import { getTokenNameByIndex, getTokenProperty } from './naming'
  * Generates fluid tokens using CSS custom properties and `calc()`, `pow()`, `clamp()`.
  * Interpolates base and ratio between two viewports.
  */
-export function generateTokens(context: ITokenContext): CssNode[] {
+export function generateTokens(context: ITokenContext): string {
 	const { scale, settings } = context
 	const {
 		gridStep,
@@ -22,98 +22,69 @@ export function generateTokens(context: ITokenContext): CssNode[] {
 	} = settings
 	const { baseMax, baseMin } = getFluidBaseBounds(settings)
 
-	if (scale.length === 0) return []
+	if (scale.length === 0) return ''
 
-	const nodes: CssNode[] = [
-		{
-			prop: '--base-min',
-			type: 'declaration',
-			value: `${Math.round(baseMin)}`,
-		},
-		{
-			prop: '--base-max',
-			type: 'declaration',
-			value: `${Math.round(baseMax)}`,
-		},
-		{ prop: '--ratio-min', type: 'declaration', value: String(ratioMin) },
-		{ prop: '--ratio-max', type: 'declaration', value: String(ratioMax) },
-		{ type: 'empty-line' },
-
-		{ type: 'comment', value: 'Viewport sizes:' },
-		{ prop: '--vw-min', type: 'declaration', value: `${viewportMin}` },
-		{ prop: '--vw-max', type: 'declaration', value: `${viewportMax}` },
-		{ type: 'empty-line' },
-
-		{ type: 'comment', value: 'Unitless viewport width:' },
-		{
-			prop: '--100vw',
-			type: 'declaration',
-			value: '100vw',
-		},
-		{
-			prop: '--w',
-			type: 'declaration',
-			value: 'calc(tan(atan2(var(--100vw), 1px)))',
-		},
-		{ type: 'empty-line' },
-
-		{ type: 'comment', value: 'Interpolation:' },
-		{
-			prop: '--progress',
-			type: 'declaration',
-			value:
-				'clamp(\n		0, (var(--w) - var(--vw-min)) / (var(--vw-max) - var(--vw-min)), 1\n	)',
-		},
-		{
-			prop: '--base',
-			type: 'declaration',
-			value:
-				'calc(\n		var(--base-min) + (var(--base-max) - var(--base-min)) * var(--progress)\n	)',
-		},
-		{
-			prop: '--ratio',
-			type: 'declaration',
-			value:
-				'calc(\n		var(--ratio-min) + (var(--ratio-max) - var(--ratio-min)) * var(--progress)\n	)',
-		},
-		{ type: 'empty-line' },
-
-		{
-			prop: '--steps',
-			type: 'declaration',
-			value: String(intermediateSteps + 1),
-		},
-		{
-			prop: '--step',
-			type: 'declaration',
-			value: 'calc(1 / var(--steps))',
-		},
-		{ type: 'empty-line' },
+	const root: string[] = [
+		`--base-min: ${Math.round(baseMin)};`,
+		`--base-max: ${Math.round(baseMax)};`,
+		`--ratio-min: ${ratioMin};`,
+		`--ratio-max: ${ratioMax};`,
+		'',
+		'/* Viewport sizes: */',
+		`--vw-min: ${viewportMin};`,
+		`--vw-max: ${viewportMax};`,
+		'',
+		'/* Unitless viewport width: */',
+		'--100vw: 100vw;',
+		'--w: calc(tan(atan2(var(--100vw), 1px)));',
+		'',
+		'/* Interpolation: */',
+		'--progress: clamp(\n\t\t0, (var(--w) - var(--vw-min)) / (var(--vw-max) - var(--vw-min)), 1\n\t);',
+		'--base: calc(\n\t\tvar(--base-min) + (var(--base-max) - var(--base-min)) * var(--progress)\n\t);',
+		'--ratio: calc(\n\t\tvar(--ratio-min) + (var(--ratio-max) - var(--ratio-min)) * var(--progress)\n\t);',
+		'',
+		`--steps: ${intermediateSteps + 1};`,
+		'--step: calc(1 / var(--steps));',
+		'',
 	]
 
 	if (shouldSnapToGrid) {
-		nodes.push(
-			{
-				prop: GRID_STEP_VAR,
-				type: 'declaration',
-				value: `${gridStep}px`,
-			},
-			{ type: 'empty-line' },
-		)
+		root.push(`${GRID_STEP_VAR}: ${gridStep}px;`, '')
 	}
 
 	scale.forEach((point, index) => {
 		const tokenName = getTokenNameByIndex(index, context)
 		if (!tokenName) return
 
-		const variableName = getTokenProperty(tokenName)
-
-		nodes.push({
-			prop: variableName,
-			type: 'declaration',
-			value: getFluidTokenSizeValue(point.exponent, settings),
-		})
+		root.push(
+			`${getTokenProperty(tokenName)}: ${getFluidTokenSizeValue(point.exponent, settings)};`,
+		)
 	})
 
-	return nodes
+	return [
+		'/**',
+		' * Fluid Modular Scale',
+		' *',
+		' * Defines one modular scale across two viewport-bound configurations:',
+		' * `--base-min` and `--ratio-min` at `--vw-min`,',
+		' * `--base-max` and `--ratio-max` at `--vw-max`.',
+		' *',
+		' * The browser continuously interpolates the base and ratio, then derives',
+		' * every scale step from them as the viewport width changes.',
+		' */',
+		'',
+		'@property --100vw {',
+		'\tsyntax: "<length>";',
+		'\tinherits: false;',
+		'\tinitial-value: 0px;',
+		'}',
+		'',
+		'html {',
+		'\tfont-size: calc(var(--base) / 16 * 100%);',
+		'}',
+		'',
+		':root {',
+		...root.map((line) => (line === '' ? '' : `\t${line}`)),
+		'}',
+	].join('\n')
 }

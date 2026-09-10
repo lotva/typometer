@@ -1,10 +1,13 @@
 <template>
-	<div class="tokens">
+	<div
+		class="tokens"
+		data-syntax-theme="vesper"
+	>
 		<pre
 			ref="preRef"
 			class="pre"
 			:aria-label="$t('preview.generatedTokens')"
-		><code class="code" v-html="html"></code></pre>
+		><code class="language-css">{{ css }}</code></pre>
 
 		<button
 			type="button"
@@ -27,24 +30,33 @@
 </template>
 
 <script setup lang="ts">
+	import { highlightAll } from 'microlighter'
+
 	import { useScaleStore } from '~/modules/root/model/useScaleStore'
 	import { useToast } from '~/modules/root/modules/preview/lib/useToast'
 	import Toast from '~/modules/root/modules/preview/ui/Toast.vue'
 
-	import { generateTokenHtml } from '../lib/html'
-
-	const { tokens } = toRefs(useScaleStore())
+	const { css } = toRefs(useScaleStore())
 	const { isVisible, message, showToast } = useToast()
 
 	const preRef = useTemplateRef('preRef')
 
-	const html = computed(() => generateTokenHtml(tokens.value))
+	async function highlightCode() {
+		await nextTick()
+
+		if (!preRef.value || typeof CSS === 'undefined' || !('highlights' in CSS)) {
+			return
+		}
+
+		await highlightAll({ root: preRef.value })
+	}
+
+	onMounted(highlightCode)
+	watch(css, highlightCode, { flush: 'post' })
 
 	function copyCode() {
-		const text = preRef.value?.textContent
-
-		if (text) {
-			navigator.clipboard.writeText(text)
+		if (css.value) {
+			navigator.clipboard.writeText(css.value)
 			showToast($t('copied'))
 		}
 	}
@@ -52,6 +64,9 @@
 
 <style scoped>
 	.tokens {
+		--syntax-background: transparent;
+		--syntax-foreground: var(--color__foreground);
+
 		display: grid;
 	}
 
@@ -80,70 +95,6 @@
 
 		&:hover {
 			background-color: var(--color__muted--hover);
-		}
-	}
-
-	.code {
-		--color__punctuation: #999;
-		--color__brackets: #999;
-		--color__semi: #999;
-		--color__foreground: #b07d48;
-		--color__selector: #b07d48;
-		--color__value: #2f798a;
-		--color__unit: #ab5959;
-		--color__operator: #ab5959;
-		--color__comment: #a0ada0;
-
-		@media (prefers-color-scheme: dark) {
-			--color__punctuation: #a0a0a0;
-			--color__brackets: var(--color__foreground);
-			--color__semi: var(--color__foreground);
-			--color__foreground: var(--color__foreground);
-			--color__selector: #a0a0a0;
-			--color__value: #ffc799;
-			--color__unit: #ffc799;
-			--color__operator: #a0a0a0;
-			--color__comment: #8b8b8b94;
-		}
-
-		&:deep() {
-			.punctuation {
-				color: var(--color__punctuation);
-			}
-
-			.brackets {
-				color: var(--color__brackets);
-			}
-
-			.semi {
-				color: var(--color__semi);
-			}
-
-			.selector {
-				color: var(--color__selector);
-			}
-
-			.property,
-			.media {
-				color: var(--color__foreground);
-			}
-
-			.value,
-			.atrule {
-				color: var(--color__value);
-			}
-
-			.unit {
-				color: var(--color__unit);
-			}
-
-			.operator {
-				color: var(--color__operator);
-			}
-
-			.comment {
-				color: var(--color__comment);
-			}
 		}
 	}
 
