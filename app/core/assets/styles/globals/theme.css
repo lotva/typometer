@@ -105,3 +105,11 @@ code {
 		box-shadow: 0 0 0 var(--typography__outline-thickness) var(--color__outline);
 	}
 }
+
+@media (forced-colors: active) {
+	:is(button, select, input, textarea, pre, .box):focus-visible,
+	[data-focus-visible] {
+		outline: var(--typography__outline-thickness) solid Highlight;
+		outline-offset: var(--typography__outline-thickness);
+	}
+}
