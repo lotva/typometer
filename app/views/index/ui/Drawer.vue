@@ -16,6 +16,7 @@
 		<div
 			ref="contentRef"
 			class="content"
+			:inert="isContentInert"
 		>
 			<slot></slot>
 
@@ -35,7 +36,7 @@
 	const contentRef = ref<HTMLElement | null>(null)
 	const spacerRef = ref<HTMLElement | null>(null)
 
-	const { isExpanded } = useDrawer(
+	const { isContentInert, isExpanded } = useDrawer(
 		{
 			contentRef,
 			drawerRef,

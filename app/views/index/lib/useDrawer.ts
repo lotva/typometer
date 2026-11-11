@@ -47,7 +47,11 @@ export function useDrawer(
 
 	const isDragging = ref(false)
 	const isExpanded = ref(initialIndex === 0)
+	const isNarrow = ref(false)
 	const currentIndex = ref(initialIndex)
+
+	const isContentInert = computed(() => isNarrow.value && !isExpanded.value)
+	let desktopMedia: MediaQueryList | null = null
 
 	let startY = 0
 	let startTranslate = 0
@@ -330,11 +334,32 @@ export function useDrawer(
 		cancelAnimationFrame(rafId)
 	}
 
+	function syncNarrow() {
+		isNarrow.value = isMobile()
+	}
+
+	function returnFocusToHandle() {
+		const content = contentRef.value
+		const active = document.activeElement
+
+		if (content && active instanceof HTMLElement && content.contains(active)) {
+			handleRef.value?.focus()
+		}
+	}
+
+	watch(isContentInert, (inert) => {
+		if (inert) returnFocusToHandle()
+	})
+
 	onMounted(() => {
+		desktopMedia = window.matchMedia('(min-width: 640px)')
+		syncNarrow()
+		desktopMedia.addEventListener('change', syncNarrow)
 		attach()
 	})
 
 	onBeforeUnmount(() => {
+		desktopMedia?.removeEventListener('change', syncNarrow)
 		detach()
 	})
 
@@ -342,6 +367,7 @@ export function useDrawer(
 		attach,
 		currentIndex,
 		detach,
+		isContentInert,
 		isDragging,
 		isExpanded,
 		positions,
