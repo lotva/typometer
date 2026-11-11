@@ -41,108 +41,85 @@
 	--animation__ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 	--animation__timing--transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 
-	--color__background: rgb(255 255 255);
-	--color__surface: rgb(248 248 248);
+	--color__background: light-dark(oklch(1 0 0), oklch(0.141 0.005 285.823));
+	--color__surface: light-dark(
+		oklch(0.967 0.001 286.375),
+		oklch(0.21 0.006 285.885)
+	);
 
-	--color__foreground--muted: rgb(109 109 109);
-	--color__foreground: rgb(10 10 10);
-	--color__foreground--strong: var(--color__foreground);
-	--color__foreground--subtitle: var(--color__foreground--muted);
-	--color__foreground--title: var(--color__foreground);
+	--color__foreground: light-dark(oklch(0.141 0.005 285.823), oklch(0.87 0 0));
+	--color__foreground--muted: light-dark(
+		oklch(0.532 0.016 285.938),
+		oklch(0.705 0.015 286.067)
+	);
 
-	--color__primary--disabled: rgb(24 24 24 / 0.5);
-	--color__primary: rgb(24 24 24);
-	--color__primary--hover: rgb(24 24 24 / 0.9);
-	--color__primary--active: rgb(24 24 24 / 0.8);
+	--color__primary: light-dark(
+		oklch(0.21 0.006 285.885),
+		oklch(0.92 0.004 286.32)
+	);
+	--color__primary--foreground: light-dark(
+		oklch(0.985 0 0),
+		oklch(0.21 0.006 285.885)
+	);
+	--color__primary--hover: color-mix(
+		in oklab,
+		var(--color__primary) 90%,
+		transparent
+	);
+	--color__primary--active: color-mix(
+		in oklab,
+		var(--color__primary) 80%,
+		transparent
+	);
+	--color__primary--disabled: color-mix(
+		in oklab,
+		var(--color__primary) 50%,
+		transparent
+	);
 
-	--color__muted: rgb(240 240 240);
-	--color__muted--hover: rgb(230 230 230);
-	--color__muted--active: rgb(220 220 220);
+	--color__muted: light-dark(
+		oklch(0.967 0.001 286.375),
+		oklch(0.274 0.006 286.033)
+	);
+	--color__muted--hover: light-dark(
+		oklch(0.92 0.004 286.32),
+		oklch(0.32 0.009 285.9)
+	);
+	--color__muted--active: light-dark(
+		oklch(0.92 0.004 286.32),
+		oklch(0.37 0.013 285.805)
+	);
+
+	--color__destructive: light-dark(
+		oklch(0.577 0.245 27.325),
+		oklch(0.704 0.191 22.216)
+	);
+	--color__destructive--foreground: oklch(0.985 0 0);
+
+	--color__border: light-dark(oklch(0.92 0.004 286.32), oklch(1 0 0 / 10%));
+	--color__outline: light-dark(
+		oklch(0.705 0.015 286.067 / 50%),
+		oklch(0.552 0.016 285.938 / 50%)
+	);
 
 	--color__input: var(--color__background);
-	--color__input--hover: var(--color__muted);
-	--color__input--active: var(--color__muted--hover);
-	--color__input-foreground: var(--color__foreground);
-	--color__input-placeholder: var(--color__foreground--muted);
-	--color__input-border: var(--color__border);
+	--color__input-border: light-dark(
+		oklch(0.92 0.004 286.32),
+		oklch(1 0 0 / 15%)
+	);
 	--color__input-border--focus: var(--color__outline);
 
 	--color__link: inherit;
-	--color__link--hover: var(--color__primary--hover);
+	--color__link--hover: var(--color__foreground);
 	--color__link-border: var(--color__primary--disabled);
-	--color__link-border--hover: var(--color__primary--hover);
-	--color__link-border--focus: var(--color__primary--hover);
-
-	--color__success: rgb(208 250 229);
-	--color__success-border: rgb(0 153 102);
-
-	--color__destructive: rgb(231 0 11 / 0.1);
-	--color__destructive--hover: rgb(255 100 103 / 0.2);
-	--color__destructive--active: var(--color__destructive--hover);
-	--color__destructive-outline: rgb(255 100 103 / 0.3);
-	--color__destructive-foreground: rgb(231 0 11);
-
-	--color__warning: rgb(255 251 235);
-	--color__warning-border: rgb(254 230 133);
-
-	--color__outline: rgb(161 161 161 / 0.5);
-	--color__border: rgb(229 229 229);
+	--color__link-border--hover: var(--color__foreground);
+	--color__link-border--focus: var(--color__foreground);
 
 	--color__disabled-state-opacity: 0.5;
 
-	color-scheme: light;
+	color-scheme: light dark;
 
 	@media (prefers-color-scheme: dark) {
 		--typography__font-weight: 450;
-
-		--color__background: rgb(10 10 10);
-		--color__surface: rgb(24 24 24);
-
-		--color__foreground--muted: rgb(161 161 161);
-		--color__foreground: rgb(212 212 212);
-		--color__foreground--strong: rgb(250 250 250);
-		--color__foreground--subtitle: var(--color__foreground--muted);
-		--color__foreground--title: var(--color__foreground);
-
-		--color__primary--disabled: rgb(229 229 229 / 0.5);
-		--color__primary: rgb(229 229 229);
-		--color__primary--hover: rgb(229 229 229 / 90%);
-		--color__primary--active: rgb(229 229 229 / 80%);
-
-		--color__muted: rgb(38 38 38);
-		--color__muted--hover: rgb(48 48 48);
-		--color__muted--active: rgb(64 64 64);
-
-		--color__input: rgb(255 255 255 / 0.045);
-		--color__input--hover: rgb(255 255 255 / 0.075);
-		--color__input--active: rgb(255 255 255 / 0.1125);
-		--color__input-foreground: var(--color__foreground);
-		--color__input-placeholder: var(--color__foreground--muted);
-		--color__input-border: rgb(255 255 255 / 0.15);
-		--color__input-border--focus: var(--color__outline);
-
-		--color__link: inherit;
-		--color__link--hover: var(--color__primary--hover);
-		--color__link-border: var(--color__primary--disabled);
-		--color__link-border--hover: var(--color__primary--hover);
-		--color__link-border--focus: var(--color__primary--hover);
-
-		--color__success: rgb(102 128 11);
-
-		--color__destructive: rgb(255 100 103 / 0.2);
-		--color__destructive--hover: rgb(255 100 103 / 0.3);
-		--color__destructive--active: var(--color__destructive--hover);
-		--color__destructive-outline: rgb(255 100 103 / 0.4);
-		--color__destructive-foreground: rgb(255 100 103);
-
-		--color__warning: rgb(70 25 1);
-		--color__warning-border: rgb(123 51 6);
-
-		--color__outline: rgb(115 115 115 / 0.5);
-		--color__border: rgb(255 255 255 / 0.1);
-
-		--color__disabled-state-opacity: 0.5;
-
-		color-scheme: dark;
 	}
 }

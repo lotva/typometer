@@ -37,19 +37,19 @@ a {
 }
 
 strong {
-	--color__link: var(--color__foreground--strong);
+	--color__link: var(--color__foreground);
 
 	font-weight: var(--typography__font-weight--bold);
-	color: var(--color__foreground--strong);
+	color: var(--color__foreground);
 }
 
 h1,
 h2,
 h3 {
-	--color__link: var(--color__foreground--title);
+	--color__link: var(--color__foreground);
 
 	font-weight: var(--typography__font-weight--bold);
-	color: var(--color__foreground--title);
+	color: var(--color__foreground);
 }
 
 h1,

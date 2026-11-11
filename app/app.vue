@@ -60,6 +60,12 @@
 			dir: computed(() => localeHead.value.htmlAttrs?.dir as 'ltr' | 'rtl'),
 			lang: computed(() => localeHead.value.htmlAttrs?.lang),
 		},
+		meta: [
+			{
+				content: 'light dark',
+				name: 'color-scheme',
+			},
+		],
 		script: [
 			{
 				innerHTML: SHOW_LOADER_SCRIPT,
@@ -86,7 +92,7 @@
 		ogType: 'website',
 		themeColor: [
 			{
-				content: '#0a0a0a',
+				content: '#09090b',
 				media: '(prefers-color-scheme: dark)',
 			},
 			{

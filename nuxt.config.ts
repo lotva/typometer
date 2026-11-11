@@ -119,7 +119,7 @@ export default defineNuxtConfig({
 			],
 			name: 'Typometer',
 			short_name: 'Typometer',
-			theme_color: '#0a0a0a',
+			theme_color: '#09090b',
 		},
 		registerType: 'autoUpdate',
 		workbox: {
