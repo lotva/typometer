@@ -38,6 +38,10 @@ html {
 	--fs-l: calc(1rem * pow(var(--ratio), 1 * var(--step)));
 	--fs-xl: calc(1rem * pow(var(--ratio), 4 * var(--step)));
 
+	@supports (opacity: calc(100vi / 1px)) {
+		--w: calc(var(--vi-100) / 1px);
+	}
+
 	@media (--desktop) {
 		--base-min: 14;
 		--base-max: 21;

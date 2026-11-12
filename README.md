@@ -60,6 +60,10 @@ Keep the interpolation block. Delete `--fs-*` tokens the project doesn't need.
 	--vi-100: 100vi;
 	--w: calc(tan(atan2(var(--vi-100), 1px)));
 
+	@supports (opacity: calc(100vi / 1px)) {
+		--w: calc(var(--vi-100) / 1px);
+	}
+
 	--progress: clamp(
 		0,
 		(var(--w) - var(--vw-min)) / (var(--vw-max) - var(--vw-min)),
@@ -137,6 +141,8 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for local development.
 [Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()](https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow.html) — Always Twisted
 
 [CSS Type Casting to Numeric: tan(atan2()) Scalars](https://dev.to/janeori/css-type-casting-to-numeric-tanatan2-scalars-582j) — Jane Ori
+
+[Using CSS typed arithmetic](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Values_and_units/Using_typed_arithmetic) — MDN
 
 [Every Layout: Modular scale](https://every-layout.dev/rudiments/modular-scale/) — Heydon Pickering & Andy Bell
 
